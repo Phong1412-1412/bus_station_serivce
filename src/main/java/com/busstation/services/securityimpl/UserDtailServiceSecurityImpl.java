@@ -2,7 +2,9 @@ package com.busstation.services.securityimpl;
 
 import com.busstation.entities.Account;
 import com.busstation.repositories.AccountRepository;
+import com.busstation.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,17 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserDtailServiceSecurityImpl implements UserDetailsService {
-    @Autowired
-    private AccountRepository accountRepository;
+
+    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Account account = accountRepository.findByusername(username);
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(account.getRole().getName().trim()));
-        return new User(username, account.getPassword(), authorities);
+        Account account = accountRepository.findAccountByUserEmail(username);
+        return new UserRegistrationDetails(account, account.getUser().getStatus());
     }
 }

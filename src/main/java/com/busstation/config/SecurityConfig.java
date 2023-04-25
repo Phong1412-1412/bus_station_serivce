@@ -77,11 +77,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST,HTTP_METHOD_POST_UN_SECURED_URLs).permitAll()
                 .anyRequest()
                 .authenticated().and().authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthTokenFilter(), UsernamePasswordAuthenticationFilter.class).logout()
+                .addFilterBefore(jwtAuthTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .formLogin()
+                .and()
+                .logout()
                 .logoutUrl("/api/v1/auth/logout").addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()).and()
                 .httpBasic(withDefaults()).sessionManagement().sessionCreationPolicy(STATELESS);
-
         return http.build();
     }
 

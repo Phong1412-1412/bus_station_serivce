@@ -1,5 +1,6 @@
 package com.busstation.services.impl;
 
+import com.busstation.controller.verifyToken.VerificationToken;
 import com.busstation.converter.UserConverter;
 import com.busstation.entities.*;
 import com.busstation.enums.NameRoleEnum;
@@ -16,6 +17,7 @@ import com.busstation.services.AuthService;
 import com.busstation.utils.JwtProviderUtils;
 import jakarta.transaction.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +27,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
+
 @Component
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -53,6 +58,8 @@ public class AuthServiceImpl implements AuthService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	private final VerificationTokenRepository verificationTokenRepository;
+
 	@Override
 	public JwtResponse signin(LoginRequest loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(
@@ -60,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = tokenProvider.generateTokenUsingUserName(loginRequest.getUsername());
 
-		var account = accountRepository.findByusername(loginRequest.getUsername());
+		var account = accountRepository.findAccountByUserEmail(loginRequest.getUsername());
 		revokeAllUserTokens(account);
 		saveUserToken(account, jwt);
 
@@ -90,8 +97,7 @@ public class AuthServiceImpl implements AuthService {
 			user.setStatus(Boolean.TRUE);
 			userRepository.save(user);
 		}
-
-		return new ApiResponse("Create successfully", HttpStatus.CREATED);
+		return new ApiResponse("Create new user successfully", HttpStatus.CREATED);
 	}
 
 	@Override
@@ -167,5 +173,54 @@ public class AuthServiceImpl implements AuthService {
 
 		return new ApiResponse("Create employee successfully", HttpStatus.CREATED);
 	}
+//--------------------------------------------------------------------------------------------------------
+	@Override
+	public User registerUser(SignupRequest signupRequest) {
+		String username = signupRequest.getUsername();
+		String email = signupRequest.getUser().getEmail();
+		User user = new User();
+
+		if (accountRepository.existsByusername(username) && userRepository.existsByEmail(email)) {
+			throw new DataExistException("This user with username or email already exist");
+		} else {
+			Account account = new Account();
+			account.setUsername(signupRequest.getUsername());
+			account.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+			Role role = roleRepository.findByName(NameRoleEnum.ROLE_USER.toString());
+			account.setRole(role);
+			accountRepository.save(account);
+			user.setAccount(accountRepository.findById(account.getAccountId()).get());
+			user.setFullName(signupRequest.getUser().getFullName());
+			user.setPhoneNumber(signupRequest.getUser().getPhoneNumber());
+			user.setEmail(signupRequest.getUser().getEmail());
+			user.setAddress(signupRequest.getUser().getAddress());
+			user.setStatus(Boolean.FALSE);
+		}
+		return userRepository.save(user);
+	}
+
+	@Override
+	public void saveUseVerificationToken(User theUser, String Token) {
+		var verificationToken = new VerificationToken(Token, theUser);
+		verificationTokenRepository.save(verificationToken);
+	}
+
+	@Override
+	public String validateToken(String theToken) {
+		VerificationToken token = verificationTokenRepository.findByToken(theToken);
+		if(token == null) {
+			return "Invalid verification token";
+		}
+		User user = token.getUser();
+		Calendar calendar = Calendar.getInstance();
+		if(token.getExpirationTime().getTime() - calendar.getTime().getTime() <= 0) {
+			verificationTokenRepository.delete(token);
+			return "Token already expired";
+		}
+		user.setStatus(true);
+		userRepository.save(user);
+		return "valid";
+	}
+
 
 }
