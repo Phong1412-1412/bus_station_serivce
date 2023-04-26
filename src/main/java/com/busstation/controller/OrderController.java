@@ -1,11 +1,19 @@
 package com.busstation.controller;
 
+import com.busstation.entities.Order;
+import com.busstation.entities.User;
+import com.busstation.event.SubmitOrderCompleteEvent;
 import com.busstation.payload.request.OrderDetailRequest;
 import com.busstation.payload.request.OrderRequest;
 import com.busstation.payload.response.OrderDetailResponse;
 import com.busstation.payload.response.OrderResponse;
+import com.busstation.repositories.OrderRepository;
+import com.busstation.repositories.UserRepository;
 import com.busstation.services.OrderService;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +22,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController(value = "orderAPIofWeb")
 @RequestMapping("/api/v1/orders")
+@RequiredArgsConstructor
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
+    private final ApplicationEventPublisher publisher;
+    private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
 
     @GetMapping("/search/{order_id}")
     public ResponseEntity<?> searchOrderById(@PathVariable("order_id") String orderId,
@@ -40,10 +51,12 @@ public class OrderController {
     public ResponseEntity<?> submitOrder(@RequestBody OrderDetailRequest orderDetailRequest) {
 
         Boolean orderResponse = orderService.submitOrder(orderDetailRequest.getOrderId(), orderDetailRequest.getTripId());
-        if(orderResponse)
-
+        if(orderResponse){
+            User user = userRepository.findUserByOrderID(orderDetailRequest.getOrderId());
+            Order order = orderRepository.findById(orderDetailRequest.getOrderId()).orElse(null);
+            publisher.publishEvent(new SubmitOrderCompleteEvent(user, order));
             return new ResponseEntity<>("successfully", HttpStatus.OK);
-
+        }
         return new ResponseEntity<>("failed", HttpStatus.OK);
     }
 

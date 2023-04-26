@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     Boolean existsByEmail(String email);
 
     User findUserByOrders(Order order);
+
+    @Query("SELECT u FROM User u JOIN Order o ON o.user.userId = u.userId WHERE o.orderID = :orderID")
+    User findUserByOrderID(@Param("orderID") String orderID);
 }

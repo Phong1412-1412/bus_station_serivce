@@ -50,4 +50,5 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
     @Query("select od.ticket.price from OrderDetail od "
             + "where od.status = true and EXTRACT(MONTH FROM od.updatedAt) = ?1 and EXTRACT(YEAR FROM od.updatedAt) = ?2")
     List<Double> getPriceByMonthAndUpdateAt(int month, int year);
+
 }
