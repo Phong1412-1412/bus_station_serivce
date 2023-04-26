@@ -3,30 +3,38 @@ package com.busstation.controller;
 import com.busstation.controller.verifyToken.VerificationToken;
 import com.busstation.entities.User;
 import com.busstation.event.RegistrationCompleteEvent;
+import com.busstation.event.listener.RegistrationCompleteEventListener;
 import com.busstation.payload.request.EmployeeRequest;
 import com.busstation.payload.request.LoginRequest;
 import com.busstation.payload.request.SignupRequest;
 import com.busstation.payload.response.JwtResponse;
 import com.busstation.repositories.VerificationTokenRepository;
 import com.busstation.services.AuthService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController(value = "authAPIofWeb")
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
 
     private final ApplicationEventPublisher publisher;
     private final VerificationTokenRepository tokenRepository;
+    private final RegistrationCompleteEventListener eventListener;
+    private final HttpServletRequest request;
 
     @PostMapping("/signin")
     public ResponseEntity<JwtResponse> signIn(@RequestBody LoginRequest loginRequest) {
@@ -55,6 +63,7 @@ public class AuthController {
 
     @GetMapping("/verifyEmail")
     public String verifyEmail(@RequestParam("token") String token) {
+        String url = applicationUrl(request)+"/api/v1/auth/resend-verification-token?token="+token;
         VerificationToken theToken = tokenRepository.findByToken(token);
         if(theToken.getUser().getStatus()) {
             return "This account has already been verified, please, login.";
@@ -63,8 +72,25 @@ public class AuthController {
         if(verificationResult.equalsIgnoreCase("valid")) {
             return "Email verified successfully. Now you can login to your account";
         }
-        return "Invalid verification token";
+        return "Invalid verification link, <a href=\""+url+"\" > Get a new verification link. </a>";
     }
+
+    @GetMapping("/resend-verification-token")
+    public String resendVerificationToken(@RequestParam("token") String oldToken, final HttpServletRequest request)
+            throws MessagingException, UnsupportedEncodingException {
+        VerificationToken verificationToken = authService.generateNewVerificationToken(oldToken);
+        User theUser = verificationToken.getUser();
+        resendVerificationTokenEmail(theUser, applicationUrl(request), verificationToken);
+        return "A new verification has been seen to your email. Please, check to activate you account";
+    }
+
+    private void resendVerificationTokenEmail(User theUser, String applicationUrl, VerificationToken verificationToken)
+            throws MessagingException, UnsupportedEncodingException {
+        String url = applicationUrl+"/api/v1/auth/verifyEmail?token="+verificationToken.getToken();
+        eventListener.sendVerificationEmail(url);
+        log.info("Click the link to verify your registration :  {}", url);
+    }
+
 
     public String applicationUrl(HttpServletRequest request) {
         return "http://" +request.getServerName()+":"+request.getServerPort()+request.getContextPath();

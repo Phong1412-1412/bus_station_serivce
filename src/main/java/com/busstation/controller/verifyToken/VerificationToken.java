@@ -13,7 +13,6 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 public class VerificationToken {
     @Id
@@ -25,7 +24,7 @@ public class VerificationToken {
     @JoinColumn(name = "user_id", referencedColumnName = "USER_ID")
     private User user;
 
-    private static final int EXPIRATION_TIME = 3;
+    private static final int EXPIRATION_TIME = 5;
     public VerificationToken(String token, User user) {
         super();
         this.token = token;
@@ -36,6 +35,10 @@ public class VerificationToken {
     public VerificationToken(String token) {
         super();
         this.token = token;
+        this.expirationTime = this.getTokenExpirationTime();
+    }
+    public VerificationToken() {
+        super();
         this.expirationTime = this.getTokenExpirationTime();
     }
 

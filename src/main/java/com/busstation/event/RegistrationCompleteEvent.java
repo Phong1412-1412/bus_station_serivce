@@ -2,6 +2,7 @@ package com.busstation.event;
 
 import com.busstation.entities.User;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
 

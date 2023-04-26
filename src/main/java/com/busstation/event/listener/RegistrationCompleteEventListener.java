@@ -7,8 +7,6 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -44,12 +42,16 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
     }
     public void sendVerificationEmail(String url) throws MessagingException, UnsupportedEncodingException {
         String subject = "Email Verification";
-        String senderName = "User Registration Portal Service";
-        String mailContent = "<p> Hi, "+ theUser.getFullName()+ ", </p>"+
-                "<p>Thank you for registering with us,"+"" +
-                "Please, follow the link below to complete your registration.</p>"+
-                "<a href=\"" +url+ "\">Verify your email to activate your account</a>"+
-                "<p> Thank you <br> Users Registration Portal Service";
+        String senderName = "User Registration Transportation Company Management Website";
+        String mailContent = "<html><body>" +
+                "<h2>Hi " + theUser.getFullName() + ",</h2>" +
+                "<p>Thank you for registering with us. Please verify your email address to activate your account by clicking the button below:</p>" +
+                "<div style=\"text-align: center;\">" +
+                "<a href=\"" + url + "\" style=\"background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;\">Verify Email</a>" +
+                "</div>" +
+                "<p>If you did not register with us, please ignore this email.</p>" +
+                "<p>Thank you for using our service.</p>" +
+                "</body></html>";
         MimeMessage message = javaMailSender.createMimeMessage();
         var messageHelper = new MimeMessageHelper(message);
         messageHelper.setFrom("phongbuibsp3@gmail.com", senderName);

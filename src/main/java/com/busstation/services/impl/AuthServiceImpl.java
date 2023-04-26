@@ -28,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -214,12 +215,20 @@ public class AuthServiceImpl implements AuthService {
 		User user = token.getUser();
 		Calendar calendar = Calendar.getInstance();
 		if(token.getExpirationTime().getTime() - calendar.getTime().getTime() <= 0) {
-			verificationTokenRepository.delete(token);
 			return "Token already expired";
 		}
 		user.setStatus(true);
 		userRepository.save(user);
 		return "valid";
+	}
+
+	@Override
+	public VerificationToken generateNewVerificationToken(String oldToken) {
+		VerificationToken token = verificationTokenRepository.findByToken(oldToken);
+		VerificationToken tokenTime = new VerificationToken();
+		token.setToken(UUID.randomUUID().toString());
+		token.setExpirationTime(tokenTime.getExpirationTime());
+		return verificationTokenRepository.save(token);
 	}
 
 

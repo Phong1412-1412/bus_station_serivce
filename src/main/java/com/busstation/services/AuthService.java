@@ -20,4 +20,6 @@ public interface AuthService {
     void saveUseVerificationToken(User theUser, String verificationToken);
 
     String validateToken(String theToken);
+
+    VerificationToken generateNewVerificationToken(String oldToken);
 }
