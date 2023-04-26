@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.busstation.enums.AuthenticationProvider;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -39,6 +41,10 @@ public class User implements Serializable {
 
     @Column(name = "status")
     private Boolean status;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auth_provider")
+    private AuthenticationProvider authProvider;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
