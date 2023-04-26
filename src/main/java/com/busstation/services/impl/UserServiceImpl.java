@@ -65,4 +65,5 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return new ApiResponse("Set status user successfully", HttpStatus.OK);
     }
+
 }

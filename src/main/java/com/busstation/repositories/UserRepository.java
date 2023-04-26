@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     Boolean existsByEmail(String email);
 
     User findUserByOrders(Order order);
+
+    @Query("select u from User u where u.account.id = ?1")
+	User findByAccountId(String accountId);
 }
