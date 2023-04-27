@@ -31,6 +31,8 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
     private Car car;
     private User employee;
 
+    private String htmlString;
+
     private BigDecimal totalPrice = BigDecimal.ZERO;
     private final TicketRepository ticketRepository;
     private final OrderDetailRepository orderDetailRepository;
@@ -47,14 +49,25 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
             BigDecimal ticketPrice = orderDetail.getTicket().getPrice();
             totalPrice = totalPrice.add(ticketPrice);
         }
-
         orderDetail = orderDetails.get(0);
-
         trip = tripRepository.findById(theOrder.getTrip().getTripId()).orElse(null);
 
         car = orderRepository.findByOrderIdAndUserId(theOrder.getOrderID(), theUser.getUserId());
 
         employee = tripUserRepository.findEmployeeByOderAndCarAndUser(theOrder.getOrderID());
+
+        StringBuilder sb = new StringBuilder();
+
+        for (OrderDetail orderDetail : orderDetails) {
+            sb.append("<tr>")
+                    .append("<td class=\"table-title\">Chair number:</td>")
+                    .append("<td class=\"table-content\">")
+                    .append(orderDetail.toString())
+                    .append("</td>")
+                    .append("</tr>");
+        }
+
+         htmlString = sb.toString();
 
         try {
             sendOderEmail();
@@ -214,6 +227,7 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
                 "                            <td class=\"table-title\">Trip:</td>\n" +
                 "                            <td class=\"table-content\">"+trip.getProvinceStart()+ " - "+trip.getProvinceEnd()+ " ("+trip.getTimeStart()+") </td>\n" +
                 "                        </tr>\n" +
+                "                          "+htmlString+"        "+
                 "                        <tr class=\"note\">\n" +
                 "                            <td class=\"table-title\">Total price:</td>\n" +
                 "                            <td class=\"table-content\">"+totalPrice+" VND</td>\n" +
@@ -289,9 +303,9 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
                 "</html>";
         MimeMessage message = javaMailSender.createMimeMessage();
         var messageHelper = new MimeMessageHelper(message);
-        messageHelper.setFrom("khanhvo270423@gmail.com", senderName);
-        messageHelper.setTo("phongbuibsp3@gmail.com");
-//        messageHelper.setTo(theUser.getEmail());
+        messageHelper.setFrom("phongbuibsp3@gmail.com", senderName);
+//        messageHelper.setTo("phongbuibsp3@gmail.com");
+        messageHelper.setTo(theUser.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
         javaMailSender.send(message);
