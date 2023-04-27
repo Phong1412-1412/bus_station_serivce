@@ -27,7 +27,7 @@ public class UserDtailServiceSecurityImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountRepository.findAccountByUserEmail(username);
+        Account account = accountRepository.findByusername(username);
         return new UserRegistrationDetails(account, account.getUser().getStatus());
     }
 }
