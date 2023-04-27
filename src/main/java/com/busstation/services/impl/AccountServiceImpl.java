@@ -63,7 +63,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDto accountInformation() {
         Account account=accountRepository.findByusername(SecurityUtils.getUserName());
-        System.out.println(SecurityUtils.getUserName());
+        //System.out.println(SecurityUtils.getUserName());
         if(Objects.isNull(account)){        	
             throw  new DataNotFoundException("Can't find this account");
         }

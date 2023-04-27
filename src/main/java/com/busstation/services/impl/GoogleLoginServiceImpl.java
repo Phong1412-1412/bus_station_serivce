@@ -14,8 +14,8 @@ import com.busstation.repositories.UserRepository;
 import com.busstation.services.GoogleLoginService;
 
 @Service
-public class GoogleLoginServiceImpl implements GoogleLoginService{
-	
+public class GoogleLoginServiceImpl implements GoogleLoginService {
+
 	@Autowired
 	private AccountRepository accountRepository;
 
@@ -26,38 +26,33 @@ public class GoogleLoginServiceImpl implements GoogleLoginService{
 	private UserRepository userRepository;
 
 	@Override
-	public void loginWithGoogle(String email, String fullname) {
-		
-		Account account = accountRepository.findByusername(email);
-		
-		if (account == null) {
-			
-			account = new Account();
-			account.setUsername(email);
-			account.setPassword("");
-			Role role = roleRepository.findByName(NameRoleEnum.ROLE_USER.toString());
-			account.setRole(role);
-			accountRepository.save(account);
-			
-			User user = new User();
-			user.setAccount(accountRepository.findById(account.getAccountId()).get());
-			user.setFullName(fullname);
-			user.setPhoneNumber("");
-			user.setEmail(email);
-			user.setAddress("");			
-			user.setStatus(Boolean.TRUE);
-			user.setAuthProvider(AuthenticationProvider.GOOGLE);
-			userRepository.save(user);
-		} else {
-			User user = userRepository.findByAccountId(account.getAccountId());
-			user.setAccount(accountRepository.findById(account.getAccountId()).get());
-			user.setFullName(fullname);
-			user.setPhoneNumber("");
-			user.setEmail(email);
-			user.setAddress("");			
-			user.setStatus(Boolean.TRUE);
-			userRepository.save(user);
-		}		
+	public void CreateNewUserloginWithGoogle(String username, String email, String fullname) {
+
+		Account account = new Account();
+		account.setUsername(username);
+		account.setPassword("");
+		Role role = roleRepository.findByName(NameRoleEnum.ROLE_USER.toString());
+		account.setRole(role);
+		accountRepository.save(account);
+
+		User user = new User();
+		user.setAccount(account);
+		user.setFullName(fullname);
+		user.setEmail(email);
+		user.setPhoneNumber("");
+		user.setAddress("");
+		user.setStatus(Boolean.TRUE);
+		user.setAuthProvider(AuthenticationProvider.GOOGLE);
+		userRepository.save(user);
+
+	}
+
+	@Override
+	public void UpdateUserloginWithGoogle(String accountId, String fullName) {
+		User userExisting = userRepository.findByAccountId(accountId);
+		userExisting.setFullName(fullName);
+		userRepository.save(userExisting);
+
 	}
 
 }

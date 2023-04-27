@@ -3,6 +3,7 @@ package com.busstation.services.impl;
 import com.busstation.controller.verifyToken.VerificationToken;
 import com.busstation.converter.UserConverter;
 import com.busstation.entities.*;
+import com.busstation.enums.AuthenticationProvider;
 import com.busstation.enums.NameRoleEnum;
 import com.busstation.enums.TokenEnum;
 import com.busstation.exception.DataExistException;
@@ -96,6 +97,7 @@ public class AuthServiceImpl implements AuthService {
 			user.setEmail(signupRequest.getUser().getEmail());
 			user.setAddress(signupRequest.getUser().getAddress());
 			user.setStatus(Boolean.TRUE);
+			user.setAuthProvider(AuthenticationProvider.LOCAL);
 			userRepository.save(user);
 		}
 		return new ApiResponse("Create new user successfully", HttpStatus.CREATED);
