@@ -96,9 +96,9 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
                 "</html>";
         MimeMessage message = javaMailSender.createMimeMessage();
         var messageHelper = new MimeMessageHelper(message);
-        messageHelper.setFrom("usnguyen@gmail.com", senderName);
-        messageHelper.setTo("phongbuibsp3@gmail.com");
-//        messageHelper.setTo(theUser.getEmail());
+        messageHelper.setFrom("khanhvo270423@gmail.com", senderName);
+        //messageHelper.setTo("vok67667@gmail.com");
+        messageHelper.setTo(theUser.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
         javaMailSender.send(message);
