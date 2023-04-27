@@ -166,7 +166,7 @@ public class OrderServiceImpl implements OrderService {
     }
     public User getUserOfSocket(String token){
         String username = jwtProviderUtils.getUserNameFromJwtToken(token);
-        Account account = accountRepository.findByusername(username);
+        Account account = accountRepository.findAccountByUserEmail(username);
         User user = userRepository.findById(account.getUser().getUserId()).orElseThrow(()->new RuntimeException("User does not exist"));
         return user;
     }
