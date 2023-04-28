@@ -59,7 +59,9 @@ public class SecurityConfig {
     private static final String[] UN_SECURED_URLs = {
             "/api/v1/auth/**",
             "/chair-booking/**",
-            "/chair-booking","/login"
+            "/chair-booking",
+            "/api/v1/auth/forgot-password",
+            "/api/v1/auth/reset-password"
 
     };
 
