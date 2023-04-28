@@ -45,6 +45,9 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "auth_provider")
     private AuthenticationProvider authProvider;
+    
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp

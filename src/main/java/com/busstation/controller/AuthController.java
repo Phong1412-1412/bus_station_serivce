@@ -5,7 +5,9 @@ import com.busstation.entities.User;
 import com.busstation.event.RegistrationCompleteEvent;
 import com.busstation.event.listener.RegistrationCompleteEventListener;
 import com.busstation.payload.request.EmployeeRequest;
+import com.busstation.payload.request.ForgotPasswordRequest;
 import com.busstation.payload.request.LoginRequest;
+import com.busstation.payload.request.ResetPasswordRequest;
 import com.busstation.payload.request.SignupRequest;
 import com.busstation.payload.response.JwtResponse;
 import com.busstation.repositories.VerificationTokenRepository;
@@ -14,7 +16,6 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ import java.io.UnsupportedEncodingException;
 public class AuthController {
 
     private final AuthService authService;
-
+    
     private final ApplicationEventPublisher publisher;
     private final VerificationTokenRepository tokenRepository;
     private final RegistrationCompleteEventListener eventListener;
@@ -94,5 +95,22 @@ public class AuthController {
 
     public String applicationUrl(HttpServletRequest request) {
         return "http://" +request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+    }
+    
+    //forgot password verify email
+    
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+
+        return authService.forgotPassword(forgotPasswordRequest.getEmail());
+    }
+    
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> reset_password(@RequestParam("token") String token,@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        return authService.resetPasswordVerifyCode(
+        		token, 
+        		resetPasswordRequest.getEmail(), 
+        		resetPasswordRequest.getNewPassword(), 
+        		resetPasswordRequest.getVerifyNewPassword());
     }
 }
