@@ -3,6 +3,7 @@ package com.busstation.config.filter;
 import java.io.IOException;
 
 import com.busstation.repositories.TokenRepository;
+import com.busstation.services.securityimpl.UserDetailServiceSecurityImpl;
 import com.busstation.utils.JwtProviderUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtProviderUtils tokenProvider;
-
+//
+//    @Autowired
+//    private UserDetailsService userDetailsService;
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailServiceSecurityImpl userDetailService;
 
     @Autowired
     private TokenRepository tokenRepository;
@@ -40,7 +43,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             }
             if (jwt != null && tokenProvider.validateToken(jwt)) {
                 String username = tokenProvider.getUserNameFromJwtToken(jwt);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailService.loadUserByUsername(username);
                 var isTokenValid = tokenRepository.findByToken(jwt).map(t -> !t.isExpired() && !t.isRevoked())
                         .orElse(false);
                 if (userDetails != null && isTokenValid) {

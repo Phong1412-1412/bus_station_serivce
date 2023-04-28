@@ -16,8 +16,9 @@ public interface TripUserRepository extends JpaRepository<TripUser, TripUserIdMt
     @Query("SELECT u FROM Order o" +
             " INNER JOIN TripCar tc ON tc.tripId = o.trip.tripId" +
             " INNER JOIN Car c ON c.carId = tc.carId" +
-            " INNER JOIN TripUser tu ON tu.tripId = o.trip.tripId" +
-            " INNER JOIN User u ON u.userId = tu.userId" +
+            " INNER JOIN Employee e ON  e.car.carId = c.carId" +
+            " INNER JOIN User u ON u.userId = e.user.userId" +
             " WHERE o.orderID = :orderId")
     User findEmployeeByOderAndCarAndUser(@Param("orderId") String orderId);
 }
+

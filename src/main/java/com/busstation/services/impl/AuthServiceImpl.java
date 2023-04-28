@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = tokenProvider.generateTokenUsingUserName(loginRequest.getUsername());
 
-		var account = accountRepository.findAccountByUserEmail(loginRequest.getUsername());
+		var account = accountRepository.findByusername(loginRequest.getUsername());
 		revokeAllUserTokens(account);
 		saveUserToken(account, jwt);
 

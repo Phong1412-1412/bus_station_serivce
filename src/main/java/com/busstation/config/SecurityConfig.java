@@ -5,6 +5,7 @@ import com.busstation.oauth.CustomAuthenticationSuccessHandler;
 import com.busstation.oauth.CustomOAuth2User;
 import com.busstation.oauth.CustomOAuth2UserService;
 import com.busstation.services.GoogleLoginService;
+import com.busstation.services.securityimpl.UserDetailServiceSecurityImpl;
 import com.busstation.utils.JwtProviderUtils;
 
 import jakarta.servlet.ServletException;
@@ -38,8 +39,11 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
+//    @Autowired
+//    private UserDetailsService userService;
+
     @Autowired
-    private UserDetailsService userService;
+    private UserDetailServiceSecurityImpl userService;
 
     @Autowired
     private JwtProviderUtils jwtProvider;
@@ -78,7 +82,6 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
         authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(passwordEncoder());
 

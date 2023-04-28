@@ -48,8 +48,8 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
         for (OrderDetail orderDetail: orderDetails) {
             BigDecimal ticketPrice = orderDetail.getTicket().getPrice();
             totalPrice = totalPrice.add(ticketPrice);
+            System.out.println(totalPrice);
         }
-        orderDetail = orderDetails.get(0);
         trip = tripRepository.findById(theOrder.getTrip().getTripId()).orElse(null);
 
         car = orderRepository.findByOrderIdAndUserId(theOrder.getOrderID(), theUser.getUserId());
@@ -62,7 +62,7 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
             sb.append("<tr>")
                     .append("<td class=\"table-title\">Chair number:</td>")
                     .append("<td class=\"table-content\">")
-                    .append(orderDetail.toString())
+                    .append(orderDetail.getChair().getChairNumber())
                     .append("</td>")
                     .append("</tr>");
         }
@@ -74,6 +74,7 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+        totalPrice = BigDecimal.ZERO;
         log.info("Nhận event thành công");
     }
     public void sendOderEmail() throws MessagingException, UnsupportedEncodingException {
@@ -219,15 +220,11 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
                 "                            <td class=\"table-content\"> "+ticket.getAddressEnd()+" " +
                 "                                </td>\n" +
                 "                        </tr>\n" +
-                "                        <tr>\n" +
-                "                            <td class=\"table-title\">Chair number:</td>\n" +
-                "                            <td class=\"table-content\">"+orderDetail.getChair().getChairNumber()+"</td>\n" +
-                "                        </tr>\n" +
+                "                        "+htmlString +
                 "                        <tr>\n" +
                 "                            <td class=\"table-title\">Trip:</td>\n" +
                 "                            <td class=\"table-content\">"+trip.getProvinceStart()+ " - "+trip.getProvinceEnd()+ " ("+trip.getTimeStart()+") </td>\n" +
                 "                        </tr>\n" +
-                "                          "+htmlString+"        "+
                 "                        <tr class=\"note\">\n" +
                 "                            <td class=\"table-title\">Total price:</td>\n" +
                 "                            <td class=\"table-content\">"+totalPrice+" VND</td>\n" +
