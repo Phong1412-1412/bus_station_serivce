@@ -14,7 +14,7 @@ public class TestController {
 		String fullname = user.getAttribute("name");
 		return "Hi " + fullname;
 	}
-
+	
 	@GetMapping("/user")
 	public OAuth2User getUserInfo(OAuth2AuthenticationToken authenticationToken) {
 		OAuth2User user = authenticationToken.getPrincipal();

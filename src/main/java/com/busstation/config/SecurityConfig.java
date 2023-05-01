@@ -2,6 +2,7 @@ package com.busstation.config;
 
 import com.busstation.config.filter.JwtAuthTokenFilter;
 import com.busstation.oauth.CustomAuthenticationSuccessHandler;
+import com.busstation.oauth.CustomLogoutSuccessHandler;
 import com.busstation.oauth.CustomOAuth2User;
 import com.busstation.oauth.CustomOAuth2UserService;
 import com.busstation.services.GoogleLoginService;
@@ -30,6 +31,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -54,12 +56,10 @@ public class SecurityConfig {
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
 
-    
-
     private static final String[] UN_SECURED_URLs = {
             "/api/v1/auth/**",
             "/chair-booking/**",
-            "/chair-booking",
+            "/chair-booking",           
             "/api/v1/auth/forgot-password",
             "/api/v1/auth/reset-password"
 
@@ -73,7 +73,7 @@ public class SecurityConfig {
     };
 
     private static final String[] HTTP_METHOD_POST_UN_SECURED_URLs = {
-            "/api/v1/trips/search/**"
+            "/api/v1/trips/search/**",            
     };
 
     @Bean
@@ -109,7 +109,14 @@ public class SecurityConfig {
     					.userService(customOAuth2UserService)
     					.and()
         	            .successHandler(successHandler())
-        	     );
+        	     )
+        	    .logout(l -> l
+        	    		.logoutUrl("/logout")
+        	    		.logoutSuccessHandler(logoutSuccessHandler())
+        	    		.deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                        .permitAll()
+        	    );
 
 
         return http.build();
@@ -118,6 +125,11 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler successHandler() {
         return new CustomAuthenticationSuccessHandler("/api/v1/accounts/information");
+    }
+    
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new CustomLogoutSuccessHandler();
     }
 
     @Bean

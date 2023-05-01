@@ -26,10 +26,10 @@ public class GoogleLoginServiceImpl implements GoogleLoginService {
 	private UserRepository userRepository;
 
 	@Override
-	public void CreateNewUserloginWithGoogle(String username, String email, String fullname) {
+	public void CreateNewUserloginWithGoogle(String email, String fullname) {
 
 		Account account = new Account();
-		account.setUsername(username);
+		account.setUsername(email);
 		account.setPassword("");
 		Role role = roleRepository.findByName(NameRoleEnum.ROLE_USER.toString());
 		account.setRole(role);
@@ -51,6 +51,8 @@ public class GoogleLoginServiceImpl implements GoogleLoginService {
 	public void UpdateUserloginWithGoogle(String accountId, String fullName) {
 		User userExisting = userRepository.findByAccountId(accountId);
 		userExisting.setFullName(fullName);
+		userExisting.setStatus(Boolean.TRUE);
+		userExisting.setAuthProvider(AuthenticationProvider.GOOGLE);
 		userRepository.save(userExisting);
 
 	}
