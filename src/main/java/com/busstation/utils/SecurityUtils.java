@@ -10,7 +10,7 @@ public class SecurityUtils {
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 	    if (principal instanceof OAuth2User) {
-	        return ((OAuth2User) principal).getAttribute("sub");
+	        return ((OAuth2User) principal).getAttribute("email");
 	    } else if (principal instanceof UserDetails) {
 	        return ((UserDetails) principal).getUsername();
 	    } else {
