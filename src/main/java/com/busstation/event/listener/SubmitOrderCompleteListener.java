@@ -59,12 +59,7 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
         StringBuilder sb = new StringBuilder();
 
         for (OrderDetail orderDetail : orderDetails) {
-            sb.append("<tr>")
-                    .append("<td class=\"table-title\">Chair number:</td>")
-                    .append("<td class=\"table-content\">")
-                    .append(orderDetail.getChair().getChairNumber())
-                    .append("</td>")
-                    .append("</tr>");
+            sb.append(orderDetail.getChair().getChairNumber()).append("/");
         }
 
          htmlString = sb.toString();
@@ -75,7 +70,6 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
             throw new RuntimeException(e);
         }
         totalPrice = BigDecimal.ZERO;
-        log.info("Nhận event thành công");
     }
     public void sendOderEmail() throws MessagingException, UnsupportedEncodingException {
         String subject = "[Bus Station] Thank you for ordering transportation at our Website, Order number: "+ theOrder.getOrderID() ;
@@ -220,7 +214,11 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
                 "                            <td class=\"table-content\"> "+ticket.getAddressEnd()+" " +
                 "                                </td>\n" +
                 "                        </tr>\n" +
-                "                        "+htmlString +
+                "                        <tr>\n" +
+                "                            <td class=\"table-title\">Chair number:</td>" +
+                "                            <td class=\"table-content\"> "+htmlString+" " +
+                "                            </td>\n" +
+                "                        </tr>\n" +
                 "                        <tr>\n" +
                 "                            <td class=\"table-title\">Trip:</td>\n" +
                 "                            <td class=\"table-content\">"+trip.getProvinceStart()+ " - "+trip.getProvinceEnd()+ " ("+trip.getTimeStart()+") </td>\n" +

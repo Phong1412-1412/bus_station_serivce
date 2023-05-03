@@ -72,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
             order.setUser(user);
             order.setOrderID(getOrderId(orderRequest.getTripId()));
             order.setTrip(trip);
+            order.setSendMail(false);
             newOrder = orderRepository.save(order);
         }
         else {
