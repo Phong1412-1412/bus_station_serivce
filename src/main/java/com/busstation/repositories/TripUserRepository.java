@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TripUserRepository extends JpaRepository<TripUser, TripUserIdMtm> {
     TripUser findTripUserByUserId(String userId);
@@ -19,6 +21,6 @@ public interface TripUserRepository extends JpaRepository<TripUser, TripUserIdMt
             " INNER JOIN Employee e ON  e.car.carId = c.carId" +
             " INNER JOIN User u ON u.userId = e.user.userId" +
             " WHERE o.orderID = :orderId")
-    User findEmployeeByOderAndCarAndUser(@Param("orderId") String orderId);
+    Optional<User> findEmployeeByOderAndCarAndUser(@Param("orderId") String orderId);
 }
 

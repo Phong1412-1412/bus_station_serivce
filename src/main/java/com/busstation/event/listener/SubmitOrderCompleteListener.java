@@ -2,6 +2,7 @@ package com.busstation.event.listener;
 
 import com.busstation.entities.*;
 import com.busstation.event.SubmitOrderCompleteEvent;
+import com.busstation.exception.DataNotFoundException;
 import com.busstation.repositories.*;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -54,7 +55,7 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
 
         car = orderRepository.findByOrderIdAndUserId(theOrder.getOrderID(), theUser.getUserId());
 
-        employee = tripUserRepository.findEmployeeByOderAndCarAndUser(theOrder.getOrderID());
+        employee = tripUserRepository.findEmployeeByOderAndCarAndUser(theOrder.getOrderID()).orElseThrow(() -> new DataNotFoundException("Driver is null"));
 
         StringBuilder sb = new StringBuilder();
 

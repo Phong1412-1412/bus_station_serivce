@@ -2,6 +2,7 @@ package com.busstation.config;
 
 
 import com.busstation.entities.*;
+import com.busstation.exception.DataNotFoundException;
 import com.busstation.repositories.OrderRepository;
 import com.busstation.repositories.TripRepository;
 import com.busstation.repositories.TripUserRepository;
@@ -47,7 +48,7 @@ public class SchedulerConfig {
 
                 car = orderRepository.findByOrderIdAndUserId(order.getOrderID(), user.getUserId());
 
-                employee = tripUserRepository.findEmployeeByOderAndCarAndUser(order.getOrderID());
+                employee = tripUserRepository.findEmployeeByOderAndCarAndUser(order.getOrderID()).orElseThrow(() -> new DataNotFoundException("Driver is null"));
 
                 try {
                     sendOderEmail(order, user, car, employee, trip);
@@ -109,7 +110,7 @@ public class SchedulerConfig {
                 "        <td style=\"padding: 10px;\">[At station]</td>\n" +
                 "      </tr>\n" +
                 "    </table>\n" +
-                "    <p style=\"margin-bottom: 10px;\">Dear [CSKHBUSSTATION],</p>\n" +
+                "    <p style=\"margin-bottom: 10px;\">Dear ["+user.getFullName()+"],</p>\n" +
                 "    <p style=\"margin-bottom: 10px;\">Thank you for booking our coach trip on ["+trip.getTimeStart()+"]. We are thrilled to have the opportunity to serve you and hope that your journey will be smooth and memorable.</p>\n" +
                 "    <p style=\"margin-bottom: 10px;\">Please arrive at the departure point ["+trip.getProvinceStart()+"] at least 30 minutes before the scheduled departure time to ensure that you do not miss the coach.</p>\n" +
                 "    <p style=\"margin-bottom: 10px;\">If you have any questions or special requests, please do not hesitate to contact us via phone at [0123456789] or email at [busservice@gmail.com]. We are committed to meeting your needs and providing the best possible service.</p>\n" +

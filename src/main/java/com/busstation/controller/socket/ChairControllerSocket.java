@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class ChairControllerSocket {
+public class  ChairControllerSocket {
     @Autowired
     private ChairService chairService;
 
