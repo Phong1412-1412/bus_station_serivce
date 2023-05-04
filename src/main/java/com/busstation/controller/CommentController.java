@@ -31,19 +31,19 @@ public class CommentController {
 
 	@GetMapping("/trips/{tripId}/comments")
 	public ResponseEntity<Page<CommentResponse>> getCommentsByTripId(@PathVariable String tripId,
-			@RequestParam(defaultValue = "3") int rating, @RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size) {
+																	 @RequestParam(defaultValue = "3") int rating, @RequestParam(defaultValue = "0") int page,
+																	 @RequestParam(defaultValue = "10") int size) {
 
 		Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 		Page<Comment> comments = commentService.getCommentsByTripId(tripId, rating, pageable);
+
 		return new ResponseEntity<>(comments.map(CommentResponse::new), HttpStatus.OK);
 	}
 
 	@PostMapping("/trips/{tripId}/comments")
 	public ResponseEntity<CommentResponse> createComment(@PathVariable String tripId,
-			@RequestBody CommentRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+														 @RequestBody CommentRequest request, @AuthenticationPrincipal UserDetails userDetails) {
 		CommentResponse response = commentService.createComment(tripId, userDetails.getUsername(), request);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
-
 	}
 }
