@@ -13,7 +13,7 @@ public class CommentResponse {
 
     private String commentId;
     private String content;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:ss")
     private LocalDateTime createdAt;
     private int rating;
 
@@ -32,11 +32,11 @@ public class CommentResponse {
 class CommentUserResponse{
 	
 	private String userId;
-	private String fullname;
+	private String fullName;
 	public CommentUserResponse(User user) {
 		super();
 		this.userId = user.getUserId();
-		this.fullname = user.getFullName();
+		this.fullName = user.getFullName();
 	}
 	
 	
