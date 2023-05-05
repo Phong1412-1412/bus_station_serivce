@@ -13,7 +13,7 @@
 </head>
 <body>
 	<h1>Comments for Trip [[${tripId}]]</h1>
-	<form onsubmit="return addComment()" class="comment-form">
+	<form onsubmit="return addComment(tripId);" class="comment-form">
 		<input type="text" id="content" placeholder="Enter your comment..."
 			style="width: 100%;"> <input type="number" id="rating"
 			placeholder="Enter your rating..." min="1" max="5">
@@ -53,81 +53,102 @@
 			</li>
 		</ul>
 	</div>
-	
 	<script th:inline="javascript">
+	
 	    const tripId = /*[[${tripId}]]*/ null;
 	    console.log('tripId:', tripId);
+	    
 	</script>
 	<script>
+	
+	    // Lưu trữ thông tin xác thực
+	    const token = sessionStorage.getItem('token');
+	    console.log('token:', token);
+	
+	    // Kết nối đến WebSocket trên máy chủ
+	    var socket = new SockJS('/comments');
+	    var stompClient = null;
+	
+	    function connect() {
+	        stompClient = Stomp.over(socket);
+	        stompClient.connect({'Authorization': token}, function (frame) {
+	            console.log('Connected: ' + frame);
+	            stompClient.subscribe('/topic/comments/' + tripId, function (comment) {
+	                var newComment = JSON.parse(comment.body);
+	                // Thêm bình luận mới vào danh sách bình luận
+	                var commentList = document.querySelector('.comment-container ul');
+	                var newCommentItem = document.createElement('li');
+	                newCommentItem.innerHTML = `
+	                    <div class="comment">
+	                        <div class="comment-header">
+	                            <img class="avatar"
+	                                src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+	                                alt="Avatar">
+	                            <h3 class="fullname">${newComment.user.fullName}</h3>
+	                        </div>
+	                        <div class="comment-body">
+	                            <p class="content">${newComment.content}</p>
+	                        </div>
+	                        <div class="comment-footer">
+	                            <div class="rating">
+	                                <span class="stars">
+	                                    <i class="${newComment.rating >= 1 ? 'fas fa-star' : 'far fa-star'}"></i>
+	                                    <i class="${newComment.rating >= 2 ? 'fas fa-star' : 'far fa-star'}"></i>
+	                                    <i class="${newComment.rating >= 3 ? 'fas fa-star' : 'far fa-star'}"></i>
+	                                    <i class="${newComment.rating >= 4 ? 'fas fa-star' : 'far fa-star'}"></i>
+	                                    <i class="${newComment.rating >= 5 ? 'fas fa-star' : 'far fa-star'}"></i>
+	                                </span>
+	                            </div>
+	                            <span class="createdAt">${newComment.createdAt}</span>
+	                        </div>
+	                    </div>
+	                `;
+	                commentList.insertBefore(newCommentItem, commentList.firstChild);
+	            });
+	        });
+	    }
+	
+	    connect();
+	</script>
 
-        // Kết nối đến WebSocket trên máy chủ
-        var socket = new SockJS('/comments');
-        var stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            // Đăng ký để nhận thông báo mới trên kênh /topic/comments
-            stompClient.subscribe('/topic/comments/'+tripId, function (comment) {
-                var newComment = JSON.parse(comment.body);
-                // Thêm bình luận mới vào danh sách bình luận
-                var commentList = document.querySelector('.comment-container ul');
-                var newCommentItem = document.createElement('li');
-                newCommentItem.innerHTML = `
-                    <div class="comment">
-                        <div class="comment-header">
-                            <img class="avatar"
-                                 src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
-                                 alt="Avatar">
-                            <h3 class="fullname">${newComment.user.fullname}</h3>
-                        </div>
-                        <div class="comment-body">
-                            <p class="content">${newComment.content}</p>
-                        </div>
-                        <div class="comment-footer">
-                            <div class="rating">
-                                <span class="stars">
-                                    <i class="${newComment.rating >= 1 ? 'fas fa-star' : 'far fa-star'}"></i>
-                                    <i class="${newComment.rating >= 2 ? 'fas fa-star' : 'far fa-star'}"></i>
-                                    <i class="${newComment.rating >= 3 ? 'fas fa-star' : 'far fa-star'}"></i>
-                                    <i class="${newComment.rating >= 4 ? 'fas fa-star' : 'far fa-star'}"></i>
-                                    <i class="${newComment.rating >= 5 ? 'fas fa-star' : 'far fa-star'}"></i>
-                                </span>
-                            </div>
-                            <span class="createdAt">${newComment.createdAt}</span>
-                        </div>
-                    </div>
-                `;
-                commentList.insertBefore(newCommentItem, commentList.firstChild);
-            });
-        });
+	<script>
 
-        // Gửi bình luận mới đến máy chủ
-		function addComment() {
-		    var content = document.querySelector('#content').value;
-		    var rating = document.querySelector('#rating').value;
-		    if (content.trim() === '') {
-		        alert('Please enter your comment');
-		        return false;
-		    }
-		    if (rating < 1 || rating > 5) {
-		        alert('Please enter a rating between 1 and 5');
-		        return false;
-		    }
-		    
-		    var xhr = new XMLHttpRequest();
-		    xhr.open('POST', '/api/v1/trips/' + tripId + '/comments', true);
-		    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-		    xhr.onreadystatechange = function () {
-		        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-		            document.querySelector('#content').value = '';
-		            document.querySelector('#rating').selectedIndex = 0;
-		        }
-		    };
-		    var data = JSON.stringify({
-		        "content": content,
-		        "rating": rating
-		    });
-		    xhr.send(data);
-		}
-    </script>
+	function addComment(tripId) {
+	    try {
+	        var content = document.querySelector('#content').value;
+	        var rating = document.querySelector('#rating').value;
+	        if (content.trim() === '') {
+	            alert('Please enter your comment');
+	            return false;
+	        }
+	        if (rating < 1 || rating > 5) {
+	            alert('Please enter a rating between 1 and 5');
+	            return false;
+	        }
+	        if (!tripId || tripId.trim() === '') {
+	            alert('Invalid trip ID');
+	            return false;
+	        }
+
+	        // Gửi thông báo mới thông qua websocket
+	        if (!stompClient) {
+	            connect();
+	        }
+	        var comment = {
+	            "content": content,
+	            "rating": rating
+	        };
+	        stompClient.send('/app/comments/' + tripId, {'Authorization': token}, JSON.stringify(comment), {}, function(error) {
+	            if (error) {
+	                console.log(error);
+	                return;
+	            }
+	            console.log('Comment sent successfully');
+	        });
+	    } catch (error) {
+	        console.log(error);
+	    }
+	}
+	</script>
 </body>
 </html>
