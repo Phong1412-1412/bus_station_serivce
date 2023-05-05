@@ -2,6 +2,7 @@ package com.busstation.event.listener;
 
 import com.busstation.entities.*;
 import com.busstation.event.SubmitOrderCompleteEvent;
+import com.busstation.exception.AccessDenyException;
 import com.busstation.exception.DataNotFoundException;
 import com.busstation.repositories.*;
 import jakarta.mail.MessagingException;
@@ -52,10 +53,17 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
             System.out.println(totalPrice);
         }
         trip = tripRepository.findById(theOrder.getTrip().getTripId()).orElse(null);
+        
+        try {
+        	car = orderRepository.findByOrderIdAndUserId(theOrder.getOrderID(), theUser.getUserId());
+        }catch (Exception e) {
+			// TODO: handle exception
+        	throw new AccessDenyException(e.getMessage());
+		}
 
-        car = orderRepository.findByOrderIdAndUserId(theOrder.getOrderID(), theUser.getUserId());
+        
 
-        employee = tripUserRepository.findEmployeeByOderAndCarAndUser(theOrder.getOrderID()).orElseThrow(() -> new DataNotFoundException("Driver is null"));
+        employee = tripUserRepository.findInforEmployeeByCarId(car.getCarId()).orElseThrow(() -> new DataNotFoundException("Driver is null"));
 
         StringBuilder sb = new StringBuilder();
 
