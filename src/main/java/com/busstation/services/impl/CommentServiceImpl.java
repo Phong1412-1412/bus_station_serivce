@@ -18,6 +18,8 @@ import com.busstation.repositories.TripRepository;
 import com.busstation.repositories.UserRepository;
 import com.busstation.services.CommentService;
 
+import java.util.List;
+
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -59,6 +61,11 @@ public class CommentServiceImpl implements CommentService {
 		commentRepository.save(comment);
 		CommentResponse response = new CommentResponse(comment);
 		return response;
+	}
+
+	@Override
+	public List<CommentResponse> getAllComments(String tripId) {
+		return commentRepository.findByTrip_TripId(tripId);
 	}
 
 }

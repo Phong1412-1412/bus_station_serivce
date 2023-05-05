@@ -120,8 +120,6 @@
 		        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
 		            document.querySelector('#content').value = '';
 		            document.querySelector('#rating').selectedIndex = 0;
-		            // Reload comments
-		            loadComments();
 		        }
 		    };
 		    var data = JSON.stringify({

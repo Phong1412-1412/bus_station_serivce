@@ -102,21 +102,21 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthTokenFilter(), UsernamePasswordAuthenticationFilter.class).logout()
                 .logoutUrl("/api/v1/auth/logout").addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()).and()
-                .httpBasic(withDefaults())
+                .httpBasic(withDefaults());
                 //.sessionManagement().sessionCreationPolicy(STATELESS)
-        	    .oauth2Login(o -> o
-        	    		.userInfoEndpoint()
-    					.userService(customOAuth2UserService)
-    					.and()
-        	            .successHandler(successHandler())
-        	     )
-        	    .logout(l -> l
-        	    		.logoutUrl("/logout")
-        	    		.logoutSuccessHandler(logoutSuccessHandler())
-        	    		.deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                        .permitAll()
-        	    );
+//        	    .oauth2Login(o -> o
+//        	    		.userInfoEndpoint()
+//    					.userService(customOAuth2UserService)
+//    					.and()
+//        	            .successHandler(successHandler())
+//        	     )
+//        	    .logout(l -> l
+//        	    		.logoutUrl("/logout")
+//        	    		.logoutSuccessHandler(logoutSuccessHandler())
+//        	    		.deleteCookies("JSESSIONID")
+//                        .invalidateHttpSession(true)
+//                        .permitAll()
+//        	    );
 
 
         return http.build();
