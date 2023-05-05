@@ -48,7 +48,7 @@ public class SchedulerConfig {
 
                 car = orderRepository.findByOrderIdAndUserId(order.getOrderID(), user.getUserId());
 
-                employee = tripUserRepository.findEmployeeByOderAndCarAndUser(order.getOrderID()).orElseThrow(() -> new DataNotFoundException("Driver is null"));
+                employee = tripUserRepository.findInforEmployeeByCarId(car.getCarId()).orElseThrow(() -> new DataNotFoundException("Driver is null"));
 
                 try {
                     sendOderEmail(order, user, car, employee, trip);
