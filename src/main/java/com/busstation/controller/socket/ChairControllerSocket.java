@@ -1,13 +1,7 @@
 package com.busstation.controller.socket;
 
-import com.busstation.dto.ChairDto;
-import com.busstation.entities.Trip;
-import com.busstation.payload.request.CancelOrderRequest;
-import com.busstation.payload.request.OrderRequest;
-import com.busstation.payload.response.ChairResponse;
-import com.busstation.payload.response.OrderResponse;
-import com.busstation.services.ChairService;
-import com.busstation.services.OrderService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -16,8 +10,12 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
-import java.util.Arrays;
-import java.util.List;
+import com.busstation.payload.request.CancelOrderRequest;
+import com.busstation.payload.request.OrderRequest;
+import com.busstation.payload.response.ChairResponse;
+import com.busstation.payload.response.OrderResponse;
+import com.busstation.services.ChairService;
+import com.busstation.services.OrderService;
 
 @Controller
 public class  ChairControllerSocket {
