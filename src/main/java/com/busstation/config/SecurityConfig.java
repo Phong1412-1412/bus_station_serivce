@@ -59,6 +59,7 @@ public class SecurityConfig {
     private static final String[] UN_SECURED_URLs = {
             "/api/v1/auth/**",
             "/chair-booking/**",
+            "/comments/**",
             "/chair-booking",           
             "/api/v1/auth/forgot-password",
             "/api/v1/auth/reset-password"
@@ -92,7 +93,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().disable();
+        http.cors();
         http.csrf().disable().authorizeHttpRequests()
                 .requestMatchers(UN_SECURED_URLs).permitAll()
                 .requestMatchers(HttpMethod.GET,HTTP_METHOD_GET_UN_SECURED_URLs).permitAll()
@@ -102,21 +103,21 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthTokenFilter(), UsernamePasswordAuthenticationFilter.class).logout()
                 .logoutUrl("/api/v1/auth/logout").addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()).and()
-                .httpBasic(withDefaults());
+                .httpBasic(withDefaults())
                 //.sessionManagement().sessionCreationPolicy(STATELESS)
-//        	    .oauth2Login(o -> o
-//        	    		.userInfoEndpoint()
-//    					.userService(customOAuth2UserService)
-//    					.and()
-//        	            .successHandler(successHandler())
-//        	     )
-//        	    .logout(l -> l
-//        	    		.logoutUrl("/logout")
-//        	    		.logoutSuccessHandler(logoutSuccessHandler())
-//        	    		.deleteCookies("JSESSIONID")
-//                        .invalidateHttpSession(true)
-//                        .permitAll()
-//        	    );
+        	    .oauth2Login(o -> o
+        	    		.userInfoEndpoint()
+    					.userService(customOAuth2UserService)
+    					.and()
+        	            .successHandler(successHandler())
+        	     )
+        	    .logout(l -> l
+        	    		.logoutUrl("/logout")
+        	    		.logoutSuccessHandler(logoutSuccessHandler())
+        	    		.deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                        .permitAll()
+        	    );
 
 
         return http.build();

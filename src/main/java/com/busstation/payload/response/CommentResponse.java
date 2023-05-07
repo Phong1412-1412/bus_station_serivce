@@ -14,7 +14,7 @@ public class CommentResponse {
     private String commentId;
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:ss")
-    private LocalDateTime createdAt;
+            private LocalDateTime createdAt;
     private int rating;
 
     private CommentUserResponse user;
