@@ -1,21 +1,21 @@
 package com.busstation.services.securityimpl;
 
-import com.busstation.entities.Account;
-import com.busstation.repositories.AccountRepository;
-import com.busstation.repositories.UserRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.busstation.entities.Account;
+import com.busstation.repositories.AccountRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class UserDetailServiceSecurityImpl implements UserDetailsService {
 
     private final AccountRepository accountRepository;
-    private final UserRepository userRepository;
 
     @Override
     @Transactional

@@ -1,13 +1,9 @@
 package com.busstation.services.impl;
 
-import com.busstation.entities.*;
-import com.busstation.exception.DataNotFoundException;
-import com.busstation.payload.request.OrderDetailRequest;
-import com.busstation.payload.response.*;
-import com.busstation.repositories.*;
-import com.busstation.services.OrderDetailService;
-import com.busstation.utils.GetUserUtil;
-import jakarta.persistence.EntityNotFoundException;
+import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,10 +11,33 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import com.busstation.entities.Account;
+import com.busstation.entities.Chair;
+import com.busstation.entities.Order;
+import com.busstation.entities.OrderDetail;
+import com.busstation.entities.Ticket;
+import com.busstation.entities.Trip;
+import com.busstation.entities.TripUser;
+import com.busstation.entities.User;
+import com.busstation.exception.DataNotFoundException;
+import com.busstation.payload.request.OrderDetailRequest;
+import com.busstation.payload.response.ChairResponse;
+import com.busstation.payload.response.OrderDetailResponse;
+import com.busstation.payload.response.OrderResponse;
+import com.busstation.payload.response.TicketResponse;
+import com.busstation.payload.response.UserResponse;
+import com.busstation.repositories.AccountRepository;
+import com.busstation.repositories.ChairRepository;
+import com.busstation.repositories.OrderDetailRepository;
+import com.busstation.repositories.OrderRepository;
+import com.busstation.repositories.TicketRepository;
+import com.busstation.repositories.TripRepository;
+import com.busstation.repositories.TripUserRepository;
+import com.busstation.repositories.UserRepository;
+import com.busstation.services.OrderDetailService;
+import com.busstation.utils.GetUserUtil;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class OrderDetailServiceImpl implements OrderDetailService {

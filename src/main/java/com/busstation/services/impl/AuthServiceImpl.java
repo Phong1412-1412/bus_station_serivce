@@ -256,7 +256,7 @@ public class AuthServiceImpl implements AuthService {
 
 				// sendForgotPasswordEmail(user.getEmail(), verificationCode);
 				String subject = "Forgot Password Verification Code";
-				String resetPasswordUrl = "http://localhost:9999/api/v1/auth/reset-password?token=" + verificationCode;
+				String resetPasswordUrl = "http://localhost:3000/reset-password/" + verificationCode;
 				String content = "<html>"
 			               + "<body style=\"background-color: #f2f2f2; margin: 0; padding: 0; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5;\">"
 			               + "<div style=\"max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
@@ -264,7 +264,8 @@ public class AuthServiceImpl implements AuthService {
 			               + "<p>You have requested to reset your password on our website.</p>"
 			               + "<p>Please click the button below to reset your password:</p>"
 			               + "<p style=\"text-align: center;\">"
-			               + "<a href=\'"+resetPasswordUrl+"\' style=\"display: inline-block; background-color: #0074D9; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 18px; font-weight: bold; text-align: center;\">Reset Your Password</a>"
+			               + "<a href=\'"+resetPasswordUrl+"\' style=\"display: inline-block; background-color: #0074D9; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 18px; font-weight: bold; text-align: center;\">"
+			               		+ "Click here to reset your password</a>"
 			               + "</p>"
 			               + "<p>If you did not request this password reset, please ignore this email.</p>"
 			               + "<p>If you need help, please visit our <a href=\"#\">help center</a>.</p>"
@@ -289,6 +290,10 @@ public class AuthServiceImpl implements AuthService {
 		User user = userRepository.findByEmail(email);
 		if (user == null) {
 			return ResponseEntity.badRequest().body("User with email " + email + " not found");
+		}
+		if (user.getResetPasswordToken() == null) {
+			System.out.println("Reset Token " + email + "invalid");
+			return ResponseEntity.badRequest().body("Reset Token " + email + " invalid");
 		}
 
 		if (!user.getResetPasswordToken().equals(code)) {

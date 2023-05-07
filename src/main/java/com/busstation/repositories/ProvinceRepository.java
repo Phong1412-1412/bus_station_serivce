@@ -1,14 +1,13 @@
 package com.busstation.repositories;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.busstation.entities.Province;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import com.busstation.entities.Province;
 
 @Repository
 public interface ProvinceRepository extends JpaRepository<Province , Integer>{

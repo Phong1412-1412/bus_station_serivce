@@ -2,7 +2,6 @@ package com.busstation.payload.request;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

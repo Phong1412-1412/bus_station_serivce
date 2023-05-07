@@ -1,20 +1,27 @@
 package com.busstation.controller;
 
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.busstation.entities.Location;
 import com.busstation.entities.Province;
 import com.busstation.payload.request.ProvinceRequest;
 import com.busstation.payload.response.ProvinceResponse;
 import com.busstation.services.ProvinceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController(value = "provinceAPIofWeb")
 @RequestMapping(value = "/api/v1/provinces")
@@ -89,23 +96,23 @@ public class ProvinceController {
         return new ResponseEntity<>(deleted,HttpStatus.OK);
     }
 
-    @PostMapping("/exportExcel")
-    public ResponseEntity<?> exportProvinces(){
-        if(provinceService.exportProvinces()){
-            return new ResponseEntity<>("Export file excel successfully !", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Export file excel failed", HttpStatus.OK);
-    }
+//    @PostMapping("/exportExcel")
+//    public ResponseEntity<?> exportProvinces(){
+//        if(provinceService.exportProvinces()){
+//            return new ResponseEntity<>("Export file excel successfully !", HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>("Export file excel failed", HttpStatus.OK);
+//    }
 
-    @PostMapping("/importExcel")
-    public ResponseEntity<?> importProvinces(@RequestParam("file") MultipartFile file){
-        try {
-            List<ProvinceResponse> provinceResponses = provinceService.importProvinces(file);
-            return new ResponseEntity<>(provinceResponses, HttpStatus.OK);
-        }catch (IOException e){
-            e.printStackTrace();
-            return new ResponseEntity<>("Import file excel failed", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("/importExcel")
+//    public ResponseEntity<?> importProvinces(@RequestParam("file") MultipartFile file){
+//        try {
+//            List<ProvinceResponse> provinceResponses = provinceService.importProvinces(file);
+//            return new ResponseEntity<>(provinceResponses, HttpStatus.OK);
+//        }catch (IOException e){
+//            e.printStackTrace();
+//            return new ResponseEntity<>("Import file excel failed", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 }
