@@ -1,15 +1,15 @@
 package com.busstation.payload.response;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import com.busstation.entities.Trip;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor

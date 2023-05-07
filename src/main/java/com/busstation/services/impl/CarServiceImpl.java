@@ -1,12 +1,26 @@
 package com.busstation.services.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import com.busstation.entities.Car;
 import com.busstation.entities.Chair;
 import com.busstation.entities.Employee;
 import com.busstation.entities.Trip;
 import com.busstation.enums.RoleEnum;
 import com.busstation.exception.DataExistException;
-import com.busstation.exception.DataNotFoundException;
 import com.busstation.payload.request.CarRequest;
 import com.busstation.payload.request.ChairRequest;
 import com.busstation.payload.response.ApiResponse;
@@ -18,17 +32,6 @@ import com.busstation.repositories.EmployeeRepository;
 import com.busstation.repositories.TripRepository;
 import com.busstation.services.CarService;
 import com.busstation.services.ChairService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
 
 
 @Service

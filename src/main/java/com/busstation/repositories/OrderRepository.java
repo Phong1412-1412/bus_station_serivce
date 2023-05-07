@@ -1,17 +1,15 @@
 package com.busstation.repositories;
 
-import com.busstation.entities.Car;
-import com.busstation.entities.OrderDetail;
-import com.busstation.entities.User;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import com.busstation.entities.Order;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.busstation.entities.Car;
+import com.busstation.entities.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String>{

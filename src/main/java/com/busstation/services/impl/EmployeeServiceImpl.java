@@ -1,18 +1,11 @@
 
 package com.busstation.services.impl;
 
-import com.busstation.dto.AccountDto;
-import com.busstation.dto.EmployeeDTO;
-import com.busstation.entities.*;
-import com.busstation.enums.NameRoleEnum;
-import com.busstation.exception.DataNotFoundException;
-import com.busstation.payload.request.EmployeeRequest;
-import com.busstation.payload.response.*;
-import com.busstation.repositories.*;
-import com.busstation.repositories.custom.UserRepositoryCustom;
-import com.busstation.services.EmployeeService;
-import com.busstation.utils.GetUserUtil;
-import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,7 +14,29 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import com.busstation.dto.AccountDto;
+import com.busstation.entities.Account;
+import com.busstation.entities.Car;
+import com.busstation.entities.Employee;
+import com.busstation.entities.Ticket;
+import com.busstation.entities.Trip;
+import com.busstation.entities.User;
+import com.busstation.enums.NameRoleEnum;
+import com.busstation.exception.DataNotFoundException;
+import com.busstation.payload.request.EmployeeRequest;
+import com.busstation.payload.response.ApiResponse;
+import com.busstation.payload.response.CarResponse;
+import com.busstation.payload.response.DriverResponse;
+import com.busstation.payload.response.TripResponse;
+import com.busstation.repositories.AccountRepository;
+import com.busstation.repositories.EmployeeRepository;
+import com.busstation.repositories.TicketRepository;
+import com.busstation.repositories.UserRepository;
+import com.busstation.repositories.custom.UserRepositoryCustom;
+import com.busstation.services.EmployeeService;
+import com.busstation.utils.GetUserUtil;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {

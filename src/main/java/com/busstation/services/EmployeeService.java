@@ -1,13 +1,11 @@
 package com.busstation.services;
 
+import org.springframework.data.domain.Page;
+
 import com.busstation.dto.AccountDto;
-import com.busstation.dto.EmployeeDTO;
 import com.busstation.payload.request.EmployeeRequest;
 import com.busstation.payload.response.ApiResponse;
 import com.busstation.payload.response.DriverResponse;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface EmployeeService {
     Page<AccountDto> getAlLEmployee(String keyword, int pageNumber, int pageSize);

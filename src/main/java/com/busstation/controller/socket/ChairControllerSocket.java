@@ -48,7 +48,7 @@ public class  ChairControllerSocket {
     @MessageMapping("/chairCancel")
     @SendTo("/topic/cancel")
     public String handleChairUpdate(@Payload CancelOrderRequest cancelOrderRequest) throws Exception {
-        Boolean orderResponse = orderService.deleteOrder(cancelOrderRequest.orderId);
+        orderService.deleteOrder(cancelOrderRequest.orderId);
         simpMessagingTemplate.convertAndSend("/topic/openCancel",cancelOrderRequest.tripId);
         return cancelOrderRequest.orderId;
     }

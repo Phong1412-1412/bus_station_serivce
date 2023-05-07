@@ -1,15 +1,15 @@
 package com.busstation.dto;
 
+import java.util.Date;
+import java.util.Objects;
+
 import com.busstation.entities.Account;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
-import java.util.Objects;
 
 @Getter
 @Setter

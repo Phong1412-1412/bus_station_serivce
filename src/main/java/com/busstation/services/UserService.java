@@ -1,10 +1,10 @@
 package com.busstation.services;
 
+import org.springframework.data.domain.Page;
+
 import com.busstation.dto.AccountDto;
-import com.busstation.dto.UserDto;
 import com.busstation.payload.request.UserRequest;
 import com.busstation.payload.response.ApiResponse;
-import org.springframework.data.domain.Page;
 
 public interface UserService {
 
