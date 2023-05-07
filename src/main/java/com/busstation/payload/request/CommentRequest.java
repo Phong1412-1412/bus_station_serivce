@@ -12,5 +12,4 @@ import lombok.Setter;
 public class CommentRequest {
 
     private String content;
-    private int rating;
 }

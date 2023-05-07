@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CommentService {
 
-	public Page<Comment> getCommentsByTripId(String tripId, int rating, Pageable pageable);
+	public Page<Comment> getCommentsByTripId(String tripId, Pageable pageable);
 
 	public CommentResponse createComment(String tripid, String username, CommentRequest Request);
 

@@ -15,8 +15,8 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, String> {
 		
-	@Query("SELECT c FROM Comment c WHERE c.trip.tripId = ?1 AND c.rating >= ?2")
-	Page<Comment> findByTripIdAndRatingGreaterThanEqual(String tripId, int rating, Pageable pageable);
+	@Query("SELECT c FROM Comment c WHERE c.trip.tripId = ?1")
+	Page<Comment> findCommentByTripId(String tripId, Pageable pageable);
 
 	@Query("SELECT com from Comment com inner join Trip t on com.trip.tripId = t.tripId where t.tripId = :tripId")
 	List<CommentResponse>findByTrip_TripId(@Param("tripId") String tripId);
