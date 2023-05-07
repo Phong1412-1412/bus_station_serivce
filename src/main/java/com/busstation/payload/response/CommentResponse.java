@@ -33,10 +33,12 @@ class CommentUserResponse{
 	
 	private String userId;
 	private String fullName;
+	private String roleId;
 	public CommentUserResponse(User user) {
 		super();
 		this.userId = user.getUserId();
 		this.fullName = user.getFullName();
+		this.roleId = user.getAccount().getRole().getRoleId();
 	}
 	
 	
