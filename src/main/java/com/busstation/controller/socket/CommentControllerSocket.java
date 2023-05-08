@@ -36,11 +36,11 @@ public class CommentControllerSocket {
 
 	@GetMapping("/trips/{tripId}/comments")
 	public String getCommentsByTripId(@PathVariable String tripId, Model model,
-			@RequestParam(defaultValue = "1") int rating, @RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
 
 		Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-		Page<Comment> comments = commentService.getCommentsByTripId(tripId, rating, pageable);
+		Page<Comment> comments = commentService.getCommentsByTripId(tripId, pageable);
 
 		model.addAttribute("tripId", tripId);
 		model.addAttribute("comments", comments);

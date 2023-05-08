@@ -36,8 +36,8 @@ public class CommentServiceImpl implements CommentService {
 	private UserRepository userRepository;
 
 	@Override
-	public Page<Comment> getCommentsByTripId(String tripId, int rating, Pageable pageable) {
-		return commentRepository.findByTripIdAndRatingGreaterThanEqual(tripId, rating, pageable);
+	public Page<Comment> getCommentsByTripId(String tripId, Pageable pageable) {
+		return commentRepository.findCommentByTripId(tripId, pageable);
 	}
 
 	@Override
@@ -55,7 +55,6 @@ public class CommentServiceImpl implements CommentService {
 
 		Comment comment = new Comment();
 		comment.setContent(request.getContent());
-		comment.setRating(request.getRating());
 		comment.setTrip(trip);
 		comment.setUser(user);
 		commentRepository.save(comment);

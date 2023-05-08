@@ -39,9 +39,6 @@ public class Comment {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "rating")
-    private int rating;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
