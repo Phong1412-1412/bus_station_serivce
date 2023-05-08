@@ -175,7 +175,6 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    @Cacheable("TripsByProvinceStartAndProvinceEndDateTime")
     public Page<SearchTripResponse> getAllTripsByProvinceStartAndProvinceEndDateTime(SearchTripRequest searchTripRequest,
                                                                                      int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("createAt").ascending());
