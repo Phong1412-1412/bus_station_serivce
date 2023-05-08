@@ -79,7 +79,7 @@ Captcha sẽ được thị sau khi người dùng đăng nhập sai n lần. Ng
 Số lần đăng nhập sai được cấu hình tại file confile với khóa là: MaxLoginFail.
 ```
 
-## ⚠️ Chú ý trong quá trình thi công của Dev
+## ⚠️ Chú ý trong quá trình thi công của dev
 - Dev chủ động tạo nhánh feature, bugfix trên repo remote theo các work items được gán.
 - Tất cả các nhánh đều được tách ra từ nhánh origin/develop
 - Khi dùng câu lệnh merge thì code sẽ được merge từ nhánh đích vào nhánh mình đang checkout. Ví dụ: Checkout ở nhánh feature/pbi-001 merge với nhánh develop => tất cả các code của nhánh develop sẽ được merge về nhánh đang checkout.
