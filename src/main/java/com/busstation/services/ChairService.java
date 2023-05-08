@@ -21,4 +21,6 @@ public interface ChairService {
     ChairResponse updateStatus(String chairId);
 
     boolean deleteChair(String chairId);
+    
+    int getEmptySeatbyCarIdAndTrip(String carId, String tripId);
 }

@@ -17,6 +17,7 @@ public class CarResponse {
     private String carId;
     private Boolean status;
     private int carNumber;
+    private int emptySeats;
     private List<ChairResponse> chair;
     private List<String> tripId;
 
@@ -26,7 +27,6 @@ public class CarResponse {
         this.tripId = tripId;
         this.status = car.getStatus();
         this.carNumber = car.getCarNumber();
-
 
         List<ChairResponse> chairResponseList = new ArrayList<>();
 
