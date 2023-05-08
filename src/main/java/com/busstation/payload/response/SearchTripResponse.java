@@ -3,6 +3,7 @@ package com.busstation.payload.response;
 import com.busstation.entities.Car;
 import com.busstation.entities.Chair;
 import com.busstation.entities.Trip;
+import com.busstation.services.ChairService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class SearchTripResponse {
     private String provinceStart;
 
     private String provinceEnd;
+    
+    private final int test = 0;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timeStart;
@@ -32,7 +35,7 @@ public class SearchTripResponse {
 
     private BigDecimal price;
 
-    public SearchTripResponse(Trip trip, BigDecimal price, List<String> chairExistInOrderDetails){
+    public SearchTripResponse(Trip trip, BigDecimal price, List<String> chairExistInOrderDetails, ChairService chairService){
 
         this.tripId = trip.getTripId();
         this.provinceStart = trip.getProvinceStart();
@@ -59,11 +62,12 @@ public class SearchTripResponse {
                 chairResponseList.add(chairResponse);
             }
 
-            CarResponse carResponse = new CarResponse();
+            CarResponse carResponse = new CarResponse();           
             carResponse.setCarId(item.getCarId());
             carResponse.setCarNumber(item.getCarNumber());
+            carResponse.setEmptySeats(chairService.getEmptySeatbyCarIdAndTrip(item.getCarId(), trip.getTripId()));
             carResponse.setChair(chairResponseList);
-            carResponse.setStatus(item.getStatus());
+            carResponse.setStatus(item.getStatus());         
             carResponseList.add(carResponse);
         }
 

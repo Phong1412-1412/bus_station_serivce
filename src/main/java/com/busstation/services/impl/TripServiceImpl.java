@@ -9,6 +9,7 @@ import com.busstation.payload.response.TicketResponse;
 import com.busstation.payload.response.TripResponse;
 import com.busstation.payload.response.UserByTripIdResponse;
 import com.busstation.repositories.*;
+import com.busstation.services.ChairService;
 import com.busstation.services.TicketService;
 import com.busstation.services.TripService;
 import jakarta.persistence.EntityNotFoundException;
@@ -47,6 +48,9 @@ public class TripServiceImpl implements TripService {
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+    
+    @Autowired
+    private ChairService chairService;
 
     @Override
     @Transactional
@@ -193,7 +197,7 @@ public class TripServiceImpl implements TripService {
                             chairId.add(orderDetail.getChair().getChairId());
                         }
                     }
-                    return new SearchTripResponse(trip, price, chairId);
+                    return new SearchTripResponse(trip, price, chairId, chairService);
                 }
                 return null;
             });
@@ -217,7 +221,7 @@ public class TripServiceImpl implements TripService {
                             chairId.add(orderDetail.getChair().getChairId());
                         }
                     }
-                    return new SearchTripResponse(trip, price, chairId);
+                    return new SearchTripResponse(trip, price, chairId, chairService);
                 }
                 return null;
             });
@@ -240,7 +244,7 @@ public class TripServiceImpl implements TripService {
                         chairId.add(orderDetail.getChair().getChairId());
                     }
                 }
-                return new SearchTripResponse(trip, price, chairId);
+                return new SearchTripResponse(trip, price, chairId, chairService);
             }
             return null;
         });

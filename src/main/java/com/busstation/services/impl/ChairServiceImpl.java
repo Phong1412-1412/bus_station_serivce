@@ -124,4 +124,12 @@ public class ChairServiceImpl implements ChairService {
 		chairRepository.delete(chair);
 		return true;
 	}
+
+	@Override
+	public int getEmptySeatbyCarIdAndTrip(String carId, String tripId) {
+		int sum = chairRepository.countChairsByCarId(carId);
+		int chairIsOder = chairRepository.countSoldSeatsByTripIdAndCarNumber(tripId, carId);
+		
+		return sum - chairIsOder;
+	}
 }
