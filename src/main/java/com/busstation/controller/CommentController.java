@@ -31,11 +31,11 @@ public class CommentController {
 
 	@GetMapping("/trips/{tripId}/comments")
 	public ResponseEntity<Page<CommentResponse>> getCommentsByTripId(@PathVariable String tripId,
-																	 @RequestParam(defaultValue = "1") int rating, @RequestParam(defaultValue = "0") int page,
+																	 @RequestParam(defaultValue = "0") int page,
 																	 @RequestParam(defaultValue = "10") int size) {
 
 		Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-		Page<Comment> comments = commentService.getCommentsByTripId(tripId, rating, pageable);
+		Page<Comment> comments = commentService.getCommentsByTripId(tripId, pageable);
 
 		return new ResponseEntity<>(comments.map(CommentResponse::new), HttpStatus.OK);
 	}
