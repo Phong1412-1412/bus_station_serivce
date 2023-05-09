@@ -1,5 +1,6 @@
 package com.busstation.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,5 +44,12 @@ public class Car  implements Serializable {
 
     @ManyToMany(mappedBy = "cars", fetch = FetchType.LAZY)
     private Set<Trip> trips = new HashSet<>();
+
+    //--------------------------------------TYPE CAR---------------------------------
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_carId")
+    @JsonFormat
+    private TypeCar typeCar;
 
 }

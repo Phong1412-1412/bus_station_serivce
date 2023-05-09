@@ -62,7 +62,8 @@ public class SecurityConfig {
             "/comments/**",
             "/chair-booking",           
             "/api/v1/auth/forgot-password",
-            "/api/v1/auth/reset-password"
+            "/api/v1/auth/reset-password",
+            "/api/v1/typeCar/**"
 
     };
 

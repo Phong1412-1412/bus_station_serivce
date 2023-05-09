@@ -25,7 +25,7 @@ public class TripController {
     public ResponseEntity<?> getAllTripsByProvinceStartAndProvinceEndDateTime(
             @RequestBody SearchTripRequest searchTripRequest,
             @RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+            @RequestParam(value = "pageSize", defaultValue = "100") int pageSize) {
 
         Page<SearchTripResponse> trips = tripService.getAllTripsByProvinceStartAndProvinceEndDateTime(searchTripRequest, pageNo, pageSize);
         if(trips == null){

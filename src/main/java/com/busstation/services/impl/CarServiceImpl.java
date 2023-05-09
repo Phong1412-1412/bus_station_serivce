@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.busstation.entities.*;
+import com.busstation.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,10 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.busstation.entities.Car;
-import com.busstation.entities.Chair;
-import com.busstation.entities.Employee;
-import com.busstation.entities.Trip;
 import com.busstation.enums.RoleEnum;
 import com.busstation.exception.DataExistException;
 import com.busstation.payload.request.CarRequest;
@@ -26,10 +24,6 @@ import com.busstation.payload.request.ChairRequest;
 import com.busstation.payload.response.ApiResponse;
 import com.busstation.payload.response.CarResponse;
 import com.busstation.payload.response.ChairResponse;
-import com.busstation.repositories.CarRepository;
-import com.busstation.repositories.ChairRepository;
-import com.busstation.repositories.EmployeeRepository;
-import com.busstation.repositories.TripRepository;
 import com.busstation.services.CarService;
 import com.busstation.services.ChairService;
 
@@ -46,6 +40,9 @@ public class CarServiceImpl implements CarService {
     private ChairService chairService;
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private TypeCarRepository typeCarRepository;
 
     @Override
     public CarResponse updatedCar(String carId, CarRequest request) {
@@ -81,11 +78,16 @@ public class CarServiceImpl implements CarService {
         }
         car.setCarNumber(request.getCarNumber());
         car.setStatus(true);
+        Optional<TypeCar> existsTypeCar = typeCarRepository.findByTypeCarId(request.getTypeCarId());
+        if(existsTypeCar.isEmpty()) {
+            throw new DataExistException("Type Car with id: "+ request.getTypeCarId()+ "doesn't exists");
+        }
+        car.setTypeCar(existsTypeCar.get());
 //     // car.setTrips(Collections.singleton(trip));
 
         Car newCar = carRepository.save(car);
 
-        for (int i = 0; i < request.getNumberOfChair(); i++) {
+        for (int i = 0; i < newCar.getTypeCar().getTotalChairs(); i++) {
 
             ChairRequest chairRequest = new ChairRequest();
             chairRequest.setChairNumber(i + 1);
@@ -101,6 +103,7 @@ public class CarServiceImpl implements CarService {
         carResponse.setStatus(newCar.getStatus());
         carResponse.setCarNumber(newCar.getCarNumber());
         carResponse.setChair(setupChairResponse(car));
+        carResponse.setTypeCar(newCar.getTypeCar());
         //carResponse.setTripId(Collections.singletonList(trip.getTripId()));
         return carResponse;
     }
