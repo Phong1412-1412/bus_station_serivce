@@ -28,9 +28,10 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         }
         System.out.println("Logout.....");
         
-        String targetUrl = "/login?logout";
-        response.sendRedirect(targetUrl);
         response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().write("Logout Success");
+        response.getWriter().flush();
+        response.getWriter().close();
     }
 
 }

@@ -8,6 +8,7 @@ import com.busstation.entities.Role;
 import com.busstation.entities.User;
 import com.busstation.enums.AuthenticationProvider;
 import com.busstation.enums.NameRoleEnum;
+import com.busstation.exception.DataExistException;
 import com.busstation.repositories.AccountRepository;
 import com.busstation.repositories.RoleRepository;
 import com.busstation.repositories.UserRepository;
@@ -50,6 +51,9 @@ public class GoogleLoginServiceImpl implements GoogleLoginService {
 	@Override
 	public void UpdateUserloginWithGoogle(String accountId, String fullName) {
 		User userExisting = userRepository.findByAccountId(accountId);
+		if(userExisting == null) {
+			throw new DataExistException("Error: user have been own account with mail!!!!");
+		}
 		userExisting.setFullName(fullName);
 		userExisting.setStatus(Boolean.TRUE);
 		userExisting.setAuthProvider(AuthenticationProvider.GOOGLE);

@@ -1,17 +1,8 @@
 package com.busstation.config;
 
-import com.busstation.config.filter.JwtAuthTokenFilter;
-import com.busstation.oauth.CustomAuthenticationSuccessHandler;
-import com.busstation.oauth.CustomLogoutSuccessHandler;
-import com.busstation.oauth.CustomOAuth2User;
-import com.busstation.oauth.CustomOAuth2UserService;
-import com.busstation.services.GoogleLoginService;
-import com.busstation.services.securityimpl.UserDetailServiceSecurityImpl;
-import com.busstation.utils.JwtProviderUtils;
+import static org.springframework.security.config.Customizer.withDefaults;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,50 +11,56 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import com.busstation.config.filter.JwtAuthTokenFilter;
+import com.busstation.oauth.CustomAuthenticationSuccessHandler;
+import com.busstation.oauth.CustomLogoutSuccessHandler;
+import com.busstation.oauth.CustomOAuth2UserService;
+import com.busstation.services.securityimpl.UserDetailServiceSecurityImpl;
 
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
+@EnableWebSecurity
 public class SecurityConfig {
 
 //    @Autowired
 //    private UserDetailsService userService;
+	
+// 	 @Autowired
+//   private JwtProviderUtils jwtProvider;
 
     @Autowired
     private UserDetailServiceSecurityImpl userService;
 
-    @Autowired
-    private JwtProviderUtils jwtProvider;
+
 
     @Autowired
     private LogoutHandler logoutHandler;
        
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
-
+    
     private static final String[] UN_SECURED_URLs = {
             "/api/v1/auth/**",
+            "/api/v1/oauth2/**",
             "/chair-booking/**",
             "/comments/**",
             "/chair-booking",           
-            "/api/v1/auth/forgot-password",
-            "/api/v1/auth/reset-password"
-
     };
 
     private static final String[] HTTP_METHOD_GET_UN_SECURED_URLs = {
@@ -93,7 +90,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors();
+        http.cors().configurationSource(corsConfigurationSource());
         http.csrf().disable().authorizeHttpRequests()
                 .requestMatchers(UN_SECURED_URLs).permitAll()
                 .requestMatchers(HttpMethod.GET,HTTP_METHOD_GET_UN_SECURED_URLs).permitAll()
@@ -106,11 +103,13 @@ public class SecurityConfig {
                 .httpBasic(withDefaults())
                 //.sessionManagement().sessionCreationPolicy(STATELESS)
         	    .oauth2Login(o -> o
+        	    		.loginPage("/api/v1/oauth2/authorization/google")
         	    		.userInfoEndpoint()
     					.userService(customOAuth2UserService)
     					.and()
         	            .successHandler(successHandler())
         	     )
+        	    
         	    .logout(l -> l
         	    		.logoutUrl("/logout")
         	    		.logoutSuccessHandler(logoutSuccessHandler())
@@ -124,8 +123,19 @@ public class SecurityConfig {
     }
     
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+    
+    @Bean
     public AuthenticationSuccessHandler successHandler() {
-        return new CustomAuthenticationSuccessHandler("/api/v1/accounts/information");
+        return new CustomAuthenticationSuccessHandler();
     }
     
     @Bean

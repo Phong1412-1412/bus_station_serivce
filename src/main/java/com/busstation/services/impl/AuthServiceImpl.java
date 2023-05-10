@@ -18,11 +18,9 @@ import com.busstation.email.EmailService;
 import com.busstation.entities.Account;
 import com.busstation.entities.Employee;
 import com.busstation.entities.Role;
-import com.busstation.entities.Token;
 import com.busstation.entities.User;
 import com.busstation.enums.AuthenticationProvider;
 import com.busstation.enums.NameRoleEnum;
-import com.busstation.enums.TokenEnum;
 import com.busstation.exception.DataExistException;
 import com.busstation.exception.DataNotFoundException;
 import com.busstation.payload.request.EmployeeRequest;
@@ -33,7 +31,6 @@ import com.busstation.payload.response.JwtResponse;
 import com.busstation.repositories.AccountRepository;
 import com.busstation.repositories.EmployeeRepository;
 import com.busstation.repositories.RoleRepository;
-import com.busstation.repositories.TokenRepository;
 import com.busstation.repositories.UserRepository;
 import com.busstation.repositories.VerificationTokenRepository;
 import com.busstation.services.AuthService;
@@ -53,8 +50,6 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	private AccountRepository accountRepository;
-	@Autowired
-	private TokenRepository tokenRepository;
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -81,8 +76,8 @@ public class AuthServiceImpl implements AuthService {
 		String jwt = tokenProvider.generateTokenUsingUserName(loginRequest.getUsername());
 
 		var account = accountRepository.findByusername(loginRequest.getUsername());
-		revokeAllUserTokens(account);
-		saveUserToken(account, jwt);
+		tokenProvider.revokeAllUserTokens(account);
+		tokenProvider.saveUserToken(account, jwt);
 
 		return new JwtResponse(jwt);
 	}
@@ -129,27 +124,6 @@ public class AuthServiceImpl implements AuthService {
 		employee.setUser(account.getUser());
 		employeeRepository.save(employee);
 		return new ApiResponse("Create successfully", HttpStatus.CREATED);
-	}
-
-	private void saveUserToken(Account account, String jwtToken) {
-		Token token = new Token();
-		token.setAccount(account);
-		token.setToken(jwtToken);
-		token.setExpired(false);
-		token.setRevoked(false);
-		token.setTokenType(TokenEnum.BEARER);
-		tokenRepository.save(token);
-	}
-
-	private void revokeAllUserTokens(Account account) {
-		var validUserTokens = tokenRepository.findAllValidTokenByUser(account.getAccountId());
-		if (validUserTokens.isEmpty())
-			return;
-		validUserTokens.forEach(token -> {
-			token.setExpired(true);
-			token.setRevoked(true);
-		});
-		tokenRepository.saveAll(validUserTokens);
 	}
 
 	@Override
