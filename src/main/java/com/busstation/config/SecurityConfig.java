@@ -60,7 +60,8 @@ public class SecurityConfig {
             "/api/v1/oauth2/**",
             "/chair-booking/**",
             "/comments/**",
-            "/chair-booking",           
+            "/chair-booking",
+            "/api/v1/typeCar/**"
     };
 
     private static final String[] HTTP_METHOD_GET_UN_SECURED_URLs = {
