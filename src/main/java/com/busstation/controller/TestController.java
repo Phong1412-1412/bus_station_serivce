@@ -9,14 +9,12 @@ import com.busstation.utils.SecurityUtils;
 
 @RestController
 public class TestController {
-	
-
 
 	@GetMapping("/hi")
 	public String hi(OAuth2AuthenticationToken authenticationToken) {
 		return "Hi " + SecurityUtils.getUserName();
 	}
-	
+
 	@GetMapping("/user")
 	public OAuth2User getUserInfo(OAuth2AuthenticationToken authenticationToken) {
 		OAuth2User user = authenticationToken.getPrincipal();
