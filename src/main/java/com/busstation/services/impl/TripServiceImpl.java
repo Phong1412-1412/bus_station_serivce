@@ -52,6 +52,9 @@ public class TripServiceImpl implements TripService {
     @Autowired
     private ChairService chairService;
 
+    @Autowired
+    private TypeCarRepository typeCarRepositoryl;
+
     @Override
     @Transactional
     public TripResponse createTrip(TripRequest tripRequest) {
@@ -196,7 +199,7 @@ public class TripServiceImpl implements TripService {
                             chairId.add(orderDetail.getChair().getChairId());
                         }
                     }
-                    return new SearchTripResponse(trip, price, chairId, chairService);
+                    return new SearchTripResponse(trip, price, chairId, chairService, typeCarRepositoryl);
                 }
                 return null;
             });
@@ -220,7 +223,7 @@ public class TripServiceImpl implements TripService {
                             chairId.add(orderDetail.getChair().getChairId());
                         }
                     }
-                    return new SearchTripResponse(trip, price, chairId, chairService);
+                    return new SearchTripResponse(trip, price, chairId, chairService, typeCarRepositoryl);
                 }
                 return null;
             });
@@ -243,7 +246,7 @@ public class TripServiceImpl implements TripService {
                         chairId.add(orderDetail.getChair().getChairId());
                     }
                 }
-                return new SearchTripResponse(trip, price, chairId, chairService);
+                return new SearchTripResponse(trip, price, chairId, chairService, typeCarRepositoryl);
             }
             return null;
         });

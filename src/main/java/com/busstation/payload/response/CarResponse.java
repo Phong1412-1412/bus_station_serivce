@@ -2,6 +2,8 @@ package com.busstation.payload.response;
 
 import com.busstation.entities.Car;
 import com.busstation.entities.Chair;
+import com.busstation.entities.TypeCar;
+import com.busstation.payload.request.TypeCarRequest;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
@@ -18,12 +20,14 @@ public class CarResponse {
     private Boolean status;
     private int carNumber;
     private int emptySeats;
+    private TypeCar typeCar;
     private List<ChairResponse> chair;
     private List<String> tripId;
 
 
     public CarResponse(Car car, List<String> tripId){
         this.carId = car.getCarId();
+        this.typeCar = car.getTypeCar();
         this.tripId = tripId;
         this.status = car.getStatus();
         this.carNumber = car.getCarNumber();
