@@ -53,8 +53,8 @@ VALUES (6, 8, '8 seater seat');
 -- Data for Name: tbl_car; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_car (car_id, car_number, created_at, status, update_at, type_car_id) VALUES ('924e7cef-da7b-45b6-b94d-deb50812d647', 7071, '2023-04-21 14:40:40.978', true, NULL,1);
-INSERT INTO public.tbl_car (car_id, car_number, created_at, status, update_at, type_car_id) VALUES ('6e386c84-5713-4cb8-9ebd-484705fbdb06', 7072, '2023-04-21 14:40:45.402', true, NULL,2);
+INSERT INTO public.tbl_car (car_id, car_number, created_at, status, update_at, type_car_id) VALUES ('924e7cef-da7b-45b6-b94d-deb50812d647', 7071, '2023-04-21 14:40:40.978', true, NULL,2);
+INSERT INTO public.tbl_car (car_id, car_number, created_at, status, update_at, type_car_id) VALUES ('6e386c84-5713-4cb8-9ebd-484705fbdb06', 7072, '2023-04-21 14:40:45.402', true, NULL,1);
 
 
 --
