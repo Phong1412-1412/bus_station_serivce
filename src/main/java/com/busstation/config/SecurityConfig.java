@@ -63,7 +63,8 @@ public class SecurityConfig {
             "/api/v1/trips/search/**",
             "/api/v1/trips/getAll",
             "/api/v1/provinces/**",
-            "/api/v1/chairs/**"
+            "/api/v1/chairs/**",
+            "/api/v1/trips/**"
     };
 
     private static final String[] HTTP_METHOD_POST_UN_SECURED_URLs = {

@@ -15,7 +15,7 @@ public class CommentResponse {
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Ho_Chi_Minh")
     private LocalDateTime createdAt;
-    private ParentCommentResponse parentComment;
+    private ParentCommentResponse relyComment;
     private CommentUserResponse user;
 
     public CommentResponse(Comment comment) {
@@ -24,7 +24,7 @@ public class CommentResponse {
         this.createdAt = comment.getCreatedAt();
         this.user = new CommentUserResponse(comment.getUser());
         if(comment.getParentComment() != null) {
-        	this.parentComment = new ParentCommentResponse(comment.getParentComment());
+        	this.relyComment = new ParentCommentResponse(comment.getParentComment());
         }
     }
 }
@@ -46,10 +46,12 @@ class CommentUserResponse{
 @Data 
 class ParentCommentResponse{	
 	private String parentId;
-	private String contentPrent;
+	private String content;
+	private CommentUserResponse user;
 	public ParentCommentResponse(Comment comment) {
 		super();
 		this.parentId = comment.getCommentId();
-		this.contentPrent = comment.getContent();
+		this.content = comment.getContent();
+		this.user = new CommentUserResponse(comment.getUser());
 	}	
 }
