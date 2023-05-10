@@ -35,14 +35,26 @@ INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, us
 INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('b0f3483c-1e19-43c7-b41f-30c2f7ebd839', '2023-04-21 09:46:28.936', '$2a$10$OW2pXX.QjmgOG4pOibDGbOQAFJ8Ir8zfGLZBrwp7DRYXumwSOXcjK', NULL, 'user3', 'USER');
 
 
+INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
+VALUES (1, 22, 'Limousine 22 VIP double rooms');
+INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
+VALUES (2, 30, 'Limousine 30 VIP double rooms');
+INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
+VALUES (3, 30, 'Limousine 30 seats');
+INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
+VALUES (4, 11, 'Limousine 11 seats');
+INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
+VALUES (5, 4, '4 seater seat');
+INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
+VALUES (6, 8, '8 seater seat');
 --
 -- TOC entry 3434 (class 0 OID 17316)
 -- Dependencies: 215
 -- Data for Name: tbl_car; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_car (car_id, car_number, created_at, status, update_at) VALUES ('924e7cef-da7b-45b6-b94d-deb50812d647', 7071, '2023-04-21 14:40:40.978', true, NULL);
-INSERT INTO public.tbl_car (car_id, car_number, created_at, status, update_at) VALUES ('6e386c84-5713-4cb8-9ebd-484705fbdb06', 7072, '2023-04-21 14:40:45.402', true, NULL);
+INSERT INTO public.tbl_car (car_id, car_number, created_at, status, update_at, type_car_id) VALUES ('924e7cef-da7b-45b6-b94d-deb50812d647', 7071, '2023-04-21 14:40:40.978', true, NULL,1);
+INSERT INTO public.tbl_car (car_id, car_number, created_at, status, update_at, type_car_id) VALUES ('6e386c84-5713-4cb8-9ebd-484705fbdb06', 7072, '2023-04-21 14:40:45.402', true, NULL,2);
 
 
 --
@@ -103,14 +115,7 @@ INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('0
 INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('f36bf68b-6a84-43cf-81a5-fbc94c60cc7a', 20, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
 INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('9d144322-ddb1-41e9-ab74-8e8fcce27140', 21, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
 INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('3163957c-3c63-4e73-8177-d91c8e1f207c', 22, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
-INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('726efd28-625c-4d29-aa66-e69691caf9a8', 23, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
-INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('76da81a1-ef2c-472d-a148-1cc81b7c8091', 24, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
-INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('82f1a47e-7f02-4492-b350-f8d8f491f9f4', 25, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
-INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('95797ba9-c96f-4401-9237-e6ae545665a0', 26, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
-INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('fd0525dc-5be4-4585-a24b-0a743ecc9e64', 27, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
-INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('4e6d8015-9ff3-4ed3-93a2-c4946098b890', 28, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
-INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('d335c6ec-6fab-4e44-af43-630214a9bfb5', 29, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
-INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('ec1981b0-a413-4eb8-9f76-e379f201e37c', 30, true, '6e386c84-5713-4cb8-9ebd-484705fbdb06');
+
 
 
 --
@@ -119,8 +124,8 @@ INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('e
 -- Data for Name: tbl_userr; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('c673f457-240e-4343-9834-88ac5846b1de', 'Đà Lạt', '2023-04-21 09:39:39.815', 'admin@gmail.com', 'Võ Ngọc Khánh', '0762590239', true, NULL, 'b76d5751-f04b-4b82-b17f-3a5c06a545e5');
-INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('e325a2df-5f15-47bc-8bcd-5ee85821de88', 'Lâm Đồng', '2023-04-21 09:43:03.575', 'taixe@gmail.com', 'Nguyễn Lê Tài', '0762590231', true, NULL, '7662e619-b22d-40f5-963a-894cf8139b3d');
+INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('c673f457-240e-4343-9834-88ac5846b1de', 'Đà Lạt', '2023-04-21 09:39:39.815', 'phongbuibsp3@gmail.com', 'CEO BusStation', '0762590239', true, NULL, 'b76d5751-f04b-4b82-b17f-3a5c06a545e5');
+INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('e325a2df-5f15-47bc-8bcd-5ee85821de88', 'Lâm Đồng', '2023-04-21 09:43:03.575', 'us@gmail.com', 'Nguyễn Lê Tài', '0762590231', true, NULL, '7662e619-b22d-40f5-963a-894cf8139b3d');
 INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('3a651aaf-b003-4baa-aece-c9379fed4ef7', 'Vĩnh Phúc', '2023-04-21 09:44:22.411', 'taixe2@gmail.com', 'Nguyễn Lê Tú', '0762590230', true, NULL, '24ba584c-f1c5-44a0-a0a4-a6d50c92bdab');
 INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('cb1f8b5e-f4a7-4426-8360-23df5e08733b', 'Khánh Hòa', '2023-04-21 09:45:18.496', 'loan@gmail.com', 'Nguyễn Loan', '0762590234', true, NULL, '26912360-eb14-4832-8cae-4ec6da48296c');
 INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('869b27a1-f289-482f-a353-06e520f218ea', 'Kiên Giang', '2023-04-21 09:45:40.373', 'duc@gmail.com', 'Lê Đức', '0762590238', true, NULL, '2449c3d9-1cf3-4d5c-af3c-1f9cce255d35');
@@ -293,8 +298,8 @@ INSERT INTO public.tbl_location (location_id, name, province_id) VALUES (63, 'Th
 -- Data for Name: tbl_trip; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_trip (trip_id, created_at, province_end, province_start, status, time_start, update_at) VALUES ('a02888ca-26c8-4e63-9f90-199ad2b3f8e4', '2023-04-21 14:24:08.553', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', true, '2023-04-23 15:00:00', NULL);
-INSERT INTO public.tbl_trip (trip_id, created_at, province_end, province_start, status, time_start, update_at) VALUES ('f443c4af-c4c9-4f05-94c0-65896b3808fb', '2023-04-21 14:24:21.68', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', true, '2023-04-23 16:30:00', NULL);
+INSERT INTO public.tbl_trip (trip_id, created_at, province_end, province_start, status, time_start, update_at) VALUES ('a02888ca-26c8-4e63-9f90-199ad2b3f8e4', '2023-04-21 14:24:08.553', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', true, '2023-05-30 15:00:00', NULL);
+INSERT INTO public.tbl_trip (trip_id, created_at, province_end, province_start, status, time_start, update_at) VALUES ('f443c4af-c4c9-4f05-94c0-65896b3808fb', '2023-04-21 14:24:21.68', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', true, '2023-05-30 16:30:00', NULL);
 
 
 --
@@ -379,4 +384,5 @@ SELECT pg_catalog.setval('public.tbl_province_province_id_seq', 63, true);
 --
 -- PostgreSQL database dump complete
 --
+
 

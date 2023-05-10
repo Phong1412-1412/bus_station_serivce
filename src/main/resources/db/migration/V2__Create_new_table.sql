@@ -156,6 +156,17 @@ CREATE TABLE IF NOT EXISTS public.tbl_ticket
 ALTER TABLE IF EXISTS public.tbl_ticket
     OWNER to postgres;
 
+CREATE TABLE IF NOT EXISTS public.tbl_type_car
+(
+    type_car_id integer NOT NULL,
+    total_charis integer,
+    type_car_name character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT tbl_type_car_pkey PRIMARY KEY (type_car_id)
+);
+
+ALTER TABLE IF EXISTS public.tbl_type_car
+    OWNER to postgres;
+
 
 CREATE TABLE IF NOT EXISTS public.tbl_car
 (
@@ -164,9 +175,14 @@ CREATE TABLE IF NOT EXISTS public.tbl_car
     created_at timestamp(6) without time zone NOT NULL,
     status boolean NOT NULL,
     update_at timestamp(6) without time zone,
+    type_car_id integer,
     CONSTRAINT tbl_car_pkey PRIMARY KEY (car_id),
-    CONSTRAINT uk_a019h68xgj2101wbsqwrv7s1x UNIQUE (car_number)
-    );
+    CONSTRAINT uk_a019h68xgj2101wbsqwrv7s1x UNIQUE (car_number),
+    CONSTRAINT fk2o0w6k5qxf30ukhjnkl35c2c4 FOREIGN KEY (type_car_id)
+        REFERENCES public.tbl_type_car (type_car_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
 
 ALTER TABLE IF EXISTS public.tbl_car
     OWNER to postgres;
@@ -312,3 +328,5 @@ CREATE TABLE IF NOT EXISTS public.tbl_order_detail
 
 ALTER TABLE IF EXISTS public.tbl_order_detail
     OWNER to postgres;
+
+;

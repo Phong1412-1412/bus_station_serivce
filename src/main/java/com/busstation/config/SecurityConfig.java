@@ -60,15 +60,15 @@ public class SecurityConfig {
             "/api/v1/oauth2/**",
             "/chair-booking/**",
             "/comments/**",
-            "/chair-booking",
-            "/api/v1/typeCar/**"
+            "/chair-booking"
     };
 
     private static final String[] HTTP_METHOD_GET_UN_SECURED_URLs = {
             "/api/v1/trips/search/**",
             "/api/v1/trips/getAll",
             "/api/v1/provinces/**",
-            "/api/v1/chairs/**"
+            "/api/v1/chairs/**",
+            "/api/v1/typeCar/**"
     };
 
     private static final String[] HTTP_METHOD_POST_UN_SECURED_URLs = {
@@ -91,7 +91,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().configurationSource(corsConfigurationSource());
+        http.cors();
         http.csrf().disable().authorizeHttpRequests()
                 .requestMatchers(UN_SECURED_URLs).permitAll()
                 .requestMatchers(HttpMethod.GET,HTTP_METHOD_GET_UN_SECURED_URLs).permitAll()
@@ -123,16 +123,16 @@ public class SecurityConfig {
         return http.build();
     }
     
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("*"));
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//        configuration.setAllowedHeaders(Arrays.asList("*"));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
     
     @Bean
     public AuthenticationSuccessHandler successHandler() {

@@ -8,6 +8,7 @@ import com.busstation.services.impl.TypeCarServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,16 +32,19 @@ public class TypeCarController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<TypeCar> addTypeCar(@RequestBody TypeCarRequest typeCarRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(typeCarService.addTypeCar(typeCarRequest));
     }
 
     @PutMapping("update/{typeCarId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<TypeCar> updateTypeCar(@PathVariable int typeCarId, @RequestBody TypeCarRequest typeCarRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(typeCarService.upDateTypeCar(typeCarId,typeCarRequest));
     }
 
     @DeleteMapping("delete/{typeCarId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteTypeCarById(@PathVariable int  typeCarId) {
         return ResponseEntity.status(HttpStatus.OK).body(typeCarService.deleteTypeCar(typeCarId));
     }
