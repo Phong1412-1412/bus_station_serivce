@@ -1,6 +1,7 @@
 package com.busstation.repositories;
 
-import com.busstation.payload.response.CommentResponse;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,8 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.busstation.entities.Comment;
-
-import java.util.List;
+import com.busstation.payload.response.CommentResponse;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, String> {
@@ -20,4 +20,8 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
 
 	@Query("SELECT com from Comment com inner join Trip t on com.trip.tripId = t.tripId where t.tripId = :tripId")
 	List<CommentResponse>findByTrip_TripId(@Param("tripId") String tripId);
+
+	
+	@Query("select c from Comment c where c.commentId = ?1")
+	Comment findParentCommentById(String parentId);
 }

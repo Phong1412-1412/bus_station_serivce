@@ -1,5 +1,7 @@
 package com.busstation.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +19,6 @@ import com.busstation.repositories.CommentRepository;
 import com.busstation.repositories.TripRepository;
 import com.busstation.repositories.UserRepository;
 import com.busstation.services.CommentService;
-
-import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -53,10 +53,14 @@ public class CommentServiceImpl implements CommentService {
 
 		User user = userRepository.findByAccountId(account.getAccountId());
 
+		Comment parent = commentRepository.findParentCommentById(request.getParentId());
+		
 		Comment comment = new Comment();
 		comment.setContent(request.getContent());
 		comment.setTrip(trip);
-		comment.setUser(user);
+		comment.setUser(user);		
+		comment.setParentComment(parent);
+		
 		commentRepository.save(comment);
 		CommentResponse response = new CommentResponse(comment);
 		return response;
