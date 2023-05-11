@@ -27,12 +27,12 @@ INSERT INTO public.tbl_role (role_id, name) VALUES ('DRIVER', 'ROLE_DRIVER');
 -- Data for Name: tbl_account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('7662e619-b22d-40f5-963a-894cf8139b3d', '2023-04-21 09:43:03.562', '$2a$10$Kkbn5Sx.8R40OVjCUBoW5e/ftIvJui1Z8FAeEWmCYHC6RmXt3QE12', NULL, 'tai', 'DRIVER');
-INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('b76d5751-f04b-4b82-b17f-3a5c06a545e5', '2023-04-21 09:39:39.773', '$2a$10$S7jFqTEmdLI.4tb24.trEOvFUdPkBQmJjtympfQlhSbUkX0YFT83u', NULL, 'admin', 'ADMIN');
-INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('24ba584c-f1c5-44a0-a0a4-a6d50c92bdab', '2023-04-21 09:44:22.404', '$2a$10$N9IHguvbQ/RFwvc6IDJrneH5HXvDPevkfPJdq4skxYTQgfkzfugn2', NULL, 'tai2', 'DRIVER');
-INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('26912360-eb14-4832-8cae-4ec6da48296c', '2023-04-21 09:45:18.481', '$2a$10$HlpbQP4KToxdu5Gc1lU2t.djAr85dwNTPdqD4ECjf.zmHmbjJa.PO', NULL, 'user', 'USER');
-INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('2449c3d9-1cf3-4d5c-af3c-1f9cce255d35', '2023-04-21 09:45:40.293', '$2a$10$wgeHCWfL5CD68MHAeaWdMucDHrKnFzi4zGK7DscnIRlBhWBu99eZu', NULL, 'user2', 'USER');
-INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('b0f3483c-1e19-43c7-b41f-30c2f7ebd839', '2023-04-21 09:46:28.936', '$2a$10$OW2pXX.QjmgOG4pOibDGbOQAFJ8Ir8zfGLZBrwp7DRYXumwSOXcjK', NULL, 'user3', 'USER');
+INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('7662e619-b22d-40f5-963a-894cf8139b3d', '2023-04-21 09:43:03.562', '$2a$10$Kkbn5Sx.8R40OVjCUBoW5e/ftIvJui1Z8FAeEWmCYHC6RmXt3QE12', NULL, 'tai@gmail.com', 'DRIVER');
+INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('b76d5751-f04b-4b82-b17f-3a5c06a545e5', '2023-04-21 09:39:39.773', '$2a$10$S7jFqTEmdLI.4tb24.trEOvFUdPkBQmJjtympfQlhSbUkX0YFT83u', NULL, 'admin@gmail.com', 'ADMIN');
+INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('24ba584c-f1c5-44a0-a0a4-a6d50c92bdab', '2023-04-21 09:44:22.404', '$2a$10$N9IHguvbQ/RFwvc6IDJrneH5HXvDPevkfPJdq4skxYTQgfkzfugn2', NULL, 'tai2@gmail.com', 'DRIVER');
+INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('26912360-eb14-4832-8cae-4ec6da48296c', '2023-04-21 09:45:18.481', '$2a$10$HlpbQP4KToxdu5Gc1lU2t.djAr85dwNTPdqD4ECjf.zmHmbjJa.PO', NULL, 'user@gmail.com', 'USER');
+INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('2449c3d9-1cf3-4d5c-af3c-1f9cce255d35', '2023-04-21 09:45:40.293', '$2a$10$wgeHCWfL5CD68MHAeaWdMucDHrKnFzi4zGK7DscnIRlBhWBu99eZu', NULL, 'user2@gmail.com', 'USER');
+INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('b0f3483c-1e19-43c7-b41f-30c2f7ebd839', '2023-04-21 09:46:28.936', '$2a$10$OW2pXX.QjmgOG4pOibDGbOQAFJ8Ir8zfGLZBrwp7DRYXumwSOXcjK', NULL, 'user3@gmail.com', 'USER');
 
 
 INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)

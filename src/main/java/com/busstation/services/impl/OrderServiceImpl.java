@@ -9,6 +9,7 @@ import com.busstation.services.OrderService;
 import com.busstation.utils.GetUserUtil;
 import com.busstation.utils.JwtProviderUtils;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Id;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -156,6 +157,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean deleteOrder(String orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new DataNotFoundException("Order not found"));
+        List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
+        orderDetailRepository.deleteAll(orderDetails);
         orderRepository.delete(order);
         return true;
     }
