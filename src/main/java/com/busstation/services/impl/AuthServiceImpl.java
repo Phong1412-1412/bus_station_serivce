@@ -166,11 +166,22 @@ public class AuthServiceImpl implements AuthService {
 		String username = signupRequest.getUsername();
 		String email = signupRequest.getUser().getEmail();
 		User user = new User();
+		Account account = new Account();
 
 		if (accountRepository.existsByusername(username) && userRepository.existsByEmail(email)) {
-			throw new DataExistException("This user with username or email already exist");
-		} else {
-			Account account = new Account();
+			user = userRepository.findByEmailAndProvider(email);
+			account = accountRepository.findByusername(username);
+			if(user == null) {
+				throw new DataExistException("This user with username or email already exist");
+			}		
+			account.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+			accountRepository.save(account);
+			user.setFullName(signupRequest.getUser().getFullName());
+			user.setPhoneNumber(signupRequest.getUser().getPhoneNumber());
+			user.setAddress(signupRequest.getUser().getAddress());
+			user.setStatus(Boolean.FALSE);
+			
+		} else {		
 			account.setUsername(signupRequest.getUsername());
 			account.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
 			Role role = roleRepository.findByName(NameRoleEnum.ROLE_USER.toString());
@@ -181,6 +192,7 @@ public class AuthServiceImpl implements AuthService {
 			user.setPhoneNumber(signupRequest.getUser().getPhoneNumber());
 			user.setEmail(signupRequest.getUser().getEmail());
 			user.setAddress(signupRequest.getUser().getAddress());
+			user.setAuthProvider(AuthenticationProvider.LOCAL);
 			user.setStatus(Boolean.FALSE);
 		}
 		return userRepository.save(user);
