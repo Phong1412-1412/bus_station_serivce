@@ -28,14 +28,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		Account account = accountRepository.findByusername(username);
 
 		if (account != null) {
-			System.out.println("Updating.....");	
-			googleLoginService.UpdateUserloginWithGoogle(account.getAccountId(), fullName);
+			System.out.println("Updating.....");
+			account.getUser().setStatus(Boolean.TRUE);
+			accountRepository.save(account);
 			return new CustomOAuth2User(user);
 		}
 		System.out.println("Creating....");
-
 		googleLoginService.CreateNewUserloginWithGoogle(username, fullName);
-
 		return new CustomOAuth2User(user);
 	}
 
