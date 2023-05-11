@@ -1,6 +1,7 @@
 package com.busstation.controller;
 
 import com.busstation.payload.request.OrderDetailRequest;
+import com.busstation.payload.response.MyBookingResponse;
 import com.busstation.payload.response.OrderDetailResponse;
 import com.busstation.services.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class OrderDetailController {
     public ResponseEntity<?> getAllOrderDetailByUser(@RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
                                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
-        Page<OrderDetailResponse> orderDetailByUserPage = orderDetailService.getAllOrderDetailByUser(pageNo, pageSize);
+        Page<MyBookingResponse> orderDetailByUserPage = orderDetailService.getMyBooking(pageNo, pageSize);
         return new ResponseEntity<>(orderDetailByUserPage, HttpStatus.OK);
     }
 

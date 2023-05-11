@@ -1,8 +1,11 @@
 package com.busstation.repositories;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,4 +35,16 @@ public interface OrderRepository extends JpaRepository<Order, String>{
 
     @Query("SELECT o FROM Order o inner join Trip t on o.trip.tripId = t.tripId WHERE t.timeStart >= :startTime AND t.timeStart <= :endTime")
     List<Order> findOrderByTripTime(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+
+    
+    @Query("select o from Order o where o.user.userId = ?1")
+	Page<Order> findAllByUserId(String userId, Pageable pageable);
+    
+    
+    @Query("SELECT SUM(t.price) FROM Order o " +
+    	       "INNER JOIN o.orderDetails od " +
+    	       "INNER JOIN od.ticket t " +
+    	       "WHERE o.orderID = ?1")
+    BigDecimal getSumOrder(String orderId);
+
 }
