@@ -22,6 +22,7 @@ import com.busstation.entities.User;
 import com.busstation.exception.DataNotFoundException;
 import com.busstation.payload.request.OrderDetailRequest;
 import com.busstation.payload.response.ChairResponse;
+import com.busstation.payload.response.MyBookingResponse;
 import com.busstation.payload.response.OrderDetailResponse;
 import com.busstation.payload.response.OrderResponse;
 import com.busstation.payload.response.TicketResponse;
@@ -122,20 +123,6 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         return orderDetailPage;
     }
 
-    @Override
-    public Page<OrderDetailResponse> getAllOrderDetailByUser(int pageNo, int pageSize) {
-
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("createAt").descending());
-
-        Account account = accountRepository.findByusername(new GetUserUtil().GetUserName());
-
-        Page<OrderDetail> orderDetails = orderDetailRepository.findAllByUserId(account.getUser().getUserId(), pageable);
-
-        Page<OrderDetailResponse> orderDetailPage = orderDetails.map(OrderDetailResponse::new);
-
-        return orderDetailPage;
-    }
-
     public UserResponse setupUserResponse(Order order) {
         User user = userRepository.findById(order.getUser().getUserId()).orElseThrow(() -> new EntityNotFoundException("User does not exist"));
 
@@ -200,4 +187,16 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             tripRepository.save(trip);
         }
     }
+
+    @Override
+    public Page<MyBookingResponse> getMyBooking(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("createAt").descending());
+
+        Account account = accountRepository.findByusername(new GetUserUtil().GetUserName());
+
+        Page<Order> orderPage = orderRepository.findAllByUserId(account.getUser().getUserId(), pageable);
+
+        return orderPage.map(order -> new MyBookingResponse(order, orderRepository));
+    }
+
 }
