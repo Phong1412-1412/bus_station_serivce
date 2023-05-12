@@ -3,6 +3,7 @@ package com.busstation.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -35,6 +36,10 @@ public class Account  implements Serializable {
     @CreationTimestamp
     private Date createdAt;
 
+    @Column(name = "Cancellation_Count")
+    @ColumnDefault("0")
+    private int cancellationCount;
+
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
@@ -48,4 +53,5 @@ public class Account  implements Serializable {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Token> tokens;
+
 }

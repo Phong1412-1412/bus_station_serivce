@@ -1,6 +1,7 @@
 package com.busstation.services.impl;
 
 import java.util.Calendar;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,10 +168,20 @@ public class AuthServiceImpl implements AuthService {
 		String email = signupRequest.getUser().getEmail();
 		User user = new User();
 		Account account = new Account();
+		Optional<User> userDelete = Optional.ofNullable(userRepository.findByEmail(signupRequest.getUser().getEmail()));
+		if(userDelete.isPresent() && !userDelete.get().getStatus())  {
+			Account deleteAccount = accountRepository.findByusername(signupRequest.getUsername());
+			VerificationToken verificationToken = verificationTokenRepository.findByUser_UserId(userDelete.get().getUserId());
+			verificationTokenRepository.delete(verificationToken);
+			userRepository.delete(userDelete.get());
+			accountRepository.delete(deleteAccount);
+		}
 
 		if (accountRepository.existsByusername(username) && userRepository.existsByEmail(email)) {
 			user = userRepository.findByEmailAndProvider(email);
 			account = accountRepository.findByusername(username);
+
+
 			if(user == null || !account.getPassword().equals(" ")) {
 				throw new DataExistException("This account already register!!!");
 			}	
@@ -179,11 +190,12 @@ public class AuthServiceImpl implements AuthService {
 			user.setFullName(signupRequest.getUser().getFullName());
 			user.setPhoneNumber(signupRequest.getUser().getPhoneNumber());
 			user.setAddress(signupRequest.getUser().getAddress());
-			user.setStatus(Boolean.FALSE);
+			user.setStatus(Boolean.TRUE);
 			
 		} else {		
 			account.setUsername(signupRequest.getUsername());
 			account.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+			account.setCancellationCount(0);
 			Role role = roleRepository.findByName(NameRoleEnum.ROLE_USER.toString());
 			account.setRole(role);
 			accountRepository.save(account);
