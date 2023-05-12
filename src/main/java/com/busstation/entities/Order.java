@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.busstation.enums.TripStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -47,5 +48,10 @@ public class Order  implements Serializable {
 
     @Column(name = "is_send_mail", columnDefinition = "boolean default false")
     private boolean isSendMail;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "paymentId")
+    @JsonFormat
+    private PaymentMethod paymentMethod;
 
 }

@@ -27,14 +27,12 @@ public class GoogleLoginServiceImpl implements GoogleLoginService {
 
 	@Override
 	public void CreateNewUserloginWithGoogle(String email, String fullname) {
-
 		Account account = new Account();
 		account.setUsername(email);
 		account.setPassword(" ");
 		Role role = roleRepository.findByName(NameRoleEnum.ROLE_USER.toString());
 		account.setRole(role);
 		accountRepository.save(account);
-
 		User user = new User();
 		user.setAccount(account);
 		user.setFullName(fullname);
@@ -44,7 +42,6 @@ public class GoogleLoginServiceImpl implements GoogleLoginService {
 		user.setStatus(Boolean.TRUE);
 		user.setAuthProvider(AuthenticationProvider.GOOGLE);
 		userRepository.save(user);
-
 	}
 
 }

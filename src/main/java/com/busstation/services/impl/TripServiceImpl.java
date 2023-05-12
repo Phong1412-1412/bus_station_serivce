@@ -297,15 +297,19 @@ public class TripServiceImpl implements TripService {
     @Override
     public void updateOnGoing(String tripId) {
         Trip trip = tripRepository.findByTripId(tripId).orElseThrow(() -> new DataNotFoundException("Trip Not exists!"));
-        trip.setStatus(TripStatus.ONGOING);
-        tripRepository.save(trip);
+        if(trip.getStatus() != TripStatus.COMPLETE && trip.getStatus() == TripStatus.PREPARE) {
+            trip.setStatus(TripStatus.ONGOING);
+            tripRepository.save(trip);
+        }
     }
 
     @Override
     public void updateComplete(String tripId) {
         Trip trip = tripRepository.findByTripId(tripId).orElseThrow(() -> new DataNotFoundException("Trip Not exists!"));
-        trip.setStatus(TripStatus.COMPLETE);
-        tripRepository.save(trip);
+        if(trip.getStatus() != TripStatus.PREPARE && trip.getStatus() == TripStatus.ONGOING) {
+            trip.setStatus(TripStatus.COMPLETE);
+            tripRepository.save(trip);
+        }
     }
 
     public void deleteUserToTrip(String tripId) {
