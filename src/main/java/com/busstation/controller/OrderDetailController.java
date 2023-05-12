@@ -44,5 +44,5 @@ public class OrderDetailController {
         OrderDetailResponse orderDetail = orderDetailService.updateOrderDetail(orderDetailId, OrderDetailRequest);
         return new ResponseEntity<>(orderDetail, HttpStatus.CREATED);
     }
-
+    
 }

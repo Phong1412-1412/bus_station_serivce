@@ -38,13 +38,6 @@ public class OrderController {
         return new ResponseEntity<>(orderDetailPage, HttpStatus.OK);
     }
 
-//    @PostMapping()
-//    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) {
-//
-//        OrderResponse orderResponse = orderService.createOrder(orderRequest);
-//        return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
-//    }
-
     @PostMapping("/submit")
     public ResponseEntity<?> submitOrder(@RequestBody OrderDetailRequest orderDetailRequest) {
 
@@ -52,6 +45,8 @@ public class OrderController {
         if(orderResponse){
             User user = userRepository.findUserByOrderID(orderDetailRequest.getOrderId());
             Order order = orderRepository.findById(orderDetailRequest.getOrderId()).orElse(null);
+            
+            
             publisher.publishEvent(new SubmitOrderCompleteEvent(user, order));
             return new ResponseEntity<>("successfully", HttpStatus.OK);
         }
