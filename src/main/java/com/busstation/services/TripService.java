@@ -21,4 +21,8 @@ public interface TripService {
 
     Page<UserByTripIdResponse> getAllUserByTrip(String tripId, int pageNo, int pageSize);
 
+    void updateOnGoing(String tripId);
+
+    void updateComplete(String tripId);
+
 }

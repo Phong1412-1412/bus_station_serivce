@@ -147,8 +147,6 @@ CREATE TABLE IF NOT EXISTS public.tbl_ticket
     ticket_id character varying(36) COLLATE pg_catalog."default" NOT NULL,
     address_end character varying(50) COLLATE pg_catalog."default" NOT NULL,
     address_start character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    drop_off_location character varying(50) COLLATE pg_catalog."default",
-    pick_up_location character varying(50) COLLATE pg_catalog."default",
     price numeric(38,2) NOT NULL,
     CONSTRAINT tbl_ticket_pkey PRIMARY KEY (ticket_id)
     );
@@ -211,18 +209,18 @@ ALTER TABLE IF EXISTS public.tbl_employee
     OWNER to postgres;
 
 --
+
 CREATE TABLE IF NOT EXISTS public.tbl_trip
 (
     trip_id character varying(36) COLLATE pg_catalog."default" NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     province_end character varying(50) COLLATE pg_catalog."default" NOT NULL,
     province_start character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    status boolean,
+    status smallint,
     time_start timestamp(6) without time zone NOT NULL,
     update_at timestamp(6) without time zone,
     CONSTRAINT tbl_trip_pkey PRIMARY KEY (trip_id)
-    );
-
+)
 
 ALTER TABLE IF EXISTS public.tbl_trip
     OWNER to postgres;

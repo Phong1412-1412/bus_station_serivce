@@ -1,6 +1,7 @@
 package com.busstation.services.impl;
 
 import com.busstation.entities.*;
+import com.busstation.enums.TripStatus;
 import com.busstation.exception.DataNotFoundException;
 import com.busstation.payload.request.OrderRequest;
 import com.busstation.payload.response.*;
@@ -9,7 +10,6 @@ import com.busstation.services.OrderService;
 import com.busstation.utils.GetUserUtil;
 import com.busstation.utils.JwtProviderUtils;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.Id;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -20,7 +20,6 @@ import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
     @Autowired
     private OrderRepository orderRepository;
 
@@ -74,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
             order.setOrderID(getOrderId(orderRequest.getTripId()));
             order.setTrip(trip);
             order.setSendMail(false);
+
             newOrder = orderRepository.save(order);
         }
         else {
@@ -157,9 +157,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean deleteOrder(String orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new DataNotFoundException("Order not found"));
-        List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
-        orderDetailRepository.deleteAll(orderDetails);
-        orderRepository.delete(order);
+            List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
+            orderDetailRepository.deleteAll(orderDetails);
+            orderRepository.delete(order);
         return true;
     }
 

@@ -5,9 +5,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.busstation.enums.TripStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 
 //import jakarta.persistence.JoinColumn;
 //import jakarta.persistence.ManyToOne;
@@ -47,4 +47,5 @@ public class Order  implements Serializable {
 
     @Column(name = "is_send_mail", columnDefinition = "boolean default false")
     private boolean isSendMail;
+
 }

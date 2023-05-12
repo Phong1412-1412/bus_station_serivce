@@ -1,5 +1,6 @@
 package com.busstation.entities;
 
+import com.busstation.enums.TripStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -36,7 +37,7 @@ public class Trip implements Serializable {
     private LocalDateTime timeStart;
 
     @Column(name = "status")
-    private Boolean status;
+    private TripStatus status;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp

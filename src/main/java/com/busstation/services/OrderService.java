@@ -15,4 +15,5 @@ public interface OrderService {
     Page<OrderDetailResponse> searchOrderById(String orderId, int pageNo, int pageSize);
 
     Boolean deleteOrder(String orderId);
+
 }

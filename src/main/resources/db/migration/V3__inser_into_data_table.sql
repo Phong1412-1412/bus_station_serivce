@@ -298,8 +298,8 @@ INSERT INTO public.tbl_location (location_id, name, province_id) VALUES (63, 'Th
 -- Data for Name: tbl_trip; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_trip (trip_id, created_at, province_end, province_start, status, time_start, update_at) VALUES ('a02888ca-26c8-4e63-9f90-199ad2b3f8e4', '2023-04-21 14:24:08.553', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', true, '2023-05-30 15:00:00', NULL);
-INSERT INTO public.tbl_trip (trip_id, created_at, province_end, province_start, status, time_start, update_at) VALUES ('f443c4af-c4c9-4f05-94c0-65896b3808fb', '2023-04-21 14:24:21.68', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', true, '2023-05-30 16:30:00', NULL);
+INSERT INTO public.tbl_trip (trip_id, created_at, province_end, province_start, status, time_start, update_at) VALUES ('a02888ca-26c8-4e63-9f90-199ad2b3f8e4', '2023-04-21 14:24:08.553', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', 'PREPARE', '2023-05-30 15:00:00', NULL);
+INSERT INTO public.tbl_trip (trip_id, created_at, province_end, province_start, status, time_start, update_at) VALUES ('f443c4af-c4c9-4f05-94c0-65896b3808fb', '2023-04-21 14:24:21.68', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', 'PREPARE', '2023-05-30 16:30:00', NULL);
 
 
 --
@@ -317,7 +317,7 @@ INSERT INTO public.tbl_order (order_id, created_at, trip_id, user_id) VALUES ('T
 -- Data for Name: tbl_ticket; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_ticket (ticket_id, address_end, address_start, drop_off_location, pick_up_location, price) VALUES ('e0259953-07c4-46a3-aef5-0fe194b470c4', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', 500000.00);
+INSERT INTO public.tbl_ticket (ticket_id, address_end, address_start, price) VALUES ('e0259953-07c4-46a3-aef5-0fe194b470c4', 'Thành Phố Bà Rịa', 'Thành Phố Long Xuyên', 500000.00);
 
 
 --

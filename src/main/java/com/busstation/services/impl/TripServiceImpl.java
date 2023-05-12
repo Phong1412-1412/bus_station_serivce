@@ -1,6 +1,8 @@
 package com.busstation.services.impl;
 
 import com.busstation.entities.*;
+import com.busstation.enums.TripStatus;
+import com.busstation.exception.DataNotFoundException;
 import com.busstation.payload.request.SearchTripRequest;
 import com.busstation.payload.request.TicketRequest;
 import com.busstation.payload.request.TripRequest;
@@ -73,7 +75,7 @@ public class TripServiceImpl implements TripService {
         trip.setProvinceStart(tripRequest.getProvinceStart());
         trip.setProvinceEnd(tripRequest.getProvinceEnd());
         trip.setTimeStart(tripRequest.getTimeStart());
-        trip.setStatus(true);
+        trip.setStatus(TripStatus.PREPARE);
 
         Trip newTrip = tripRepository.save(trip);
 
@@ -158,7 +160,7 @@ public class TripServiceImpl implements TripService {
 
         Trip trip = tripRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Trip does not exist"));
 
-        trip.setStatus(false);
+        trip.setStatus(TripStatus.PREPARE);
         tripRepository.save(trip);
 
         List<Car> cars = carRepository.findByTrips_TripId(id);
@@ -297,6 +299,18 @@ public class TripServiceImpl implements TripService {
             return users.map(user -> new UserByTripIdResponse(user, getTrip, price));
         }
         return null;
+    }
+
+    @Override
+    public void updateOnGoing(String tripId) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new DataNotFoundException("Trip Not exists!"));
+        trip.setStatus(TripStatus.ONGOING);
+    }
+
+    @Override
+    public void updateComplete(String tripId) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new DataNotFoundException("Trip Not exists!"));
+        trip.setStatus(TripStatus.COMPLETE);
     }
 
     public void deleteUserToTrip(String tripId) {

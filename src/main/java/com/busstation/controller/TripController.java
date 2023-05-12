@@ -1,10 +1,12 @@
 package com.busstation.controller;
 
+import com.busstation.payload.request.FindTripRequest;
 import com.busstation.payload.request.SearchTripRequest;
 import com.busstation.payload.request.TripRequest;
 import com.busstation.payload.response.SearchTripResponse;
 import com.busstation.payload.response.TripResponse;
 import com.busstation.payload.response.UserByTripIdResponse;
+import com.busstation.services.OrderService;
 import com.busstation.services.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController(value = "tripAPIofWeb")
 @RequestMapping(value = "/api/v1/trips")
 public class TripController {
-
 
     @Autowired
     private TripService tripService;
@@ -88,5 +89,21 @@ public class TripController {
             return new ResponseEntity<>("delete Success!", HttpStatus.OK);
         }
         return new ResponseEntity<>("delete failed!!", HttpStatus.OK);
+    }
+
+    @PutMapping("/update/ongoing")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    public ResponseEntity<?> updateOnGoIng(@RequestBody FindTripRequest findTripRequest) {
+        tripService.updateOnGoing(
+                findTripRequest.getTripId());
+        return ResponseEntity.status(HttpStatus.OK).body("Update order status ongoing successfully");
+    }
+
+    @PutMapping("/update/complete")
+    @PreAuthorize("hasRole('ROLE_DRIVER')")
+    public ResponseEntity<?> updateComplete(@RequestBody FindTripRequest findTripRequest) {
+        tripService.updateComplete(
+                findTripRequest.getTripId());
+        return ResponseEntity.status(HttpStatus.OK).body("Update order status complete successfully");
     }
 }

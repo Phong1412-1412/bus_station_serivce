@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.busstation.entities.Order;
 import com.busstation.entities.OrderDetail;
+import com.busstation.enums.TripStatus;
 import com.busstation.repositories.OrderRepository;
 
 import lombok.Data;
@@ -14,6 +15,8 @@ import lombok.Data;
 public class MyBookingResponse {
 	
 	private String orderId;
+
+    private TripStatus tripStatus;
 	
 	private UserResponse user;
 	
@@ -29,7 +32,7 @@ public class MyBookingResponse {
 		this.orderId = order.getOrderID();
 		
 		this.sumOrder = orderRepository.getSumOrder(order.getOrderID());
-		
+
         UserResponse userResponse = new UserResponse();
         userResponse.setUserId(order.getUser().getUserId());
         userResponse.setFullName(order.getUser().getFullName());
@@ -44,6 +47,7 @@ public class MyBookingResponse {
         tripResponse.setProvinceStart(order.getTrip().getProvinceStart());
         tripResponse.setProvinceEnd(order.getTrip().getProvinceEnd());;
         tripResponse.setTimeStart(order.getTrip().getTimeStart());
+        this.tripStatus = tripResponse.getStatus();
         this.trip = tripResponse;
         
 		List<OrderDetailsResponse> lstOderDetails = new ArrayList<>();
@@ -55,10 +59,7 @@ public class MyBookingResponse {
 		
 		this.details = lstOderDetails;
 	}
-	
 
-	
-	
 }
 
 @Data

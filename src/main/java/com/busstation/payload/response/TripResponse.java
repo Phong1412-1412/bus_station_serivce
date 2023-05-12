@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.busstation.entities.Trip;
+import com.busstation.enums.TripStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -28,7 +29,7 @@ public class TripResponse {
 
     private BigDecimal price;
 
-    private Boolean status;
+    private TripStatus status;
 
     private String pickupLocation;
 

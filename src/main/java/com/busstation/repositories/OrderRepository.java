@@ -47,4 +47,12 @@ public interface OrderRepository extends JpaRepository<Order, String>{
     	       "WHERE o.orderID = ?1")
     BigDecimal getSumOrder(String orderId);
 
+    @Query("SELECT o FROM Order o " +
+            "INNER JOIN Trip t ON t.tripId = o.trip.tripId" +
+            " INNER JOIN TripCar tc ON tc.tripId = t.tripId" +
+            " INNER JOIN Car c ON c.carId = tc.carId" +
+            " WHERE t.tripId = :tripId" +
+            " AND c.carId = :carId")
+    List<Order> findAllOrderByTripCar(@Param("tripId") String tripId, @Param("carId") String carId);
+
 }
