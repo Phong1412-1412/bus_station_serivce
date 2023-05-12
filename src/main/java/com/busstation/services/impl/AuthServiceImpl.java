@@ -171,9 +171,9 @@ public class AuthServiceImpl implements AuthService {
 		if (accountRepository.existsByusername(username) && userRepository.existsByEmail(email)) {
 			user = userRepository.findByEmailAndProvider(email);
 			account = accountRepository.findByusername(username);
-			if(user == null) {
-				throw new DataExistException("This user with username or email already exist");
-			}		
+			if(user == null || !account.getPassword().equals(" ")) {
+				throw new DataExistException("This account already register!!!");
+			}	
 			account.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
 			accountRepository.save(account);
 			user.setFullName(signupRequest.getUser().getFullName());

@@ -16,6 +16,4 @@ public class TicketRequest {
 	private String addressStart;
 	private String addressEnd;
 	private BigDecimal price;
-	private String pickupLocation;
-	private String dropOffLocation ;
 }

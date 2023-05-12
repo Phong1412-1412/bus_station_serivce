@@ -107,8 +107,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 Ticket ticket = checkTicket.get();
 
                 TripResponse tripResponse = new TripResponse(trip.getTripId(), trip.getProvinceStart(),
-                        trip.getProvinceEnd(), trip.getTimeStart(), ticket.getPrice(),trip.getStatus(),
-                        ticket.getPickupLocation(), ticket.getDropOffLocation());
+                        trip.getProvinceEnd(), trip.getTimeStart(), ticket.getPrice(),trip.getStatus());
 
                 tripResponses.add(tripResponse);
             }
@@ -156,8 +155,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     Ticket ticket = checkTicket.get();
 
                     TripResponse tripResponse = new TripResponse(trip.getTripId(), trip.getProvinceStart(),
-                            trip.getProvinceEnd(), trip.getTimeStart(), ticket.getPrice(),trip.getStatus(),
-                            ticket.getPickupLocation(), ticket.getDropOffLocation());
+                            trip.getProvinceEnd(), trip.getTimeStart(), ticket.getPrice(),trip.getStatus());
 
                     tripResponses.add(tripResponse);
                 }

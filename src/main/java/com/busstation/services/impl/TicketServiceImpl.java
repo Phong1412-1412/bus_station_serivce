@@ -1,13 +1,5 @@
 package com.busstation.services.impl;
 
-import com.busstation.common.Constant;
-import com.busstation.entities.Ticket;
-import com.busstation.payload.request.TicketRequest;
-import com.busstation.payload.response.TicketResponse;
-import com.busstation.repositories.TicketRepository;
-import com.busstation.repositories.custom.TicketRepositoryCustom;
-import com.busstation.services.TicketService;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,6 +22,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.busstation.common.Constant;
+import com.busstation.entities.Ticket;
+import com.busstation.payload.request.TicketRequest;
+import com.busstation.payload.response.TicketResponse;
+import com.busstation.repositories.TicketRepository;
+import com.busstation.repositories.custom.TicketRepositoryCustom;
+import com.busstation.services.TicketService;
+
 // NOTE : No exception handling
 
 @Service
@@ -49,8 +49,6 @@ public class TicketServiceImpl implements TicketService {
 		ticket.setAddressEnd(request.getAddressEnd());
 		ticket.setAddressStart(request.getAddressStart());
 		ticket.setPrice(request.getPrice());
-		ticket.setPickupLocation(request.getPickupLocation());
-		ticket.setDropOffLocation(request.getDropOffLocation());
 		ticketRepository.save(ticket);
 
 		Ticket newTicket = ticketRepository.save(ticket);
@@ -59,8 +57,6 @@ public class TicketServiceImpl implements TicketService {
 		ticketResponse.setAddressStart(newTicket.getAddressStart());
 		ticketResponse.setAddressEnd(newTicket.getAddressEnd());
 		ticketResponse.setPrice(newTicket.getPrice());
-		ticketResponse.setPickupLocation(newTicket.getPickupLocation());
-		ticketResponse.setDropOffLocation(newTicket.getDropOffLocation());
 
 		return ticketResponse;
 	}
@@ -74,13 +70,13 @@ public class TicketServiceImpl implements TicketService {
 		ticket.setAddressEnd(request.getAddressEnd());
 		ticket.setAddressStart(request.getAddressStart());
 		ticket.setPrice(request.getPrice());
-		ticket.setPickupLocation(request.getPickupLocation());
-		ticket.setDropOffLocation(request.getDropOffLocation());
+
 
 		ticketRepository.save(ticket);
 
-		TicketResponse ticketResponse = new TicketResponse(ticket.getTicketId(), ticket.getAddressStart(),
-				ticket.getAddressEnd(), ticket.getPrice(), ticket.getPickupLocation(), ticket.getDropOffLocation());
+		TicketResponse ticketResponse = new TicketResponse(
+				ticket.getTicketId(), ticket.getAddressStart(),
+				ticket.getAddressEnd(), ticket.getPrice());
 
 		return ticketResponse;
 	}
@@ -126,8 +122,6 @@ public class TicketServiceImpl implements TicketService {
 		ticketResponse.setAddressStart(ticket.getAddressStart());
 		ticketResponse.setAddressEnd(ticket.getAddressEnd());
 		ticketResponse.setPrice(ticket.getPrice());
-		ticketResponse.setPickupLocation(ticket.getPickupLocation());
-		ticketResponse.setDropOffLocation(ticket.getDropOffLocation());
 
 		return ticketResponse;
 	}
@@ -158,8 +152,6 @@ public class TicketServiceImpl implements TicketService {
 				row.createCell(1).setCellValue(ticket.getAddressStart());
 				row.createCell(2).setCellValue(ticket.getAddressEnd());
 				row.createCell(3).setCellValue(ticket.getPrice().toString());
-				row.createCell(4).setCellValue(ticket.getPickupLocation());
-				row.createCell(5).setCellValue(ticket.getDropOffLocation());
 			}
 
 			try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_PATH)) {
@@ -194,7 +186,6 @@ public class TicketServiceImpl implements TicketService {
 				String addressStart = row.getCell(1).getStringCellValue();
 				String addressEnd = row.getCell(2).getStringCellValue();
 
-// Exception :	BigDecimal price = (BigDecimal) row.getCell(3).getNumericCellValue();
 				Cell cell = row.getCell(3);
 				BigDecimal price = null;
 				if (cell.getCellType() == CellType.NUMERIC) {
@@ -202,13 +193,10 @@ public class TicketServiceImpl implements TicketService {
 				} else if (cell.getCellType() == CellType.STRING) {
 					price = new BigDecimal(cell.getStringCellValue());
 				}
-				
-				String pickupLocation = row.getCell(4).getStringCellValue();
-				String dropOffLocation = row.getCell(5).getStringCellValue();
-				
-				Ticket ticket = new Ticket(ticketId ,addressStart, addressEnd, price, pickupLocation , dropOffLocation);
+								
+				Ticket ticket = new Ticket(ticketId ,addressStart, addressEnd, price);
 				ticketRepository.save(ticket);
-				TicketResponse ticketResponse = new TicketResponse(ticketId, addressStart, addressEnd, price ,  pickupLocation , dropOffLocation);
+				TicketResponse ticketResponse = new TicketResponse(ticketId, addressStart, addressEnd, price);
 				ticketResponses.add(ticketResponse);
 			}
 			

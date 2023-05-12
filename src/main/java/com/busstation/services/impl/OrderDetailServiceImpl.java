@@ -163,8 +163,6 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         ticketResponse.setAddressStart(ticket.getAddressStart());
         ticketResponse.setAddressEnd(ticket.getAddressEnd());
         ticketResponse.setPrice(ticket.getPrice());
-        ticket.setPickupLocation(ticket.getPickupLocation());
-        ticket.setDropOffLocation(ticket.getDropOffLocation());
 
         return ticketResponse;
     }
