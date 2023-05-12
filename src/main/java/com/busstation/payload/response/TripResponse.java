@@ -30,11 +30,8 @@ public class TripResponse {
 
     private Boolean status;
 
-    private String pickupLocation;
 
-    private String dropOffLocation;
-
-    public TripResponse(Trip trip, BigDecimal price, String pickupLocation, String dropOffLocation){
+    public TripResponse(Trip trip, BigDecimal price){
 
         this.tripId = trip.getTripId();
         this.provinceStart = trip.getProvinceStart();
@@ -42,7 +39,5 @@ public class TripResponse {
         this.timeStart = trip.getTimeStart();
         this.price = price;
         this.status = trip.getStatus();
-        this.pickupLocation = pickupLocation;
-        this.dropOffLocation = dropOffLocation;
     }
 }

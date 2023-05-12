@@ -28,7 +28,7 @@ public class MyBookingResponse {
 		
 		this.orderId = order.getOrderID();
 		
-		this.sumOrder = orderRepository.getSumOrder(order.getOrderID());
+		this.sumOrder = orderRepository.getSumOrder(orderId);
 		
         UserResponse userResponse = new UserResponse();
         userResponse.setUserId(order.getUser().getUserId());

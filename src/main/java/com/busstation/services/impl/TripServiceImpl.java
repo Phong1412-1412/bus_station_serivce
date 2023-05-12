@@ -1,6 +1,25 @@
 package com.busstation.services.impl;
 
-import com.busstation.entities.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.busstation.entities.Car;
+import com.busstation.entities.Order;
+import com.busstation.entities.OrderDetail;
+import com.busstation.entities.Ticket;
+import com.busstation.entities.Trip;
+import com.busstation.entities.User;
 import com.busstation.payload.request.SearchTripRequest;
 import com.busstation.payload.request.TicketRequest;
 import com.busstation.payload.request.TripRequest;
@@ -8,22 +27,19 @@ import com.busstation.payload.response.SearchTripResponse;
 import com.busstation.payload.response.TicketResponse;
 import com.busstation.payload.response.TripResponse;
 import com.busstation.payload.response.UserByTripIdResponse;
-import com.busstation.repositories.*;
+import com.busstation.repositories.CarRepository;
+import com.busstation.repositories.OrderDetailRepository;
+import com.busstation.repositories.OrderRepository;
+import com.busstation.repositories.TicketRepository;
+import com.busstation.repositories.TripRepository;
+import com.busstation.repositories.TypeCarRepository;
+import com.busstation.repositories.UserRepository;
 import com.busstation.services.ChairService;
 import com.busstation.services.TicketService;
 import com.busstation.services.TripService;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.*;
 
 @Service
 public class TripServiceImpl implements TripService {
@@ -79,9 +95,7 @@ public class TripServiceImpl implements TripService {
 
         TicketRequest ticketRequest = new TicketRequest(tripRequest.getProvinceStart(),
                 tripRequest.getProvinceEnd(),
-                tripRequest.getPrice(),
-                tripRequest.getPickupLocation(),
-                tripRequest.getDropOffLocation());
+                tripRequest.getPrice());
 
         TicketResponse ticketResponse;
 
@@ -129,9 +143,7 @@ public class TripServiceImpl implements TripService {
 
         TicketRequest ticketRequest = new TicketRequest(newTripRequest.getProvinceStart(),
                 newTripRequest.getProvinceEnd(),
-                newTripRequest.getPrice(),
-                newTripRequest.getPickupLocation(),
-                newTripRequest.getDropOffLocation());
+                newTripRequest.getPrice());
 
         TicketResponse ticketResponse;
 
@@ -264,9 +276,7 @@ public class TripServiceImpl implements TripService {
             if (ticket.isPresent()) {
                 Ticket getTicket = ticket.get();
                 BigDecimal price = getTicket.getPrice();
-                String pickupLocation = getTicket.getPickupLocation();
-                String dropOffLocation = getTicket.getDropOffLocation();
-                return new TripResponse(trip, price, pickupLocation, dropOffLocation);
+                return new TripResponse(trip, price);
             }
             return null;
         });
