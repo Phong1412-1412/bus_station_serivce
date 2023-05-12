@@ -220,7 +220,7 @@ CREATE TABLE IF NOT EXISTS public.tbl_trip
     time_start timestamp(6) without time zone NOT NULL,
     update_at timestamp(6) without time zone,
     CONSTRAINT tbl_trip_pkey PRIMARY KEY (trip_id)
-)
+);
 
 ALTER TABLE IF EXISTS public.tbl_trip
     OWNER to postgres;

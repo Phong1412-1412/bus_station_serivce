@@ -13,25 +13,25 @@ import lombok.Data;
 
 @Data
 public class MyBookingResponse {
-	
-	private String orderId;
+
+    private String orderId;
 
     private TripStatus tripStatus;
-	
-	private UserResponse user;
-	
-	private TripResponse trip;
-	
-	private BigDecimal sumOrder;
-	
-	private List<OrderDetailsResponse> details;
 
-	public MyBookingResponse(Order order, OrderRepository orderRepository) {
-		super();
-		
-		this.orderId = order.getOrderID();
-		
-		this.sumOrder = orderRepository.getSumOrder(order.getOrderID());
+    private UserResponse user;
+
+    private TripResponse trip;
+
+    private BigDecimal sumOrder;
+
+    private List<OrderDetailsResponse> details;
+
+    public MyBookingResponse(Order order, OrderRepository orderRepository) {
+        super();
+
+        this.orderId = order.getOrderID();
+
+        this.sumOrder = orderRepository.getSumOrder(order.getOrderID());
 
         UserResponse userResponse = new UserResponse();
         userResponse.setUserId(order.getUser().getUserId());
@@ -47,24 +47,25 @@ public class MyBookingResponse {
         tripResponse.setProvinceStart(order.getTrip().getProvinceStart());
         tripResponse.setProvinceEnd(order.getTrip().getProvinceEnd());;
         tripResponse.setTimeStart(order.getTrip().getTimeStart());
+        tripResponse.setStatus(order.getTrip().getStatus());
         this.tripStatus = tripResponse.getStatus();
         this.trip = tripResponse;
-        
-		List<OrderDetailsResponse> lstOderDetails = new ArrayList<>();
-		
-		for(OrderDetail i: order.getOrderDetails()) {
-			OrderDetailsResponse od = new OrderDetailsResponse(i);
-			lstOderDetails.add(od);
-		}
-		
-		this.details = lstOderDetails;
-	}
+
+        List<OrderDetailsResponse> lstOderDetails = new ArrayList<>();
+
+        for(OrderDetail i: order.getOrderDetails()) {
+            OrderDetailsResponse od = new OrderDetailsResponse(i);
+            lstOderDetails.add(od);
+        }
+
+        this.details = lstOderDetails;
+    }
 
 }
 
 @Data
 class OrderDetailsResponse{
-	
+
     private String orderDetailId;
 
     private Boolean status;
@@ -93,5 +94,5 @@ class OrderDetailsResponse{
 
         this.ticket = ticketResponse;
     }
-	
+
 }

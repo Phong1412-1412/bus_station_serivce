@@ -21,8 +21,4 @@ public class TripRequest {
 
     private BigDecimal price;
 
-    private String pickupLocation;
-
-    private String dropOffLocation ;
-
 }

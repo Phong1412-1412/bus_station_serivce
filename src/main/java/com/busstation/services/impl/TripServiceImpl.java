@@ -64,8 +64,7 @@ public class TripServiceImpl implements TripService {
         Optional<Trip> checkTrip = tripRepository
                 .findByProvinceStartAndProvinceEnd(tripRequest.getProvinceStart(), tripRequest.getProvinceEnd(), tripRequest.getTimeStart());
 
-        Optional<Ticket> checkTicket = ticketRepository
-                .findByAddressStartAndAddressEnd(tripRequest.getProvinceStart(),tripRequest.getProvinceEnd());
+        Optional<Ticket> checkTicket = ticketRepository.findByAddressStartAndAddressEnd(tripRequest.getProvinceStart(),tripRequest.getProvinceEnd());
 
         if(checkTrip.isPresent()){
             return null;
@@ -81,9 +80,7 @@ public class TripServiceImpl implements TripService {
 
         TicketRequest ticketRequest = new TicketRequest(tripRequest.getProvinceStart(),
                 tripRequest.getProvinceEnd(),
-                tripRequest.getPrice(),
-                tripRequest.getPickupLocation(),
-                tripRequest.getDropOffLocation());
+                tripRequest.getPrice());
 
         TicketResponse ticketResponse;
 
@@ -100,7 +97,7 @@ public class TripServiceImpl implements TripService {
         tripResponse.setProvinceEnd(newTrip.getProvinceEnd());
         tripResponse.setTimeStart(newTrip.getTimeStart());
         tripResponse.setPrice(ticketResponse.getPrice());
-
+        tripResponse.setStatus(newTrip.getStatus());
         return tripResponse;
     }
 
@@ -131,9 +128,7 @@ public class TripServiceImpl implements TripService {
 
         TicketRequest ticketRequest = new TicketRequest(newTripRequest.getProvinceStart(),
                 newTripRequest.getProvinceEnd(),
-                newTripRequest.getPrice(),
-                newTripRequest.getPickupLocation(),
-                newTripRequest.getDropOffLocation());
+                newTripRequest.getPrice());
 
         TicketResponse ticketResponse;
 
@@ -266,9 +261,7 @@ public class TripServiceImpl implements TripService {
             if (ticket.isPresent()) {
                 Ticket getTicket = ticket.get();
                 BigDecimal price = getTicket.getPrice();
-                String pickupLocation = getTicket.getPickupLocation();
-                String dropOffLocation = getTicket.getDropOffLocation();
-                return new TripResponse(trip, price, pickupLocation, dropOffLocation);
+                return new TripResponse(trip, price);
             }
             return null;
         });
@@ -303,14 +296,16 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void updateOnGoing(String tripId) {
-        Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new DataNotFoundException("Trip Not exists!"));
+        Trip trip = tripRepository.findByTripId(tripId).orElseThrow(() -> new DataNotFoundException("Trip Not exists!"));
         trip.setStatus(TripStatus.ONGOING);
+        tripRepository.save(trip);
     }
 
     @Override
     public void updateComplete(String tripId) {
-        Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new DataNotFoundException("Trip Not exists!"));
+        Trip trip = tripRepository.findByTripId(tripId).orElseThrow(() -> new DataNotFoundException("Trip Not exists!"));
         trip.setStatus(TripStatus.COMPLETE);
+        tripRepository.save(trip);
     }
 
     public void deleteUserToTrip(String tripId) {
