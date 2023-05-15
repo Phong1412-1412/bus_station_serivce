@@ -11,6 +11,7 @@ import com.busstation.utils.GetUserUtil;
 import com.busstation.utils.JwtProviderUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.*;
 
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
@@ -50,6 +52,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private JwtProviderUtils jwtProviderUtils;
 
+    private final PaymentMethodRepository paymentMethodRepository;
 
     @Override
     @Transactional
@@ -59,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
 
         Optional<Ticket> ticket = ticketRepository.findByAddressStartAndAddressEnd(orderRequest.getAddressStart(), orderRequest.getAddressEnd());
 
-        if(!ticket.isPresent()){
+        if(ticket.isEmpty()){
             throw new DataNotFoundException("Ticket not found");
         }
 
@@ -67,13 +70,13 @@ public class OrderServiceImpl implements OrderService {
         if(orderRequest.getOrderId().equalsIgnoreCase("")){
 
             Trip trip = tripRepository.findById(orderRequest.getTripId()).orElseThrow(()-> new DataNotFoundException("Trip not found"));
-
+            Optional<PaymentMethod> paymentMethod = paymentMethodRepository.findPaymentMethodById(orderRequest.getPaymentId());
             Order order = new Order();
             order.setUser(user);
             order.setOrderID(getOrderId(orderRequest.getTripId()));
             order.setTrip(trip);
             order.setSendMail(false);
-
+            order.setPaymentMethod(null);
             newOrder = orderRepository.save(order);
         }
         else {
@@ -85,12 +88,22 @@ public class OrderServiceImpl implements OrderService {
         orderResponse.setOrderId(newOrder.getOrderID());
         orderResponse.setChairId(orderDetail.getChair().getChairId());
         orderResponse.setTripId(newOrder.getTrip().getTripId());
+        orderResponse.setPaymentId(null);
         return orderResponse;
     }
 
     @Override
     @Transactional
-    public Boolean submitOrder(String orderId, String tripId) {
+    public Boolean submitOrder(String orderId, String tripId, Long paymentId) {
+
+        Optional<Order> order = Optional.ofNullable(orderRepository.findOrderByOrderID(orderId));
+
+        Optional<PaymentMethod> paymentMethod = paymentMethodRepository.findPaymentMethodById(paymentId);
+
+        if(order.isPresent() && paymentMethod.isPresent())  {
+            order.get().setPaymentMethod(paymentMethod.get());
+            orderRepository.save(order.get());
+        }
 
         List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
         User user = getUser();
@@ -157,6 +170,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean deleteOrder(String orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new DataNotFoundException("Order not found"));
+        Account account = accountRepository.findAccountByOrderId(orderId);
+        account.setCancellationCount(account.getCancellationCount() + 1);
+        accountRepository.save(account);
             List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
             orderDetailRepository.deleteAll(orderDetails);
             orderRepository.delete(order);

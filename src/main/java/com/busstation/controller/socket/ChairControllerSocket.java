@@ -38,6 +38,7 @@ public class  ChairControllerSocket {
     @SendTo("/topic/chair")
     public OrderResponse handleChairUpdate(@Payload OrderRequest orderRequest, StompHeaderAccessor headers) throws Exception {
         String bearerToken = headers.getFirstNativeHeader("Authorization");
+        assert bearerToken != null;
         String jwtToken = bearerToken.substring(7);
 
         OrderResponse orderResponse=orderService.createOrder(orderRequest, jwtToken);

@@ -21,4 +21,6 @@ public class OrderRequest {
 
     private String addressEnd;
 
+    private Long paymentId;
+
 }

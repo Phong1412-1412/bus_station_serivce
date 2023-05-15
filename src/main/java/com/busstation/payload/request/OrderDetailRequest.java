@@ -17,7 +17,7 @@ public class OrderDetailRequest {
 
     private Boolean status;
 
-
+    private Long paymentId;
     private String addressStart;
 
     private String addressEnd;

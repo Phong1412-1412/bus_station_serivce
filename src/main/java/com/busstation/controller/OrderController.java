@@ -45,10 +45,15 @@ public class OrderController {
 //        return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
 //    }
 
+    @GetMapping("/findCancel/{orderId}")
+    public ResponseEntity<?> cancellationCount(@PathVariable(name = "orderId") String orderId) {
+        return ResponseEntity.ok().body(orderRepository.findCancellationCountForUserByOrderId(orderId));
+    }
+
     @PostMapping("/submit")
     public ResponseEntity<?> submitOrder(@RequestBody OrderDetailRequest orderDetailRequest) {
 
-        Boolean orderResponse = orderService.submitOrder(orderDetailRequest.getOrderId(), orderDetailRequest.getTripId());
+        Boolean orderResponse = orderService.submitOrder(orderDetailRequest.getOrderId(), orderDetailRequest.getTripId(), orderDetailRequest.getPaymentId());
         if(orderResponse){
             User user = userRepository.findUserByOrderID(orderDetailRequest.getOrderId());
             Order order = orderRepository.findById(orderDetailRequest.getOrderId()).orElse(null);

@@ -10,7 +10,7 @@ public interface OrderService {
 
     OrderResponse createOrder(OrderRequest orderRequest,String token);
 
-    Boolean submitOrder(String orderId, String tripId);
+    Boolean submitOrder(String orderId, String tripId, Long paymentId);
 
     Page<OrderDetailResponse> searchOrderById(String orderId, int pageNo, int pageSize);
 

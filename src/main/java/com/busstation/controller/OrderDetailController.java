@@ -3,7 +3,9 @@ package com.busstation.controller;
 import com.busstation.payload.request.OrderDetailRequest;
 import com.busstation.payload.response.MyBookingResponse;
 import com.busstation.payload.response.OrderDetailResponse;
+import com.busstation.repositories.OrderDetailRepository;
 import com.busstation.services.OrderDetailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController(value = "orderDetailAPIofWeb")
 @RequestMapping("/api/v1/orderdetails")
+@RequiredArgsConstructor
 public class OrderDetailController {
 
     @Autowired
     private OrderDetailService orderDetailService;
+
+    private final OrderDetailRepository orderDetailRepository;
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE','ROLE_ADMIN')")
@@ -26,6 +31,11 @@ public class OrderDetailController {
 
         Page<OrderDetailResponse> orderDetailPage = orderDetailService.getAllOrderDetail(pageNo, pageSize);
         return new ResponseEntity<>(orderDetailPage, HttpStatus.OK);
+    }
+
+    @GetMapping("/count/{orderId}")
+    public ResponseEntity<?> getCountOrderDetails(@PathVariable(name = "orderId") String orderId) {
+        return ResponseEntity.ok().body(orderDetailRepository.findByOrder_OrderID(orderId).size());
     }
 
     @GetMapping("/user")
@@ -44,5 +54,6 @@ public class OrderDetailController {
         OrderDetailResponse orderDetail = orderDetailService.updateOrderDetail(orderDetailId, OrderDetailRequest);
         return new ResponseEntity<>(orderDetail, HttpStatus.CREATED);
     }
+
 
 }

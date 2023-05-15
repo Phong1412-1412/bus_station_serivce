@@ -19,6 +19,13 @@ public interface OrderRepository extends JpaRepository<Order, String>{
 
     List<Order> findAllByTrip_TripId(String tripId);
 
+    @Query("SELECT a.cancellationCount from Order o " +
+            " INNER JOIN User u ON u.userId = o.user.userId " +
+            " INNER JOIN Account a on a.accountId = u.account.accountId " +
+            " WHERE o.orderID = :orderId"
+    )
+    int findCancellationCountForUserByOrderId(@Param("orderId") String orderId);
+
     @Query("SELECT COUNT(o) FROM Order o "
     	       + "WHERE EXTRACT(MONTH FROM o.createAt) = ?1 "
     	       + "AND EXTRACT(YEAR FROM o.createAt) = ?2")
@@ -55,4 +62,5 @@ public interface OrderRepository extends JpaRepository<Order, String>{
             " AND c.carId = :carId")
     List<Order> findAllOrderByTripCar(@Param("tripId") String tripId, @Param("carId") String carId);
 
+    Order findOrderByOrderID(String orderId);
 }

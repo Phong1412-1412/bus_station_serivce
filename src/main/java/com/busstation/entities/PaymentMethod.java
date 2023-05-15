@@ -1,11 +1,18 @@
 package com.busstation.entities;
 
+import com.busstation.payload.request.PaymentMethodRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Table(name = "Payment_Method")
 public class PaymentMethod {
 
@@ -14,7 +21,7 @@ public class PaymentMethod {
     @Column(name = "paymentId")
     private Long id;
 
-    @Column(name = "payment_method")
+    @Column(name = "payment_method", unique = true)
     private String paymentMethod;
 
     @Column(name = "description")

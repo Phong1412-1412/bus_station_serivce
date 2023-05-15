@@ -19,4 +19,10 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     //--------------------------------------------------------------------
     @Query("SELECT a FROM Account a JOIN User u ON a.accountId = u.account.accountId WHERE u.email = :email")
     Account findAccountByUserEmail(@Param("email") String email);
+    @Query("SELECT a from Order o " +
+            " INNER JOIN User u ON u.userId = o.user.userId " +
+            " INNER JOIN Account a on a.accountId = u.account.accountId " +
+            " WHERE o.orderID = :orderId"
+    )
+    Account findAccountByOrderId(@Param("orderId") String orderId);
 }

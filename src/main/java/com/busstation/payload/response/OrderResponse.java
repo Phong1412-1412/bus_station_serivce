@@ -19,5 +19,7 @@ public class OrderResponse {
 
     private UserResponse user;
 
+    private Long paymentId;
+
     private List<OrderDetailResponse> orderDetail;
 }
