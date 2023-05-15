@@ -55,5 +55,4 @@ public class OrderDetailController {
         return new ResponseEntity<>(orderDetail, HttpStatus.CREATED);
     }
 
-
 }

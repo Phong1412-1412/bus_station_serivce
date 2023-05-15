@@ -1,14 +1,50 @@
 package com.busstation.services.impl;
 
-import com.busstation.entities.*;
-import com.busstation.enums.TripStatus;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.busstation.entities.Account;
+import com.busstation.entities.Chair;
+import com.busstation.entities.Location;
+import com.busstation.entities.Order;
+import com.busstation.entities.OrderDetail;
+import com.busstation.entities.Province;
+import com.busstation.entities.Ticket;
+import com.busstation.entities.Trip;
+import com.busstation.entities.User;
 import com.busstation.exception.DataNotFoundException;
 import com.busstation.payload.request.OrderRequest;
-import com.busstation.payload.response.*;
-import com.busstation.repositories.*;
+import com.busstation.payload.response.ChairResponse;
+import com.busstation.payload.response.MyBookingResponse;
+import com.busstation.payload.response.OrderDetailResponse;
+import com.busstation.payload.response.OrderResponse;
+import com.busstation.payload.response.TicketResponse;
+import com.busstation.payload.response.UserResponse;
+import com.busstation.repositories.AccountRepository;
+import com.busstation.repositories.ChairRepository;
+import com.busstation.repositories.LocationRepository;
+import com.busstation.repositories.OrderDetailRepository;
+import com.busstation.repositories.OrderRepository;
+import com.busstation.repositories.ProvinceRepository;
+import com.busstation.repositories.TicketRepository;
+import com.busstation.repositories.TripRepository;
+import com.busstation.repositories.UserRepository;
 import com.busstation.services.OrderService;
 import com.busstation.utils.GetUserUtil;
 import com.busstation.utils.JwtProviderUtils;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -88,7 +124,6 @@ public class OrderServiceImpl implements OrderService {
         orderResponse.setOrderId(newOrder.getOrderID());
         orderResponse.setChairId(orderDetail.getChair().getChairId());
         orderResponse.setTripId(newOrder.getTrip().getTripId());
-        orderResponse.setPaymentId(null);
         return orderResponse;
     }
 
@@ -305,4 +340,15 @@ public class OrderServiceImpl implements OrderService {
         ticketResponse.setPrice(ticket.getPrice());
         return ticketResponse;
     }
+
+	@Override
+	public MyBookingResponse getInformationNewOrder(String orderId) {
+		Account account = accountRepository.findByusername(new GetUserUtil().GetUserName());
+
+		Order order = orderRepository.findByOrderId(orderId, account.getUser().getUserId());
+		if(order == null) {
+			throw new DataNotFoundException("Order not found!");
+		}
+		return new MyBookingResponse(order, orderRepository);
+	}
 }

@@ -10,6 +10,8 @@ import com.busstation.entities.Order;
 import com.busstation.entities.User;
 import com.busstation.event.SubmitOrderCompleteEvent;
 import com.busstation.payload.request.OrderDetailRequest;
+import com.busstation.payload.request.VerifyOrderInformationRequest;
+import com.busstation.payload.response.MyBookingResponse;
 import com.busstation.payload.response.OrderDetailResponse;
 import com.busstation.repositories.OrderRepository;
 import com.busstation.repositories.UserRepository;
@@ -72,4 +74,12 @@ public class OrderController {
 
         return new ResponseEntity<>("failed", HttpStatus.OK);
     }
+
+    @GetMapping("/verify-order-info/{orderId}")
+    public ResponseEntity<?> getInformationOrder(@PathVariable String orderId) {
+
+        MyBookingResponse order = orderService.getInformationNewOrder(orderId);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
 }
