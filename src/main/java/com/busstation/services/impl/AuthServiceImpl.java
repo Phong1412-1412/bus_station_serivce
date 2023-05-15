@@ -190,7 +190,7 @@ public class AuthServiceImpl implements AuthService {
 			user.setFullName(signupRequest.getUser().getFullName());
 			user.setPhoneNumber(signupRequest.getUser().getPhoneNumber());
 			user.setAddress(signupRequest.getUser().getAddress());
-			user.setStatus(Boolean.TRUE);
+			user.setStatus(Boolean.FALSE);
 			
 		} else {		
 			account.setUsername(signupRequest.getUsername());

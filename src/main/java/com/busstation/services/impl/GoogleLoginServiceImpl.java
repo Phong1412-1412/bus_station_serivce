@@ -29,6 +29,7 @@ public class GoogleLoginServiceImpl implements GoogleLoginService {
 	public void CreateNewUserloginWithGoogle(String email, String fullname) {
 		Account account = new Account();
 		account.setUsername(email);
+		account.setCancellationCount(0);
 		account.setPassword(" ");
 		Role role = roleRepository.findByName(NameRoleEnum.ROLE_USER.toString());
 		account.setRole(role);

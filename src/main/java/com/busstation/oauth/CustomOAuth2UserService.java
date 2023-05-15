@@ -15,7 +15,10 @@ import com.busstation.repositories.UserRepository;
 import com.busstation.repositories.VerificationTokenRepository;
 import com.busstation.services.GoogleLoginService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 	@Autowired
@@ -38,21 +41,28 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		Account account = accountRepository.findByusername(username);
 
 		if (account != null) {
+			log.info("Login goole : update account...");
 			User existingUser = account.getUser();
 			if(!existingUser.getStatus()) {
+				log.info("Login goole : delete info account status false...");
 				VerificationToken verificationToken = verificationTokenRepository.findByUser_UserId(existingUser.getUserId());
 				verificationTokenRepository.delete(verificationToken);
-				userRepository.delete(existingUser);
-				accountRepository.delete(account);
-				System.out.println("Creating....");
-				googleLoginService.CreateNewUserloginWithGoogle(username, fullName);
+				
+				existingUser.setFullName(fullName);
+				existingUser.setAddress("");
+				existingUser.setPhoneNumber("");
+				existingUser.setStatus(Boolean.TRUE);
+				userRepository.save(existingUser);
+								
+				account.setPassword(" ");
+				accountRepository.save(account);
+
 				return new CustomOAuth2User(user);
-			}
-			System.out.println("Updating.....");
+			}						
 			return new CustomOAuth2User(user);
 		}
 		
-		System.out.println("Creating....");
+		log.info("Login goole : create new account...");
 		googleLoginService.CreateNewUserloginWithGoogle(username, fullName);
 		return new CustomOAuth2User(user);
 	}
