@@ -20,6 +20,8 @@ INSERT INTO public.tbl_role (role_id, name) VALUES ('ADMIN', 'ROLE_ADMIN');
 INSERT INTO public.tbl_role (role_id, name) VALUES ('USER', 'ROLE_USER');
 INSERT INTO public.tbl_role (role_id, name) VALUES ('DRIVER', 'ROLE_DRIVER');
 
+INSERT INTO public.tbl_payment_method (payment_id, description, payment_method) VALUES (1, 'Pay upon boarding.', 'At Station');
+INSERT INTO public.tbl_payment_method (payment_id, description, payment_method) VALUES (2, 'Direct bank transfer when booking', 'Bank Transfer');
 
 --
 -- TOC entry 3433 (class 0 OID 17311)
@@ -35,18 +37,12 @@ INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, us
 INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('b0f3483c-1e19-43c7-b41f-30c2f7ebd839', '2023-04-21 09:46:28.936', '$2a$10$OW2pXX.QjmgOG4pOibDGbOQAFJ8Ir8zfGLZBrwp7DRYXumwSOXcjK', NULL, 'user3@gmail.com', 'USER');
 
 
-INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
-VALUES (1, 22, 'Limousine 22 VIP double rooms');
-INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
-VALUES (2, 30, 'Limousine 30 VIP double rooms');
-INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
-VALUES (3, 30, 'Limousine 30 seats');
-INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
-VALUES (4, 11, 'Limousine 11 seats');
-INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
-VALUES (5, 4, '4 seater seat');
-INSERT INTO public.tbl_type_car(type_car_id, total_charis, type_car_name)
-VALUES (6, 8, '8 seater seat');
+INSERT INTO public.tbl_type_car (type_car_id, total_charis, type_car_name) VALUES (1, 22, 'Limousine 22 VIP double rooms');
+INSERT INTO public.tbl_type_car (type_car_id, total_charis, type_car_name) VALUES (2, 30, 'Limousine 30 VIP double rooms');
+INSERT INTO public.tbl_type_car (type_car_id, total_charis, type_car_name) VALUES (3, 30, 'Limousine 30 seats');
+INSERT INTO public.tbl_type_car (type_car_id, total_charis, type_car_name) VALUES (4, 11, 'Limousine 11 seats');
+INSERT INTO public.tbl_type_car (type_car_id, total_charis, type_car_name) VALUES (5, 4, '4 seater seat');
+INSERT INTO public.tbl_type_car (type_car_id, total_charis, type_car_name) VALUES (6, 8, '8 seater seat');
 --
 -- TOC entry 3434 (class 0 OID 17316)
 -- Dependencies: 215

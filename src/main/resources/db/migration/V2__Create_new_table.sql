@@ -6,6 +6,17 @@ CREATE SEQUENCE public.tbl_province_province_id_seq
     NO MAXVALUE
     CACHE 1;
 
+CREATE TABLE IF NOT EXISTS public.tbl_payment_method
+(
+    payment_id bigint NOT NULL,
+    description character varying(255) COLLATE pg_catalog."default",
+    payment_method character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT tbl_payment_method_pkey PRIMARY KEY (payment_id),
+    CONSTRAINT uk_tdub4p5ie801hyra21v0qrkoa UNIQUE (payment_method)
+);
+
+ALTER TABLE IF EXISTS public.tbl_payment_method
+    OWNER to postgres;
 
 CREATE TABLE IF NOT EXISTS public.tbl_province
 (
