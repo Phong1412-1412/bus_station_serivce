@@ -59,7 +59,7 @@ public class OrderController {
         if(orderResponse){
             User user = userRepository.findUserByOrderID(orderDetailRequest.getOrderId());
             Order order = orderRepository.findById(orderDetailRequest.getOrderId()).orElse(null);
-            publisher.publishEvent(new SubmitOrderCompleteEvent(user, order));
+            //publisher.publishEvent(new SubmitOrderCompleteEvent(user, order));
             return new ResponseEntity<>("successfully", HttpStatus.OK);
         }
         return new ResponseEntity<>("failed", HttpStatus.OK);

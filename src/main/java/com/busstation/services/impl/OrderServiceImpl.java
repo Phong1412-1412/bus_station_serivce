@@ -7,8 +7,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-import com.busstation.entities.*;
-import com.busstation.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,6 +15,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.busstation.entities.Account;
+import com.busstation.entities.Chair;
+import com.busstation.entities.Location;
+import com.busstation.entities.Order;
+import com.busstation.entities.OrderDetail;
+import com.busstation.entities.PaymentMethod;
+import com.busstation.entities.Province;
+import com.busstation.entities.Ticket;
+import com.busstation.entities.Trip;
+import com.busstation.entities.User;
 import com.busstation.exception.DataNotFoundException;
 import com.busstation.payload.request.OrderRequest;
 import com.busstation.payload.response.ChairResponse;
@@ -25,6 +33,16 @@ import com.busstation.payload.response.OrderDetailResponse;
 import com.busstation.payload.response.OrderResponse;
 import com.busstation.payload.response.TicketResponse;
 import com.busstation.payload.response.UserResponse;
+import com.busstation.repositories.AccountRepository;
+import com.busstation.repositories.ChairRepository;
+import com.busstation.repositories.LocationRepository;
+import com.busstation.repositories.OrderDetailRepository;
+import com.busstation.repositories.OrderRepository;
+import com.busstation.repositories.PaymentMethodRepository;
+import com.busstation.repositories.ProvinceRepository;
+import com.busstation.repositories.TicketRepository;
+import com.busstation.repositories.TripRepository;
+import com.busstation.repositories.UserRepository;
 import com.busstation.services.OrderService;
 import com.busstation.utils.GetUserUtil;
 import com.busstation.utils.JwtProviderUtils;
@@ -32,11 +50,6 @@ import com.busstation.utils.JwtProviderUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
 
 
 @Service
@@ -190,11 +203,14 @@ public class OrderServiceImpl implements OrderService {
     public Boolean deleteOrder(String orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new DataNotFoundException("Order not found"));
         Account account = accountRepository.findAccountByOrderId(orderId);
+        
+        
+        
+        List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
+        orderDetailRepository.deleteAll(orderDetails);
+        orderRepository.delete(order);
         account.setCancellationCount(account.getCancellationCount() + 1);
         accountRepository.save(account);
-            List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
-            orderDetailRepository.deleteAll(orderDetails);
-            orderRepository.delete(order);
         return true;
     }
 
