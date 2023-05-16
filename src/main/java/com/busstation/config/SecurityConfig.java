@@ -18,11 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.busstation.config.filter.JwtAuthTokenFilter;
-import com.busstation.oauth.CustomLogoutSuccessHandler;
-import com.busstation.oauth.CustomOAuth2UserService;
 import com.busstation.services.securityimpl.UserDetailServiceSecurityImpl;
 
 
@@ -44,10 +41,7 @@ public class SecurityConfig {
 
     @Autowired
     private LogoutHandler logoutHandler;
-       
-    @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
-    
+         
     private static final String[] UN_SECURED_URLs = {
             "/api/v1/auth/**",
             "/api/v1/oauth2/**",
@@ -98,29 +92,14 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthTokenFilter(), UsernamePasswordAuthenticationFilter.class).logout()
                 .logoutUrl("/api/v1/auth/logout").addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()).and()
-                .httpBasic(withDefaults())
+                .httpBasic(withDefaults());
                 //.sessionManagement().sessionCreationPolicy(STATELESS)
-        	    .oauth2Login(o -> o
-        	    		.userInfoEndpoint()
-    					.userService(customOAuth2UserService)
-    					.and().defaultSuccessUrl("/api/v1/oauth2/accessToken")
-        	     )        	    
-        	    .logout(l -> l
-        	    		.logoutUrl("/logout")
-        	    		.logoutSuccessHandler(logoutSuccessHandler())
-        	    		.deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                        .permitAll()
-        	    );
 
 
         return http.build();
     }
     
-    @Bean
-    public LogoutSuccessHandler logoutSuccessHandler() {
-        return new CustomLogoutSuccessHandler();
-    }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
