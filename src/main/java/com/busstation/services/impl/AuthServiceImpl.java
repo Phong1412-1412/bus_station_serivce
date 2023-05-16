@@ -39,9 +39,11 @@ import com.busstation.utils.JwtProviderUtils;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -252,7 +254,6 @@ public class AuthServiceImpl implements AuthService {
 				user.setResetPasswordToken(verificationCode);
 				userRepository.save(user);
 
-				// sendForgotPasswordEmail(user.getEmail(), verificationCode);
 				String subject = "Forgot Password Verification Code";
 				String resetPasswordUrl = "http://localhost:3000/reset-password/" + verificationCode;
 				String content = "<html>"
@@ -271,9 +272,8 @@ public class AuthServiceImpl implements AuthService {
 			               + "</div>"
 			               + "</body>"
 			               + "</html>";
-
+				log.info(resetPasswordUrl);
 				emailService.sendForgotPasswordEmail(email, verificationCode, subject, content);
-
 				return ResponseEntity.ok().body("Verification code sent to " + user.getEmail());
 			}
 		} catch (Exception e) {

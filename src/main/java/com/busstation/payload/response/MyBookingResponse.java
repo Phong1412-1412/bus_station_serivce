@@ -15,6 +15,8 @@ import lombok.Data;
 public class MyBookingResponse {
 
     private String orderId;
+    
+    private String paymentMethodName;
 
     private TripStatus tripStatus;
 
@@ -30,7 +32,7 @@ public class MyBookingResponse {
         super();
 
         this.orderId = order.getOrderID();
-
+        this.paymentMethodName = order.getPaymentMethod().getPaymentMethod();
         this.sumOrder = orderRepository.getSumOrder(order.getOrderID());
 
         UserResponse userResponse = new UserResponse();

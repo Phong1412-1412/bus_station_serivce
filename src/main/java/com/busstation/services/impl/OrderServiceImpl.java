@@ -189,10 +189,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean deleteOrder(String orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new DataNotFoundException("Order not found"));
-            List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
-            orderDetailRepository.deleteAll(orderDetails);
-            orderRepository.delete(order);
         Account account = accountRepository.findAccountByOrderId(orderId);
+
+
+
+        List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
+        orderDetailRepository.deleteAll(orderDetails);
+        orderRepository.delete(order);
         account.setCancellationCount(account.getCancellationCount() + 1);
         accountRepository.save(account);
         return true;
