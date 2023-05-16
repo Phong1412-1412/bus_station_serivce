@@ -189,19 +189,18 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean deleteOrder(String orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new DataNotFoundException("Order not found"));
-        Account account = accountRepository.findAccountByOrderId(orderId);
-        account.setCancellationCount(account.getCancellationCount() + 1);
-        accountRepository.save(account);
             List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(orderId);
             orderDetailRepository.deleteAll(orderDetails);
             orderRepository.delete(order);
+        Account account = accountRepository.findAccountByOrderId(orderId);
+        account.setCancellationCount(account.getCancellationCount() + 1);
+        accountRepository.save(account);
         return true;
     }
 
     public User getUser(){
         Account account = accountRepository.findByusername(new GetUserUtil().GetUserName());
-        User user = userRepository.findById(account.getUser().getUserId()).orElseThrow(()->new RuntimeException("User does not exist"));
-        return user;
+        return userRepository.findById(account.getUser().getUserId()).orElseThrow(()->new RuntimeException("User does not exist"));
     }
     public User getUserOfSocket(String token){
         String username = jwtProviderUtils.getUserNameFromJwtToken(token);
