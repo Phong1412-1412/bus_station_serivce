@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,9 +30,10 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
     private OrderDetail orderDetail;
     private Ticket ticket;
     private Trip trip;
-
     private Car car;
     private User employee;
+
+    private Optional<PaymentMethod> paymentMethod;
 
     private String htmlString;
 
@@ -41,10 +43,12 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
     private final TripRepository tripRepository;
     private final TripUserRepository tripUserRepository;
     private final OrderRepository orderRepository;
+    private final PaymentMethodRepository paymentMethodRepository;
     @Override
     public void onApplicationEvent(SubmitOrderCompleteEvent event) {
         theUser = event.getUser();
         theOrder = event.getOrder();
+        paymentMethod = paymentMethodRepository.findPaymentMethodById(theOrder.getPaymentMethod().getId());
         List<OrderDetail> orderDetails = orderDetailRepository.findByOrder_OrderID(theOrder.getOrderID());
         ticket = orderDetails.get(0).getTicket();
         for (OrderDetail orderDetail: orderDetails) {
@@ -55,11 +59,11 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
         trip = tripRepository.findById(theOrder.getTrip().getTripId()).orElse(null);
         
         try {
-        	car = orderRepository.findByOrderIdAndUserId(theOrder.getOrderID(), theUser.getUserId());
+            car = orderRepository.findByOrderIdAndUserId(theOrder.getOrderID(), theUser.getUserId());
         }catch (Exception e) {
-			// TODO: handle exception
-        	throw new AccessDenyException(e.getMessage());
-		}
+            // TODO: handle exception
+            throw new AccessDenyException(e.getMessage());
+        }
 
         
 
@@ -287,7 +291,8 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
                 "                        </tr>\n" +
                 "                        <tr>\n" +
                 "                            <td class=\"table-title\">Payments:</td>\n" +
-                "                            <td class=\"table-content\">At the station</td>\n" +
+                "                            <td class=\"table-content\">"+paymentMethod.get().getPaymentMethod()+": </td>\n" +
+                "                            <td class=\"table-content\">"+paymentMethod.get().getDescription()+"</td>\n" +
                 "                        </tr>\n" +
                 "                </table>\n" +
                 "                </div>    \n" +

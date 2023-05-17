@@ -34,7 +34,11 @@ public class MyBookingResponse {
         
         this.orderId = order.getOrderID();
         if(order.getPaymentMethod()!= null) {
+<<<<<<< HEAD
             this.paymentMethodName = order.getPaymentMethod().getPaymentMethod();      	
+=======
+            this.paymentMethodName = order.getPaymentMethod().getPaymentMethod();
+>>>>>>> 7a606492b16e603186189d148f78373ef109d74e
         }
         this.sumOrder = orderRepository.getSumOrder(order.getOrderID());
 
