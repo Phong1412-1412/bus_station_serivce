@@ -39,13 +39,6 @@ public class OrderController {
         return new ResponseEntity<>(orderDetailPage, HttpStatus.OK);
     }
 
-//    @PostMapping()
-//    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) {
-//
-//        OrderResponse orderResponse = orderService.createOrder(orderRequest);
-//        return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
-//    }
-
     @GetMapping("/findCancel/{orderId}")
     public ResponseEntity<?> cancellationCount(@PathVariable(name = "orderId") String orderId) {
         return ResponseEntity.ok().body(orderRepository.findCancellationCountForUserByOrderId(orderId));
@@ -56,13 +49,17 @@ public class OrderController {
 
         Boolean orderResponse = orderService.submitOrder(orderDetailRequest.getOrderId(), orderDetailRequest.getTripId(), orderDetailRequest.getPaymentId());
         if(orderResponse){
+            return new ResponseEntity<>("successfully", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("failed", HttpStatus.OK);
+    }
+    
+    @PostMapping("/sendMail")
+    public ResponseEntity<?> sendMail(@RequestBody OrderDetailRequest orderDetailRequest) {
             User user = userRepository.findUserByOrderID(orderDetailRequest.getOrderId());
             Order order = orderRepository.findById(orderDetailRequest.getOrderId()).orElse(null);
             publisher.publishEvent(new SubmitOrderCompleteEvent(user, order));
             return new ResponseEntity<>("successfully", HttpStatus.OK);
-
-        }
-        return new ResponseEntity<>("failed", HttpStatus.OK);
     }
 
     @DeleteMapping("/cancellingInvoice/{orderId}")
