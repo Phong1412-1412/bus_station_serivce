@@ -10,7 +10,6 @@ import com.busstation.entities.Order;
 import com.busstation.entities.User;
 import com.busstation.event.SubmitOrderCompleteEvent;
 import com.busstation.payload.request.OrderDetailRequest;
-import com.busstation.payload.request.VerifyOrderInformationRequest;
 import com.busstation.payload.response.MyBookingResponse;
 import com.busstation.payload.response.OrderDetailResponse;
 import com.busstation.repositories.OrderRepository;
