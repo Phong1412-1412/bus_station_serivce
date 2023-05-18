@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import com.busstation.entities.*;
+import com.busstation.payload.response.*;
 import com.busstation.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,12 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.busstation.exception.DataNotFoundException;
 import com.busstation.payload.request.OrderRequest;
-import com.busstation.payload.response.ChairResponse;
-import com.busstation.payload.response.MyBookingResponse;
-import com.busstation.payload.response.OrderDetailResponse;
-import com.busstation.payload.response.OrderResponse;
-import com.busstation.payload.response.TicketResponse;
-import com.busstation.payload.response.UserResponse;
 import com.busstation.services.OrderService;
 import com.busstation.utils.GetUserUtil;
 import com.busstation.utils.JwtProviderUtils;
@@ -337,4 +332,5 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return new MyBookingResponse(order, orderRepository);
 	}
+
 }

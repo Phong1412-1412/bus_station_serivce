@@ -18,5 +18,5 @@ public interface OrderService {
     Boolean deleteOrder(String orderId);
     
     MyBookingResponse getInformationNewOrder(String orderId);
-   
+
 }

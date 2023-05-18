@@ -1,5 +1,6 @@
 package com.busstation.controller;
 
+import com.busstation.entities.User;
 import com.busstation.payload.request.FindTripRequest;
 import com.busstation.payload.request.SearchTripRequest;
 import com.busstation.payload.request.TripRequest;
@@ -14,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController(value = "tripAPIofWeb")
 @RequestMapping(value = "/api/v1/trips")
@@ -36,9 +40,9 @@ public class TripController {
     }
 
     @GetMapping("/{trip_id}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_DRIVER','ROLE_ADMIN')")
     public ResponseEntity<?> getUsersByTrips(@RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
-                                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                             @RequestParam(value = "pageSize", defaultValue = "30") int pageSize,
                                              @PathVariable("trip_id") String tripId) {
 
         Page<UserByTripIdResponse> userByTripIdResponsePage = tripService.getAllUserByTrip(tripId, pageNo, pageSize);
@@ -54,6 +58,12 @@ public class TripController {
 
         Page<TripResponse> tripResponsePage = tripService.getAllTrips(pageNo, pageSize);
         return new ResponseEntity<>(tripResponsePage, HttpStatus.OK);
+    }
+
+    @GetMapping("/getUsers/{tripId}")
+    @PreAuthorize("hasAnyRole('ROLE_DRIVER','ROLE_ADMIN')")
+    public ResponseEntity<?> getUsersByTripId(@PathVariable(name = "tripId") String tripId) {
+        return ResponseEntity.ok().body(tripService.getUsersByTripId(tripId));
     }
 
     @PostMapping()

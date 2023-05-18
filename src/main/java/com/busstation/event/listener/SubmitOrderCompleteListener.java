@@ -54,7 +54,6 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
         for (OrderDetail orderDetail: orderDetails) {
             BigDecimal ticketPrice = orderDetail.getTicket().getPrice();
             totalPrice = totalPrice.add(ticketPrice);
-            System.out.println(totalPrice);
         }
         trip = tripRepository.findById(theOrder.getTrip().getTripId()).orElse(null);
         

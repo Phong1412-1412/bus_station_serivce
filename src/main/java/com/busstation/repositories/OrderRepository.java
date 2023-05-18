@@ -66,4 +66,10 @@ public interface OrderRepository extends JpaRepository<Order, String>{
 
     @Query("select o from Order o where o.orderID = ?1 and o.user.userId =?2")
     Order findByOrderId(String orderId, String userId);
+
+    @Query("SELECT o FROM User u " +
+            " INNER JOIN Order o on o.user.userId = u.userId" +
+            " INNER JOIN Trip t on t.tripId = o.trip.tripId" +
+            " WHERE u.userId = :userId AND t.tripId = :tripId")
+    Order findOrderByUser_UserId(@Param("userId") String userId, @Param("tripId") String tripId );
 }

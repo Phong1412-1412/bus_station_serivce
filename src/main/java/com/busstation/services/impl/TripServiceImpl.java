@@ -6,10 +6,7 @@ import com.busstation.exception.DataNotFoundException;
 import com.busstation.payload.request.SearchTripRequest;
 import com.busstation.payload.request.TicketRequest;
 import com.busstation.payload.request.TripRequest;
-import com.busstation.payload.response.SearchTripResponse;
-import com.busstation.payload.response.TicketResponse;
-import com.busstation.payload.response.TripResponse;
-import com.busstation.payload.response.UserByTripIdResponse;
+import com.busstation.payload.response.*;
 import com.busstation.repositories.*;
 import com.busstation.services.ChairService;
 import com.busstation.services.TicketService;
@@ -326,5 +323,46 @@ public class TripServiceImpl implements TripService {
             }
             tripRepository.save(trip);
         }
+    }
+
+    @Override
+    public List<UserOrderByTripIdResponse> getUsersByTripId(String tripId) {
+        List<User> users = userRepository.findUsersByTripId(tripId);
+        if(users.isEmpty()) {
+            throw new DataNotFoundException("Not user for trip::");
+        }
+
+        List<Order> orders = orderRepository.findAllByTrip_TripId(tripId);
+        if(orders.isEmpty()) {
+            throw new DataNotFoundException("Not order for trip::");
+        }
+
+        List<UserOrderByTripIdResponse> userOrderByTripIdResponses = new ArrayList<>();
+        for(Order order: orders) {
+            UserOrderByTripIdResponse userOrderByTripIdResponse = new UserOrderByTripIdResponse();
+            UserResponse userResponse = new UserResponse();
+            BigDecimal total = BigDecimal.ZERO;
+            userResponse.setUserId(order.getUser().getUserId());
+            userResponse.setFullName(order.getUser().getFullName());
+            userResponse.setEmail(order.getUser().getEmail());
+            userResponse.setPhoneNumber(order.getUser().getPhoneNumber());
+            userResponse.setAddress(order.getUser().getAddress());
+            userResponse.setStatus(order.getUser().getStatus());
+            String chairs = "";
+            for(OrderDetail orderDetail: order.getOrderDetails()) {
+                BigDecimal priceTicket = orderDetail.getTicket().getPrice();
+                total = total.add(priceTicket);
+                chairs = chairs.concat("/").concat(String.valueOf(orderDetail.getChair().getChairNumber()));
+            }
+            if (chairs.startsWith("/")) {
+                chairs = chairs.substring(1); // Xóa ký tự '/' ở đầu chuỗi
+            }
+            userOrderByTripIdResponse.setUserResponse(userResponse);
+            userOrderByTripIdResponse.setPaymentMethod(order.getPaymentMethod());
+            userOrderByTripIdResponse.setToTalPrice(total);
+            userOrderByTripIdResponse.setChairNumber(chairs);
+            userOrderByTripIdResponses.add(userOrderByTripIdResponse);
+        }
+        return userOrderByTripIdResponses;
     }
 }

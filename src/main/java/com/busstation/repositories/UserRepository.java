@@ -27,6 +27,12 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("SELECT u FROM User u JOIN Order o ON o.user.userId = u.userId WHERE o.orderID = :orderID")
     User findUserByOrderID(@Param("orderID") String orderID);
 
+    @Query("SELECT DISTINCT u FROM User u "
+            + "INNER JOIN Order o ON o.user.userId = u.userId "
+            + "INNER JOIN Trip t ON t.tripId = o.trip.tripId "
+            + "WHERE t.tripId = :tripId")
+    List<User> findUsersByTripId(@Param("tripId")String tripId);
+
     @Query("select u from User u where u.account.accountId = ?1")
 	User findByAccountId(String accountId);
 
