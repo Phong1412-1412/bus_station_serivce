@@ -29,7 +29,7 @@ INSERT INTO public.tbl_payment_method (payment_id, description, payment_method) 
 -- Data for Name: tbl_account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('7662e619-b22d-40f5-963a-894cf8139b3d', '2023-04-21 09:43:03.562', '$2a$10$Kkbn5Sx.8R40OVjCUBoW5e/ftIvJui1Z8FAeEWmCYHC6RmXt3QE12', NULL, 'tai@gmail.com', 'DRIVER');
+INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('7662e619-b22d-40f5-963a-894cf8139b3d', '2023-04-21 09:43:03.562', '$2a$10$Kkbn5Sx.8R40OVjCUBoW5e/ftIvJui1Z8FAeEWmCYHC6RmXt3QE12', NULL, 'tai1@gmail.com', 'DRIVER');
 INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('b76d5751-f04b-4b82-b17f-3a5c06a545e5', '2023-04-21 09:39:39.773', '$2a$10$S7jFqTEmdLI.4tb24.trEOvFUdPkBQmJjtympfQlhSbUkX0YFT83u', NULL, 'admin@gmail.com', 'ADMIN');
 INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('24ba584c-f1c5-44a0-a0a4-a6d50c92bdab', '2023-04-21 09:44:22.404', '$2a$10$N9IHguvbQ/RFwvc6IDJrneH5HXvDPevkfPJdq4skxYTQgfkzfugn2', NULL, 'tai2@gmail.com', 'DRIVER');
 INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('26912360-eb14-4832-8cae-4ec6da48296c', '2023-04-21 09:45:18.481', '$2a$10$HlpbQP4KToxdu5Gc1lU2t.djAr85dwNTPdqD4ECjf.zmHmbjJa.PO', NULL, 'user@gmail.com', 'USER');
@@ -121,8 +121,8 @@ INSERT INTO public.tbl_chair (chair_id, chair_number, status, car_id) VALUES ('3
 --
 
 INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('c673f457-240e-4343-9834-88ac5846b1de', 'Đà Lạt', '2023-04-21 09:39:39.815', 'phongbuibsp3@gmail.com', 'CEO BusStation', '0762590239', true, NULL, 'b76d5751-f04b-4b82-b17f-3a5c06a545e5');
-INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('e325a2df-5f15-47bc-8bcd-5ee85821de88', 'Lâm Đồng', '2023-04-21 09:43:03.575', 'us@gmail.com', 'Nguyễn Lê Tài', '0762590231', true, NULL, '7662e619-b22d-40f5-963a-894cf8139b3d');
-INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('3a651aaf-b003-4baa-aece-c9379fed4ef7', 'Vĩnh Phúc', '2023-04-21 09:44:22.411', 'taixe2@gmail.com', 'Nguyễn Lê Tú', '0762590230', true, NULL, '24ba584c-f1c5-44a0-a0a4-a6d50c92bdab');
+INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('e325a2df-5f15-47bc-8bcd-5ee85821de88', 'Lâm Đồng', '2023-04-21 09:43:03.575', 'tai1@gmail.com', 'Nguyễn Lê Tài', '0762590231', true, NULL, '7662e619-b22d-40f5-963a-894cf8139b3d');
+INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('3a651aaf-b003-4baa-aece-c9379fed4ef7', 'Vĩnh Phúc', '2023-04-21 09:44:22.411', 'tai2@gmail.com', 'Nguyễn Lê Tú', '0762590230', true, NULL, '24ba584c-f1c5-44a0-a0a4-a6d50c92bdab');
 INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('cb1f8b5e-f4a7-4426-8360-23df5e08733b', 'Khánh Hòa', '2023-04-21 09:45:18.496', 'loan@gmail.com', 'Nguyễn Loan', '0762590234', true, NULL, '26912360-eb14-4832-8cae-4ec6da48296c');
 INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('869b27a1-f289-482f-a353-06e520f218ea', 'Kiên Giang', '2023-04-21 09:45:40.373', 'duc@gmail.com', 'Lê Đức', '0762590238', true, NULL, '2449c3d9-1cf3-4d5c-af3c-1f9cce255d35');
 INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, phone_number, status, updated_at, account_id) VALUES ('4e4783b1-18b5-40cf-a4bc-eb01fc78222f', 'Hà Nội', '2023-04-21 09:46:28.939', 'hkhang@gmail.com', 'Hoàng Khang', '0762590222', true, NULL, 'b0f3483c-1e19-43c7-b41f-30c2f7ebd839');
@@ -304,9 +304,6 @@ INSERT INTO public.tbl_trip (trip_id, created_at, province_end, province_start, 
 -- Data for Name: tbl_order; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_order (order_id, created_at, trip_id, user_id) VALUES ('TPBR2-L582MBNCY', '2023-04-23 12:26:02.928', 'a02888ca-26c8-4e63-9f90-199ad2b3f8e4', 'cb1f8b5e-f4a7-4426-8360-23df5e08733b');
-
-
 --
 -- TOC entry 3445 (class 0 OID 17367)
 -- Dependencies: 226
@@ -321,10 +318,6 @@ INSERT INTO public.tbl_ticket (ticket_id, address_end, address_start, price) VAL
 -- Dependencies: 222
 -- Data for Name: tbl_order_detail; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-INSERT INTO public.tbl_order_detail (order_detail_id, created_at, status, update_at, chair_id, order_id, ticket_id) VALUES ('fa304f71-1da6-4bd6-b50f-7c2e0cda830b', '2023-04-23 12:26:02.976', true, NULL, '3b337ba2-f1d1-4d71-8f7b-fc91d75bb6a8', 'TPBR2-L582MBNCY', 'e0259953-07c4-46a3-aef5-0fe194b470c4');
-
-
 --
 -- TOC entry 3446 (class 0 OID 17372)
 -- Dependencies: 227

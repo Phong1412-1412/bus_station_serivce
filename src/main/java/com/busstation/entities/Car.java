@@ -45,6 +45,9 @@ public class Car  implements Serializable {
     @ManyToMany(mappedBy = "cars", fetch = FetchType.LAZY)
     private Set<Trip> trips = new HashSet<>();
 
+    @OneToMany(mappedBy = "car")
+    private Set<Order> orders = new HashSet<>();
+
     //--------------------------------------TYPE CAR---------------------------------
 
     @ManyToOne(fetch = FetchType.EAGER)

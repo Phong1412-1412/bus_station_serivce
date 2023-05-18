@@ -67,6 +67,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private JwtProviderUtils jwtProviderUtils;
 
+    private final CarRepository carRepository;
+
     private final PaymentMethodRepository paymentMethodRepository;
 
     @Override
@@ -74,6 +76,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse createOrder(OrderRequest orderRequest,String token) {
 
         User user = getUserOfSocket(token);
+        Car car = carRepository.findCarByCarId(orderRequest.getCarId());
 
         Optional<Ticket> ticket = ticketRepository.findByAddressStartAndAddressEnd(orderRequest.getAddressStart(), orderRequest.getAddressEnd());
 
@@ -92,6 +95,7 @@ public class OrderServiceImpl implements OrderService {
             order.setTrip(trip);
             order.setSendMail(false);
             order.setPaymentMethod(null);
+            order.setCar(car);
             newOrder = orderRepository.save(order);
         }
         else {

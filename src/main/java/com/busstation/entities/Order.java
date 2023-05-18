@@ -54,6 +54,10 @@ public class Order  implements Serializable {
     @JoinColumn(name = "trip_id")
     private Trip trip;
 
+    @ManyToOne
+    @JoinColumn(name = "carId")
+    private Car car;
+
     @Column(name = "is_send_mail", columnDefinition = "boolean default false")
     private boolean isSendMail;
 

@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -327,12 +328,8 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<UserOrderByTripIdResponse> getUsersByTripId(String tripId) {
-        List<User> users = userRepository.findUsersByTripId(tripId);
-        if(users.isEmpty()) {
-            throw new DataNotFoundException("Not user for trip::");
-        }
-
-        List<Order> orders = orderRepository.findAllByTrip_TripId(tripId);
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+         List<Order> orders = orderRepository.findOrderByTripIdAndEmployeeId(tripId, user.getUserId());
         if(orders.isEmpty()) {
             throw new DataNotFoundException("Not order for trip::");
         }

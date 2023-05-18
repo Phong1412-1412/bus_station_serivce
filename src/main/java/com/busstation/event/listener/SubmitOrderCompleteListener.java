@@ -73,9 +73,10 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
         for (OrderDetail orderDetail : orderDetails) {
             sb.append(orderDetail.getChair().getChairNumber()).append("/");
         }
-
          htmlString = sb.toString();
-
+         if(htmlString.startsWith("/")) {
+             htmlString = htmlString.substring(1);
+         }
         try {
             sendOderEmail();
         } catch (MessagingException | UnsupportedEncodingException e) {

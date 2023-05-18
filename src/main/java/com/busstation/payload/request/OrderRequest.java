@@ -23,4 +23,6 @@ public class OrderRequest {
 
     private Long paymentId;
 
+    private String CarId;
+
 }
