@@ -114,6 +114,12 @@ public class CarServiceImpl implements CarService {
         Optional<Employee> employee = employeeRepository.findById(employeeId);
         Optional<Car> car = carRepository.findById(carId);
 
+        Optional<Employee> existsCarEm = employeeRepository.findEmployeeByCarId(carId);
+
+        if(existsCarEm.isPresent()) {
+            return new ApiResponse("Employee, car has exist", HttpStatus.OK);
+        }
+
         if (employee.isEmpty() || car.isEmpty())
             return new ApiResponse("Employee, car does not exist", HttpStatus.OK);
         if (!employee.get().getUser().getAccount().getRole().getRoleId().equals(RoleEnum.DRIVER.toString()))

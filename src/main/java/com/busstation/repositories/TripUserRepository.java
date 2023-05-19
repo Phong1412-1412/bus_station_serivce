@@ -15,7 +15,7 @@ public interface TripUserRepository extends JpaRepository<TripUser, TripUserIdMt
 	
     TripUser findTripUserByUserId(String userId);
 
-    @Query("SELECT u from User u, Car c, Employee e where e.car.carId = c.carId and e.user.userId = u.userId and c.carId = ?1")
+        @Query("SELECT u from User u, Car c, Employee e where e.car.carId = c.carId and e.user.userId = u.userId and c.carId = ?1")
     Optional<User> findInforEmployeeByCarId(String cartId);
 }
 

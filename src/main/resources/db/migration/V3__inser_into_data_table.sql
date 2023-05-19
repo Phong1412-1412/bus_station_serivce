@@ -29,7 +29,7 @@ INSERT INTO public.tbl_payment_method (payment_id, description, payment_method) 
 -- Data for Name: tbl_account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('7662e619-b22d-40f5-963a-894cf8139b3d', '2023-04-21 09:43:03.562', '$2a$10$Kkbn5Sx.8R40OVjCUBoW5e/ftIvJui1Z8FAeEWmCYHC6RmXt3QE12', NULL, 'tai1@gmail.com', 'DRIVER');
+INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('7662e619-b22d-40f5-963a-894cf8139b3d', '2023-04-21 09:43:03.562', '$2a$10$Kkbn5Sx.8R40OVjCUBoW5e/ftIvJui1Z8FAeEWmCYHC6RmXt3QE12', NULL, 'tai1@gmail.com', 'USER');
 INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('b76d5751-f04b-4b82-b17f-3a5c06a545e5', '2023-04-21 09:39:39.773', '$2a$10$S7jFqTEmdLI.4tb24.trEOvFUdPkBQmJjtympfQlhSbUkX0YFT83u', NULL, 'admin@gmail.com', 'ADMIN');
 INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('24ba584c-f1c5-44a0-a0a4-a6d50c92bdab', '2023-04-21 09:44:22.404', '$2a$10$N9IHguvbQ/RFwvc6IDJrneH5HXvDPevkfPJdq4skxYTQgfkzfugn2', NULL, 'tai2@gmail.com', 'DRIVER');
 INSERT INTO public.tbl_account (account_id, created_at, password, updated_at, username, role_id) VALUES ('26912360-eb14-4832-8cae-4ec6da48296c', '2023-04-21 09:45:18.481', '$2a$10$HlpbQP4KToxdu5Gc1lU2t.djAr85dwNTPdqD4ECjf.zmHmbjJa.PO', NULL, 'user@gmail.com', 'USER');
@@ -133,8 +133,6 @@ INSERT INTO public.tbl_userr (user_id, address, created_at, email, full_name, ph
 -- Dependencies: 217
 -- Data for Name: tbl_employee; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-INSERT INTO public.tbl_employee (employee_id, created_at, dob, update_at, yoe, car_id, user_id) VALUES ('2a87bc73-6955-4d2e-8497-37c1111a520c', '2023-04-21 14:23:26.548', '1995-06-01 07:00:00', NULL, 5, '6e386c84-5713-4cb8-9ebd-484705fbdb06', 'e325a2df-5f15-47bc-8bcd-5ee85821de88');
 INSERT INTO public.tbl_employee (employee_id, created_at, dob, update_at, yoe, car_id, user_id) VALUES ('33c215b4-fdfc-4f00-a568-cbcdc4c936f6', '2023-04-21 14:23:48.927', '1995-06-01 07:00:00', NULL, 5, '924e7cef-da7b-45b6-b94d-deb50812d647', '3a651aaf-b003-4baa-aece-c9379fed4ef7');
 
 
@@ -336,20 +334,10 @@ INSERT INTO public.tbl_token (token_id, expired, revoked, token, token_type, acc
 -- Dependencies: 229
 -- Data for Name: tbl_trip_car; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-INSERT INTO public.tbl_trip_car (car_id, trip_id) VALUES ('924e7cef-da7b-45b6-b94d-deb50812d647', 'a02888ca-26c8-4e63-9f90-199ad2b3f8e4');
-INSERT INTO public.tbl_trip_car (car_id, trip_id) VALUES ('6e386c84-5713-4cb8-9ebd-484705fbdb06', 'f443c4af-c4c9-4f05-94c0-65896b3808fb');
-
-
 --
 -- TOC entry 3449 (class 0 OID 17389)
 -- Dependencies: 230
--- Data for Name: tbl_trip_user; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.tbl_trip_user (trip_id, user_id) VALUES ('a02888ca-26c8-4e63-9f90-199ad2b3f8e4', 'cb1f8b5e-f4a7-4426-8360-23df5e08733b');
-
-
+-- Data for Name: tbl_trip_user; Type: TABLE DATA; Schema: public; Owner: postgre
 --
 -- TOC entry 3456 (class 0 OID 0)
 -- Dependencies: 219
