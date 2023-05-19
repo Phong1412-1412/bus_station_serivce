@@ -3,7 +3,6 @@ package com.busstation.payload.response;
 import java.time.LocalDateTime;
 
 import com.busstation.entities.Comment;
-import com.busstation.entities.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
@@ -16,13 +15,13 @@ public class CommentResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Ho_Chi_Minh")
     private LocalDateTime createdAt;
     private ParentCommentResponse relyComment;
-    private CommentUserResponse user;
+    private InfoUserResonse user;
 
     public CommentResponse(Comment comment) {
         this.commentId = comment.getCommentId();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
-        this.user = new CommentUserResponse(comment.getUser());
+        this.user = new InfoUserResonse(comment.getUser());
         if(comment.getParentComment() != null) {
         	this.relyComment = new ParentCommentResponse(comment.getParentComment());
         }
@@ -30,28 +29,14 @@ public class CommentResponse {
 }
 
 @Data 
-class CommentUserResponse{
-	
-	private String userId;
-	private String fullName;
-	private String roleId;
-	public CommentUserResponse(User user) {
-		super();
-		this.userId = user.getUserId();
-		this.fullName = user.getFullName();
-		this.roleId = user.getAccount().getRole().getRoleId();
-	}	
-}
-
-@Data 
 class ParentCommentResponse{	
 	private String parentId;
 	private String content;
-	private CommentUserResponse user;
+	private InfoUserResonse user;
 	public ParentCommentResponse(Comment comment) {
 		super();
 		this.parentId = comment.getCommentId();
 		this.content = comment.getContent();
-		this.user = new CommentUserResponse(comment.getUser());
+		this.user = new InfoUserResonse(comment.getUser());
 	}	
 }
