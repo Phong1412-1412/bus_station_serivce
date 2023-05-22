@@ -165,7 +165,7 @@ public class AuthServiceImpl implements AuthService {
 
 //--------------------------------------------------------------------------------------------------------
 	@Override
-	public User registerUser(SignupRequest signupRequest) {
+	public User 	registerUser(SignupRequest signupRequest) {
 		String username = signupRequest.getUsername();
 		String email = signupRequest.getUser().getEmail();
 		User user = new User();
@@ -236,11 +236,14 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public VerificationToken generateNewVerificationToken(String oldToken) {
-		VerificationToken token = verificationTokenRepository.findByToken(oldToken);
-		VerificationToken tokenTime = new VerificationToken();
-		token.setToken(UUID.randomUUID().toString());
-		token.setExpirationTime(tokenTime.getExpirationTime());
-		return verificationTokenRepository.save(token);
+		Optional<VerificationToken> token = Optional.ofNullable(verificationTokenRepository.findByToken(oldToken));
+		if(token.isPresent()) {
+			VerificationToken tokenTime = new VerificationToken();
+			token.get().setToken(UUID.randomUUID().toString());
+			token.get().setExpirationTime(tokenTime.getExpirationTime());
+			return verificationTokenRepository.save(token.get());
+		}
+		throw new DataNotFoundException("This Verification token is not exists!");
 	}
 
 	@Override

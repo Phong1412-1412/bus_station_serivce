@@ -19,4 +19,5 @@ public class UserOrderByTripIdResponse {
     private PaymentMethod paymentMethod;
     private BigDecimal toTalPrice;
     private String chairNumber;
+    private String orderId;
 }

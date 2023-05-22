@@ -35,7 +35,8 @@ public class SchedulerConfig {
     private User employee;
     private Trip trip;
 
-    @Scheduled(fixedDelay =1000 * 60 * 60 * 2)
+//    @Scheduled(fixedDelay =1000 * 60 * 60 * 2)
+    @Scheduled(fixedDelay = 1000 * 60)
     public void sendEmailScheduler(){
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime tomorrowStart = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth() + 1, 0, 0, 0);

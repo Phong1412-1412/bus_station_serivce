@@ -337,4 +337,9 @@ public class OrderServiceImpl implements OrderService {
 		return new MyBookingResponse(order, orderRepository);
 	}
 
+    @Override
+    public List<Integer> getOrderByTripAndUser(String tripId, String userId) {
+        return null;
+    }
+
 }

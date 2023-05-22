@@ -328,7 +328,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<UserOrderByTripIdResponse> getUsersByTripId(String tripId) {
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
          List<Order> orders = orderRepository.findOrderByTripIdAndEmployeeId(tripId, user.getUserId());
         if(orders.isEmpty()) {
             throw new DataNotFoundException("Not order for trip::");
@@ -358,6 +358,7 @@ public class TripServiceImpl implements TripService {
             userOrderByTripIdResponse.setPaymentMethod(order.getPaymentMethod());
             userOrderByTripIdResponse.setToTalPrice(total);
             userOrderByTripIdResponse.setChairNumber(chairs);
+            userOrderByTripIdResponse.setOrderId(order.getOrderID());
             userOrderByTripIdResponses.add(userOrderByTripIdResponse);
         }
         return userOrderByTripIdResponses;

@@ -71,10 +71,10 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
         StringBuilder sb = new StringBuilder();
 
         for (OrderDetail orderDetail : orderDetails) {
-            sb.append(orderDetail.getChair().getChairNumber()).append("/");
+            sb.append(orderDetail.getChair().getChairNumber()).append(",");
         }
          htmlString = sb.toString();
-         if(htmlString.startsWith("/")) {
+         if(htmlString.startsWith(",")) {
              htmlString = htmlString.substring(1);
          }
         try {
@@ -211,10 +211,6 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
                 "                <div class=\"table\">\n" +
                 "                    <table>\n" +
                 "                        <tr>\n" +
-                "                            <td class=\"table-title\">Ticket ID:</td>\n" +
-                "                            <td class=\"table-content\">"+ticket.getTicketId()+"</td>\n" +
-                "                        </tr>\n" +
-                "                        <tr>\n" +
                 "                            <td class=\"table-title\">Address start:</td>\n" +
                 "                            <td class=\"table-content\"> "+ticket.getAddressStart()+"</td>\n" +
                 "                        </tr>\n" +
@@ -231,10 +227,6 @@ public class SubmitOrderCompleteListener implements ApplicationListener<SubmitOr
                 "                            <td class=\"table-title\">Chair number:</td>" +
                 "                            <td class=\"table-content\"> "+htmlString+" " +
                 "                            </td>\n" +
-                "                        </tr>\n" +
-                "                        <tr>\n" +
-                "                            <td class=\"table-title\">Trip:</td>\n" +
-                "                            <td class=\"table-content\">"+trip.getProvinceStart()+ " - "+trip.getProvinceEnd()+ " ("+trip.getTimeStart()+") </td>\n" +
                 "                        </tr>\n" +
                 "                        <tr class=\"note\">\n" +
                 "                            <td class=\"table-title\">Total price:</td>\n" +

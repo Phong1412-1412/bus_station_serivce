@@ -7,6 +7,8 @@ import com.busstation.payload.response.MyBookingResponse;
 import com.busstation.payload.response.OrderDetailResponse;
 import com.busstation.payload.response.OrderResponse;
 
+import java.util.List;
+
 public interface OrderService {
 
     OrderResponse createOrder(OrderRequest orderRequest,String token);
@@ -18,5 +20,7 @@ public interface OrderService {
     Boolean deleteOrder(String orderId);
     
     MyBookingResponse getInformationNewOrder(String orderId);
+
+    List<Integer> getOrderByTripAndUser(String tripId, String userId);
 
 }

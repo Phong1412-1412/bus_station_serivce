@@ -1,4 +1,4 @@
-package com.busstation.oauth;
+package com.busstation.payload.request;
 
 import lombok.Data;
 

@@ -2,6 +2,8 @@ package com.busstation.services.impl;
 
 import java.time.LocalDateTime;
 
+import com.busstation.exception.DataNotFoundException;
+import com.busstation.exception.ErrorDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,15 +47,17 @@ public class RatingServiceImpl implements RatingService{
 	public RatingResponse createRating(RatingRequest request) {
 		
 		String username = SecurityUtils.getUserName();
-		Account account = accountRepository.findByusername(username);		
+		Account account = accountRepository.findByusername(username);
+		if(account.getUser().getOrders().size() == 0) {
+			throw new DataNotFoundException("Cannot rate. Please order our service first.");
+		}
 		Rating rating = new Rating();
 		rating.setUser(account.getUser());
 		rating.setContent(request.getContent());
 		rating.setRating(request.getRating());
 		ratingRepository.save(rating);
-		
-		RatingResponse response = new RatingResponse(rating);
-		return response;
+
+		return new RatingResponse(rating);
 	}
 
 	@Override

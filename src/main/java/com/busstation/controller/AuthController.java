@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -77,6 +78,7 @@ public class AuthController {
     }
 
     @GetMapping("/resend-verification-token")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_DRIVER', 'ROLE_ADMIN')")
     public String resendVerificationToken(@RequestParam("token") String oldToken, final HttpServletRequest request)
             throws MessagingException, UnsupportedEncodingException {
         VerificationToken verificationToken = authService.generateNewVerificationToken(oldToken);
@@ -90,6 +92,11 @@ public class AuthController {
         String url = applicationUrl+"/api/v1/auth/verifyEmail?token="+verificationToken.getToken();
         eventListener.sendVerificationEmail(url);
         log.info("Click the link to verify your registration :  {}", url);
+    }
+
+    @GetMapping("getVerificationToken/{userId}")
+    public ResponseEntity<?> getVerificationToken(@PathVariable("userId") String userId) {
+        return ResponseEntity.ok().body(tokenRepository.findByUser_UserId(userId));
     }
 
 
@@ -113,4 +120,6 @@ public class AuthController {
         		resetPasswordRequest.getNewPassword(), 
         		resetPasswordRequest.getVerifyNewPassword());
     }
+
+
 }

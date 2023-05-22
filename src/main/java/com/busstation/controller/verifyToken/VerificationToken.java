@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.busstation.entities.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class VerificationToken {
     private Date expirationTime;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "USER_ID")
+    @JsonIgnore
     private User user;
 
     private static final int EXPIRATION_TIME = 5;
