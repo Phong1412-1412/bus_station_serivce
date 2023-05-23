@@ -359,6 +359,7 @@ public class TripServiceImpl implements TripService {
             userOrderByTripIdResponse.setToTalPrice(total);
             userOrderByTripIdResponse.setChairNumber(chairs);
             userOrderByTripIdResponse.setOrderId(order.getOrderID());
+            userOrderByTripIdResponse.setTripStatus(order.getTrip().getStatus());
             userOrderByTripIdResponses.add(userOrderByTripIdResponse);
         }
         return userOrderByTripIdResponses;

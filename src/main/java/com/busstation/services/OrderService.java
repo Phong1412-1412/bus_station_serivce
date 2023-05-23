@@ -21,6 +21,6 @@ public interface OrderService {
     
     MyBookingResponse getInformationNewOrder(String orderId);
 
-    List<Integer> getOrderByTripAndUser(String tripId, String userId);
+    Integer getOrderByTripAndUser(String userId);
 
 }

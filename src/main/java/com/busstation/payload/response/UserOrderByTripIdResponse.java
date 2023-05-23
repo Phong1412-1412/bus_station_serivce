@@ -1,6 +1,7 @@
 package com.busstation.payload.response;
 
 import com.busstation.entities.PaymentMethod;
+import com.busstation.enums.TripStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,5 @@ public class UserOrderByTripIdResponse {
     private BigDecimal toTalPrice;
     private String chairNumber;
     private String orderId;
+    private TripStatus tripStatus;
 }

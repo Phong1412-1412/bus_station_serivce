@@ -70,8 +70,8 @@ public interface OrderRepository extends JpaRepository<Order, String>{
     @Query("SELECT o FROM User u " +
             " INNER JOIN Order o on o.user.userId = u.userId" +
             " INNER JOIN Trip t on t.tripId = o.trip.tripId" +
-            " WHERE u.userId = :userId AND t.tripId = :tripId")
-    Order findOrderByUser_UserId(@Param("userId") String userId, @Param("tripId") String tripId );
+            " WHERE u.userId = :userId AND t.status = 0")
+    List<Order> findOrderByUser_UserId(@Param("userId") String userId);
 
     @Query("select o from Order o" +
             " inner join Car c on c.carId = o.car.carId" +

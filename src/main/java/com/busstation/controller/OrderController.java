@@ -4,6 +4,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.busstation.entities.Order;
@@ -77,6 +79,18 @@ public class OrderController {
 
         MyBookingResponse order = orderService.getInformationNewOrder(orderId);
         return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @GetMapping("/countOrderByPaymentAtStation")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
+    public ResponseEntity<?> countOrderByPaymentAtStation() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = new User();
+        if(userEmail != null) {
+             user = userRepository.findByEmail(userEmail);
+             return ResponseEntity.ok().body(orderService.getOrderByTripAndUser(user.getUserId()));
+        }
+       return ResponseEntity.ok().body("User not found!!!");
     }
 
 }

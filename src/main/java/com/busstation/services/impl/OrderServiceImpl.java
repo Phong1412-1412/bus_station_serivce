@@ -326,20 +326,33 @@ public class OrderServiceImpl implements OrderService {
         return ticketResponse;
     }
 
-	@Override
-	public MyBookingResponse getInformationNewOrder(String orderId) {
-		Account account = accountRepository.findByusername(new GetUserUtil().GetUserName());
+    @Override
+    public MyBookingResponse getInformationNewOrder(String orderId) {
+        Account account = accountRepository.findByusername(new GetUserUtil().GetUserName());
 
-		Order order = orderRepository.findByOrderId(orderId, account.getUser().getUserId());
-		if(order == null) {
-			throw new DataNotFoundException("Order not found!");
-		}
-		return new MyBookingResponse(order, orderRepository);
-	}
+        Order order = orderRepository.findByOrderId(orderId, account.getUser().getUserId());
+        if(order == null) {
+            throw new DataNotFoundException("Order not found!");
+        }
+        return new MyBookingResponse(order, orderRepository);
+    }
 
     @Override
-    public List<Integer> getOrderByTripAndUser(String tripId, String userId) {
-        return null;
+    public Integer getOrderByTripAndUser(String userId) {
+        List<Order> orders = orderRepository.findOrderByUser_UserId(userId);
+        int countOrderDetailsPaymentAtStation = 0;
+        if(orders.size() > 0) {
+            for (Order order: orders) {
+                if(order.getPaymentMethod().getId() == 1) {
+                    List<OrderDetail> orderDetails = new ArrayList<>();
+                    orderDetails = orderDetailRepository.findByOrder_OrderID(order.getOrderID());
+                    countOrderDetailsPaymentAtStation = countOrderDetailsPaymentAtStation + orderDetails.size();
+                }
+
+            }
+            return countOrderDetailsPaymentAtStation;
+        }
+        return 0;
     }
 
 }
